@@ -1,9 +1,11 @@
 import djLoboImage from "@/assets/dj-lobo-real.jpg";
-import { Radio } from "lucide-react";
+import { Radio, MessageCircle } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
+import { usePresence } from "@/hooks/usePresence";
 
 const HeroSection = () => {
   const { branding } = useBranding();
+  const { listenerCount } = usePresence();
   
   const scrollToSchedule = () => {
     document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth" });
@@ -18,17 +20,36 @@ const HeroSection = () => {
       className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 pt-20 pb-32 relative"
       aria-labelledby="hero-title"
     >
-      {/* On Air Badge */}
-      <div 
-        className="glass-card-pink on-air-pulse px-4 sm:px-6 py-2 sm:py-3 mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3"
-        role="status"
-        aria-live="polite"
-        aria-label="DJ Lobo är på luften just nu"
-      >
-        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-neon-pink rounded-full live-dot" aria-hidden="true"></div>
-        <span className="font-display font-bold text-neon-pink tracking-wider text-sm sm:text-base">
-          PÅ LUFTEN
-        </span>
+      {/* On Air Badge + Live Chat Counter */}
+      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+        {/* On Air Badge */}
+        <div 
+          className="glass-card-pink on-air-pulse px-4 sm:px-6 py-2 sm:py-3 flex items-center gap-2 sm:gap-3"
+          role="status"
+          aria-live="polite"
+          aria-label="DJ Lobo är på luften just nu"
+        >
+          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-neon-pink rounded-full live-dot" aria-hidden="true"></div>
+          <span className="font-display font-bold text-neon-pink tracking-wider text-sm sm:text-base">
+            PÅ LUFTEN
+          </span>
+        </div>
+
+        {/* Live Chat Counter - FOMO indicator */}
+        {listenerCount > 0 && (
+          <button
+            onClick={() => document.getElementById("live-chat-section")?.scrollIntoView({ behavior: "smooth" })}
+            className="glass-card px-4 sm:px-5 py-2 sm:py-3 flex items-center gap-2 hover:border-neon-cyan/50 transition-all hover:scale-105 cursor-pointer group"
+            aria-label={`${listenerCount} fans chattar just nu, klicka för att gå till chatten`}
+          >
+            <MessageCircle className="w-4 h-4 text-neon-cyan group-hover:animate-bounce" aria-hidden="true" />
+            <span className="text-sm sm:text-base">
+              <span className="font-bold text-neon-cyan">{listenerCount}</span>
+              <span className="text-muted-foreground ml-1.5 hidden sm:inline">fans chattar</span>
+              <span className="text-muted-foreground ml-1.5 sm:hidden">💬</span>
+            </span>
+          </button>
+        )}
       </div>
 
       {/* DJ Image with neon border */}

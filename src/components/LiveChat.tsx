@@ -327,6 +327,7 @@ const LiveChat = () => {
   if (!isJoined) {
     return (
       <section 
+        id="live-chat-section"
         className="py-12 sm:py-16 px-4 sm:px-6"
         aria-labelledby="chat-join-title"
       >
@@ -381,6 +382,7 @@ const LiveChat = () => {
   // Chat interface
   return (
     <section 
+      id="live-chat-section"
       className="py-12 sm:py-16 px-4 sm:px-6"
       aria-labelledby="chat-title"
     >

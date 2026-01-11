@@ -7,6 +7,7 @@ import SocialGallerySection from "@/components/SocialGallerySection";
 import LiveChat from "@/components/LiveChat";
 import Footer from "@/components/Footer";
 import NowPlayingBar from "@/components/NowPlayingBar";
+import FloatingChatButton from "@/components/FloatingChatButton";
 
 const Index = () => {
   return (
@@ -33,6 +34,7 @@ const Index = () => {
         </main>
         <Footer />
         <NowPlayingBar />
+        <FloatingChatButton />
       </div>
     </div>
   );
