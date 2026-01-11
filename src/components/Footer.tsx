@@ -3,7 +3,7 @@ import { Instagram, Facebook, Youtube, Radio, ExternalLink } from "lucide-react"
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
   facebook: "https://www.facebook.com/djloboradiodjs/",
-  youtube: "https://www.youtube.com/@djloboradio",
+  youtube: "https://www.youtube.com/@djloboproducciones3211",
   zenoPlayer: "https://zeno.fm/radio/dj-lobo-radio-o85p/",
 };
 

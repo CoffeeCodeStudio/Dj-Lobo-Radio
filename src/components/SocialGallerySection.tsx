@@ -1,40 +1,63 @@
 import { Instagram, Facebook, Youtube, Play, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGallery } from "@/hooks/useGallery";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
   facebook: "https://www.facebook.com/djloboradiodjs/",
-  youtube: "https://www.youtube.com/@djloboradio",
+  youtube: "https://www.youtube.com/@djloboproducciones3211",
 };
 
-// Placeholder video embeds - replace with actual video IDs
-const LIVE_SETS = [
-  {
-    id: 1,
-    title: "Live Set - 80s Classics Mix",
-    platform: "youtube",
-    embedId: "placeholder",
-    thumbnail: null,
+// Latest YouTube video ID from DJ Lobo's channel
+const LATEST_VIDEO_ID = "dQw4w9WgXcQ"; // Replace with actual latest video ID
+
+const translations = {
+  sv: {
+    connectTitle: "FÖLJ DJ LOBO",
+    connectSubtitle: "Följ resan, fånga live-set och gå med i communityn",
+    gallery: "Galleri",
+    noImages: "Inga bilder i galleriet ännu",
+    followInstagram: "Följ på Instagram",
+    joinFacebook: "Gilla på Facebook",
+    subscribeYoutube: "Prenumerera på YouTube",
+    liveSets: "Live Sets & Videos",
+    clickToWatch: "Klicka för att titta",
+    latestVideo: "Senaste Videon",
+    watchOnYoutube: "Se på YouTube",
   },
-  {
-    id: 2,
-    title: "Friday Night Party Stream",
-    platform: "facebook",
-    embedId: "placeholder",
-    thumbnail: null,
+  en: {
+    connectTitle: "CONNECT WITH DJ LOBO",
+    connectSubtitle: "Follow the journey, catch live sets, and join the community",
+    gallery: "Gallery",
+    noImages: "No images in gallery yet",
+    followInstagram: "Follow on Instagram",
+    joinFacebook: "Join on Facebook",
+    subscribeYoutube: "Subscribe on YouTube",
+    liveSets: "Live Sets & Videos",
+    clickToWatch: "Click to watch",
+    latestVideo: "Latest Video",
+    watchOnYoutube: "Watch on YouTube",
   },
-  {
-    id: 3,
-    title: "90s Dance Hits Marathon",
-    platform: "youtube",
-    embedId: "placeholder",
-    thumbnail: null,
+  es: {
+    connectTitle: "CONECTA CON DJ LOBO",
+    connectSubtitle: "Sigue el viaje, mira sets en vivo y únete a la comunidad",
+    gallery: "Galería",
+    noImages: "No hay imágenes en la galería aún",
+    followInstagram: "Seguir en Instagram",
+    joinFacebook: "Únete en Facebook",
+    subscribeYoutube: "Suscribirse en YouTube",
+    liveSets: "Sets en Vivo & Videos",
+    clickToWatch: "Clic para ver",
+    latestVideo: "Último Video",
+    watchOnYoutube: "Ver en YouTube",
   },
-];
+};
 
 const SocialGallerySection = () => {
   const { images, isLoading } = useGallery();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="social-gallery-heading">
@@ -45,10 +68,10 @@ const SocialGallerySection = () => {
             id="social-gallery-heading"
             className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-neon-gradient mb-4"
           >
-            CONNECT WITH DJ LOBO
+            {t.connectTitle}
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
-            Follow the journey, catch live sets, and join the community
+            {t.connectSubtitle}
           </p>
         </div>
 
@@ -57,7 +80,7 @@ const SocialGallerySection = () => {
           <div className="flex items-center justify-center mb-6">
             <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-cyan flex items-center gap-3">
               <ImageIcon className="w-6 h-6" />
-              Gallery
+              {t.gallery}
             </h3>
           </div>
 
@@ -97,7 +120,7 @@ const SocialGallerySection = () => {
               // Empty state
               <div className="col-span-full text-center py-8 text-muted-foreground">
                 <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>Inga bilder i galleriet ännu</p>
+                <p>{t.noImages}</p>
               </div>
             )}
           </div>
@@ -119,7 +142,7 @@ const SocialGallerySection = () => {
               }}
             >
               <Instagram className="w-6 h-6 mr-3" />
-              Follow on Instagram
+              {t.followInstagram}
               <span 
                 className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 aria-hidden="true"
@@ -144,7 +167,7 @@ const SocialGallerySection = () => {
               }}
             >
               <Facebook className="w-5 h-5 mr-2" />
-              Join us on Facebook
+              {t.joinFacebook}
               <span 
                 className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 aria-hidden="true"
@@ -166,7 +189,7 @@ const SocialGallerySection = () => {
               }}
             >
               <Youtube className="w-5 h-5 mr-2" />
-              Subscribe on YouTube
+              {t.subscribeYoutube}
               <span 
                 className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 aria-hidden="true"
@@ -175,25 +198,70 @@ const SocialGallerySection = () => {
           </a>
         </div>
 
+        {/* Latest Video Section */}
+        <div className="mb-16">
+          <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-pink mb-6 flex items-center justify-center gap-3">
+            <Youtube className="w-6 h-6" />
+            {t.latestVideo}
+          </h3>
+          
+          <div className="max-w-3xl mx-auto">
+            <div className="glass-card overflow-hidden group hover:border-neon-pink/50 transition-all duration-300">
+              {/* YouTube Embed */}
+              <div className="aspect-video relative">
+                <iframe
+                  src={`https://www.youtube.com/embed/${LATEST_VIDEO_ID}?rel=0&modestbranding=1`}
+                  title="DJ Lobo Latest Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                  loading="lazy"
+                />
+              </div>
+              
+              {/* Video Info */}
+              <div className="p-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#FF0000] flex items-center justify-center">
+                    <Youtube className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="font-medium text-foreground">DJ Lobo Producciones</span>
+                </div>
+                <a
+                  href={SOCIAL_LINKS.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-neon-cyan hover:underline flex items-center gap-1"
+                >
+                  {t.watchOnYoutube}
+                  <Play className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Live Sets / Video Section */}
         <div>
-          <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-pink mb-6 flex items-center gap-3">
+          <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-cyan mb-6 flex items-center gap-3">
             <Play className="w-6 h-6" />
-            Live Sets & Videos
+            {t.liveSets}
           </h3>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {LIVE_SETS.map((video) => (
-              <div
-                key={video.id}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <a
+                key={i}
+                href={SOCIAL_LINKS.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="glass-card overflow-hidden group hover:border-neon-cyan/50 transition-all duration-300"
               >
-                {/* Video Placeholder / Embed Area */}
+                {/* Video Placeholder */}
                 <div className="aspect-video relative bg-gradient-to-br from-muted/50 to-muted/20 flex items-center justify-center">
-                  {/* Placeholder - Replace with actual embed */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div 
-                      className="w-16 h-16 rounded-full bg-neon-pink/20 flex items-center justify-center group-hover:bg-neon-pink/40 transition-colors cursor-pointer"
+                      className="w-16 h-16 rounded-full bg-neon-pink/20 flex items-center justify-center group-hover:bg-neon-pink/40 transition-colors"
                       style={{
                         boxShadow: "0 0 20px rgba(255, 0, 255, 0.3)",
                       }}
@@ -204,19 +272,9 @@ const SocialGallerySection = () => {
 
                   {/* Platform badge */}
                   <div className="absolute top-3 left-3">
-                    <span 
-                      className={`px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 ${
-                        video.platform === "youtube" 
-                          ? "bg-red-600 text-white" 
-                          : "bg-blue-600 text-white"
-                      }`}
-                    >
-                      {video.platform === "youtube" ? (
-                        <Youtube className="w-3 h-3" />
-                      ) : (
-                        <Facebook className="w-3 h-3" />
-                      )}
-                      {video.platform === "youtube" ? "YouTube" : "Facebook Live"}
+                    <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 bg-red-600 text-white">
+                      <Youtube className="w-3 h-3" />
+                      YouTube
                     </span>
                   </div>
                 </div>
@@ -224,19 +282,15 @@ const SocialGallerySection = () => {
                 {/* Video Info */}
                 <div className="p-4">
                   <h4 className="font-semibold text-foreground group-hover:text-neon-cyan transition-colors line-clamp-2">
-                    {video.title}
+                    Live Set #{i}
                   </h4>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Click to watch
+                    {t.clickToWatch}
                   </p>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
-
-          <p className="text-center text-muted-foreground text-sm mt-6">
-            Add YouTube or Facebook Live video IDs to embed your live sets
-          </p>
         </div>
       </div>
     </section>
