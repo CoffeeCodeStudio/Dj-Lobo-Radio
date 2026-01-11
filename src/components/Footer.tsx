@@ -24,7 +24,7 @@ const Footer = () => {
         </div>
 
         {/* Description */}
-        <p className="text-muted-foreground max-w-md mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
+        <p className="text-muted-foreground/80 max-w-md mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
           Bringing the best of 80s and 90s music to your ears. Tune in and let the
           nostalgia flow.
         </p>
@@ -84,7 +84,7 @@ const Footer = () => {
         </nav>
 
         {/* Copyright */}
-        <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4">
+        <p className="text-muted-foreground/70 text-xs sm:text-sm mb-3 sm:mb-4">
           © 2026 DJ Lobo Radio. All rights reserved.
         </p>
 
@@ -122,7 +122,7 @@ const Footer = () => {
           href="https://www.linkedin.com/in/rami-e-453b77330/"
           target="_blank"
           rel="noopener noreferrer"
-          className="group flex items-center justify-center gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors duration-300 focus-neon rounded px-2 py-1"
+          className="group flex items-center justify-center gap-1.5 text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors duration-300 focus-neon rounded px-2 py-1"
           aria-label="Besök Coffee Code Studio (öppnas i nytt fönster)"
         >
           <span 
