@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ScheduleSection from "@/components/ScheduleSection";
 import CalendarSection from "@/components/CalendarSection";
+import LiveChat from "@/components/LiveChat";
 import Footer from "@/components/Footer";
 import NowPlayingBar from "@/components/NowPlayingBar";
 
@@ -26,6 +27,7 @@ const Index = () => {
           <AboutSection />
           <ScheduleSection />
           <CalendarSection />
+          <LiveChat />
         </main>
         <Footer />
         <NowPlayingBar />
