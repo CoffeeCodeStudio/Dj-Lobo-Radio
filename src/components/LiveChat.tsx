@@ -155,8 +155,10 @@ const LiveChat = () => {
   const [lastMessageTime, setLastMessageTime] = useState(0);
   const [cooldownRemaining, setCooldownRemaining] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const typeSoundRef = useRef<HTMLAudioElement | null>(null);
   const prevMessageCountRef = useRef(0);
   const cleanupPresenceRef = useRef<(() => void) | null>(null);
   
@@ -198,6 +200,13 @@ const LiveChat = () => {
     }
   }, [soundEnabled]);
 
+  // Play typing sound
+  const playTypeSound = useCallback(() => {
+    if (soundEnabled && typeSoundRef.current) {
+      typeSoundRef.current.currentTime = 0;
+      typeSoundRef.current.play().catch(() => {});
+    }
+  }, [soundEnabled]);
   // Fetch initial messages
   useEffect(() => {
     if (!isJoined) return;
@@ -263,12 +272,24 @@ const LiveChat = () => {
     };
   }, [isJoined, nickname, playMessageSound]);
 
-  // Auto-scroll to bottom
+  // Scroll to bottom helper
+  const scrollToBottom = useCallback(() => {
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  }, []);
+
+  // Auto-scroll on new messages
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    scrollToBottom();
+  }, [messages, scrollToBottom]);
+
+  // Scroll to bottom when joining chat
+  useEffect(() => {
+    if (isJoined) {
+      scrollToBottom();
     }
-  }, [messages]);
+  }, [isJoined, scrollToBottom]);
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -567,6 +588,8 @@ const LiveChat = () => {
                     </div>
                   );
                 })}
+                {/* Scroll anchor */}
+                <div ref={messagesEndRef} />
               </div>
             )}
           </ScrollArea>
@@ -601,7 +624,12 @@ const LiveChat = () => {
               type="text"
               placeholder={t.typeMessage}
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                if (e.target.value.length > message.length) {
+                  playTypeSound();
+                }
+              }}
               className="flex-1 bg-background/50 border-muted focus:border-neon-cyan"
               maxLength={500}
               disabled={isLoading}
