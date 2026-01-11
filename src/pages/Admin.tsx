@@ -91,6 +91,28 @@ const Admin = () => {
     }
   };
 
+  const handleClearAllMessages = async () => {
+    if (!window.confirm("Are you sure you want to delete ALL chat messages? This cannot be undone.")) {
+      return;
+    }
+
+    const { error } = await supabase
+      .from("chat_messages")
+      .delete()
+      .neq("id", "00000000-0000-0000-0000-000000000000"); // Delete all rows
+
+    if (error) {
+      toast({ 
+        title: "Error", 
+        description: "Failed to clear messages: " + error.message,
+        variant: "destructive" 
+      });
+    } else {
+      toast({ title: "Cleared", description: "All messages have been deleted" });
+      setMessages([]);
+    }
+  };
+
   const handleBanUser = async (sessionId: string, nickname: string) => {
     if (!sessionId) {
       toast({ title: "Error", description: "Cannot ban user without session ID", variant: "destructive" });
@@ -415,9 +437,20 @@ const Admin = () => {
                   </CardTitle>
                   <CardDescription>Manage and moderate chat messages</CardDescription>
                 </div>
-                <Button variant="outline" size="sm" onClick={fetchMessages}>
-                  Refresh
-                </Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={fetchMessages}>
+                    Refresh
+                  </Button>
+                  <Button 
+                    variant="destructive" 
+                    size="sm" 
+                    onClick={handleClearAllMessages}
+                    disabled={messages.length === 0}
+                  >
+                    <Trash2 className="w-3 h-3 mr-1" />
+                    Clear All
+                  </Button>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
