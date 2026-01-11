@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Send, MessageCircle, Users } from "lucide-react";
+import { Send, MessageCircle, Users, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/hooks/use-toast";
+import { Switch } from "@/components/ui/switch";
 
 interface ChatMessage {
   id: string;
@@ -13,14 +14,63 @@ interface ChatMessage {
   created_at: string;
 }
 
+const QUICK_EMOTES = ["🔥", "❤️", "🎵", "🎧", "💃"];
+const DJ_NAMES = ["dj lobo", "djlobo", "lobo"];
+
+// Fire animation component
+const FireAnimation = ({ show }: { show: boolean }) => {
+  if (!show) return null;
+  return (
+    <span className="inline-block animate-bounce text-lg ml-1">
+      <span className="animate-pulse">🔥</span>
+    </span>
+  );
+};
+
+// Badge component
+const UserBadge = ({ nickname }: { nickname: string }) => {
+  const isDJ = DJ_NAMES.includes(nickname.toLowerCase());
+  return (
+    <span className="text-[10px] px-1.5 py-0.5 rounded-full ml-1.5" 
+      style={{
+        background: isDJ 
+          ? 'linear-gradient(90deg, hsla(45, 100%, 50%, 0.3), hsla(30, 100%, 50%, 0.3))'
+          : 'linear-gradient(90deg, hsla(180, 100%, 50%, 0.2), hsla(220, 100%, 60%, 0.2))',
+        border: isDJ 
+          ? '1px solid hsla(45, 100%, 50%, 0.5)'
+          : '1px solid hsla(180, 100%, 50%, 0.3)',
+      }}
+    >
+      {isDJ ? "👑 DJ" : "🎧"}
+    </span>
+  );
+};
+
 const LiveChat = () => {
   const [nickname, setNickname] = useState("");
   const [isJoined, setIsJoined] = useState(false);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [fireAnimations, setFireAnimations] = useState<Set<string>>(new Set());
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const prevMessageCountRef = useRef(0);
+
+  // Initialize audio
+  useEffect(() => {
+    audioRef.current = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJOdpYqHfYl+nrK+q5eOhYB6gIyYoZyWjYuLipWfpZ+Yj4aAfH6DiJGUnZuWj4qHhIWJj5SYmpaRjIeEg4WJjpOXmZeUj4qGhIOGiY6TlpiXk4+LhoSDhomOk5aYl5OPi4aEg4aJjpOWmJeTj4uGhIOGiY6TlpiXk4+LhoSDhomOk5aYl5OPi4aEg4aJjpOWl5eTj4uGhIOGiY6TlpeXk4+LhoSDhomOk5aXl5OPi4aEg4aJjpOWl5eTj4uGhIOGiY6TlpeXk4+LhoSDhomNkpWWlpKOioaEg4aJjZKVlpaSjouGhIOFiI2SlZaWko6LhoSDhYiNkpWWlpKOi4aEg4WIjZKVlpaSjouGhIOFiI2SlZWVko6LhoSDhYiNkpWVlZKOi4aEg4WIjZKVlZWSjouGhIOFiI2SlZWVko6LhoSDhYiNkpWVlZKOi4aEg4WIjJGUlZSRjouGhIOFiIyRlJWUkY6LhoSDhYiMkZSVlJGOi4aEg4WIjJGUlJSRjouGhIOFiIyRlJSUkY6LhoSDhYiMkZSUlJGOi4aEg4WIjJGUlJSRjouGhIOFiIyRlJSUkY6LhoSDhIiMkZOUlJGOi4aEg4SIjJGTlJSRjouGhIOEiIyRk5SUkY6LhoSDhIiMkZOUlJGOi4aEg4SIjJGTk5ORjouGhIOEiIyRk5OTkY6LhoSDhIiMkZOTk5GOi4aEg4SIjJGTk5ORjouGhIOEiIyRk5OTkY6LhoSDhIiMkJOTk5GOi4aEg4SHjJCTk5ORjouGhIOEh4yQk5OTkY6LhoSDhIeMkJOTk5GOi4aEg4SHjJCTkpKRjouGhIOEh4yQk5KSkY6LhoSDhIeMkJOSkpGOi4aEg4SHjJCTkpKRjouGhIOEh4yQkpKSkY6LhoSDhIeMkJKSkpGOi4aEg4SHjJCSkpKRjouGhIOEh4yQkpKSkY6LhoSDhIeMkJKSkpCNi4aEg4SHi5CSkpKQjYuGhIOEh4uQkpKSkI2LhoSDhIeLkJKSkpCNi4aEg4SHi5CSkZGQjYuGhIOEh4uQkpGRkI2LhoSDhIeLkJKRkZCNi4aEg4SHi5CSkZGQjYuGhIOEh4uQkZGRkI2LhoSDhIeLkJGRkZCNi4aEg4SHi5CRkZGQjYuGhIOEh4uQkZGRkI2LhoSDg4eLj5GRkZCNi4aEg4OHi4+RkZGQjYuGhIODh4uPkZGRkI2LhoSDg4eLj5GRkJCNi4aEg4OHi4+RkZCQjYuGhIODh4uPkZGQkI2LhoSDg4eLj5GRkJCNi4aEg4OHi4+RkJCQjYuGhIODh4uPkZCQkI2LhoSDg4eLj5GQkJCNi4aEg4OHi4+RkJCQjYuGhIODh4uPkJCQkI2LhoSDg4eLj5CQkJCNi4aEg4OHi4+QkJCQjYuGhIODh4uPkJCQkI2LhoODg4eLj5CQkI+Ni4aDg4OHi4+QkJCPjYuGg4ODh4uPkJCQj42LhoODg4eLj5CQj4+Ni4aDg4OHi4+QkI+PjYuGg4ODh4uPkJCPj42LhoODg4eLj5CQj4+Ni4aDg4OHi4+Qj4+PjYuGg4ODh4uPkI+Pj42LhoODg4eLj5CPj4+Ni4aDg4OHi4+Qj4+PjYuGg4ODh4uOj4+Pj42LhoODg4eLjo+Pj4+Ni4aDg4OHi46Pj4+PjYuGg4ODh4uOj4+Pj42LhoODg4eLjo+Pj4+Ni4aDg4OHi46Pj4+PjYuGg4ODh4uOj4+Pj42LhoODg4eLjo+Pj42Ni4aDg4OGi46Pj4+NjYuGg4ODhouOj4+PjY2LhoODg4aLjo+Pj42Ni4aDg4OGi46Pjo6NjYuGg4ODhouOj46OjY2LhoODg4aLjo+Ojo2Ni4aDg4OGi46Pjo6NjYuGg4ODhouOjo6OjY2LhoODg4aLjo6Ojo2Ni4aDg4OGi46Ojo6NjYuGg4ODhouOjo6OjY2LhoODg4aLjo6OjY2Ni4aDg4OGi42Ojo6NjY2LhoODg4aLjY6Ojo2NjYuGg4ODhouNjo6OjY2Ni4aDg4OGi42Ojo2NjY2LhoODg4aLjY6OjY2NjYuGg4ODhouNjo6NjY2Ni4aDg4OGi42Ojo2NjY2LhoODg4aLjY6NjY2NjYuGg4ODhouNjY2NjY2Ni4aDg4OGi42NjY2NjY2LhoODg4aLjY2NjY2NjYuGg4ODhouNjY2NjY2Ni4aDg4OFi42NjY2NjY2LhoODg4WLjY2NjY2NjYuGg4ODhYuNjY2NjY2Ni4aDg4OFi42NjY2NjY2LhoODg4WLjY2NjY2NjYuGg4ODhYuNjY2NjY2Ni4aDg4OFi42NjY2NjI2LhoODg4WLjI2NjY2MjYuGg4ODhYuMjY2NjYyNi4aDg4OFi4yNjY2NjI2Lg4ODg4WLjI2MjIyMjYuDg4ODhYuMjYyMjIyNi4ODg4OFi4yNjIyMjI2Lg4ODg4WLjIyMjIyMjIuDg4ODhYuMjIyMjIyMi4ODg4OFi4yMjIyMjIyLg4ODg4WLjIyMjIyMjIuDg4ODhYuMjIyMjIyMi4ODg4OFi4yMjIyMjIyLg4ODg4WLjIyMjIyMjIuDg4ODhYuMjIyMjIyMi4ODg4OFi4yMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMi4ODg4OFioyMjIyMjIyLg4ODg4WKjIyMjIyMjIuDg4ODhYqMjIyMjIyMiw==");
+  }, []);
+
+  // Play sound on new message
+  const playMessageSound = useCallback(() => {
+    if (soundEnabled && audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play().catch(() => {});
+    }
+  }, [soundEnabled]);
 
   // Fetch initial messages
   useEffect(() => {
@@ -39,6 +89,7 @@ const LiveChat = () => {
       }
 
       setMessages(data || []);
+      prevMessageCountRef.current = data?.length || 0;
     };
 
     fetchMessages();
@@ -60,6 +111,23 @@ const LiveChat = () => {
         (payload) => {
           const newMessage = payload.new as ChatMessage;
           setMessages((prev) => [...prev, newMessage]);
+          
+          // Play sound for new messages (not your own)
+          if (newMessage.nickname !== nickname) {
+            playMessageSound();
+          }
+          
+          // Trigger fire animation if message contains 🔥
+          if (newMessage.message.includes("🔥")) {
+            setFireAnimations(prev => new Set([...prev, newMessage.id]));
+            setTimeout(() => {
+              setFireAnimations(prev => {
+                const next = new Set(prev);
+                next.delete(newMessage.id);
+                return next;
+              });
+            }, 2000);
+          }
         }
       )
       .subscribe();
@@ -67,7 +135,7 @@ const LiveChat = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [isJoined]);
+  }, [isJoined, nickname, playMessageSound]);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -134,6 +202,26 @@ const LiveChat = () => {
     setIsLoading(false);
   };
 
+  const handleQuickEmote = async (emote: string) => {
+    setIsLoading(true);
+
+    const { error } = await supabase.from("chat_messages").insert({
+      nickname: nickname.trim(),
+      message: emote,
+    });
+
+    if (error) {
+      console.error("Error sending emote:", error);
+      toast({
+        title: "Kunde inte skicka",
+        description: "Försök igen.",
+        variant: "destructive",
+      });
+    }
+
+    setIsLoading(false);
+  };
+
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString("sv-SE", {
@@ -141,6 +229,9 @@ const LiveChat = () => {
       minute: "2-digit",
     });
   };
+
+  // Check if message is just an emote
+  const isEmoteMessage = (msg: string) => QUICK_EMOTES.includes(msg);
 
   // Join screen
   if (!isJoined) {
@@ -216,8 +307,25 @@ const LiveChat = () => {
                 LIVE CHAT
               </h2>
             </div>
-            <div className="text-sm text-muted-foreground">
-              <span className="text-neon-pink font-semibold">{nickname}</span>
+            <div className="flex items-center gap-3">
+              {/* Sound toggle */}
+              <div className="flex items-center gap-2">
+                {soundEnabled ? (
+                  <Volume2 className="w-4 h-4 text-neon-cyan" aria-hidden="true" />
+                ) : (
+                  <VolumeX className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                )}
+                <Switch
+                  checked={soundEnabled}
+                  onCheckedChange={setSoundEnabled}
+                  aria-label="Ljud för nya meddelanden"
+                  className="data-[state=checked]:bg-neon-cyan"
+                />
+              </div>
+              <div className="text-sm text-muted-foreground flex items-center">
+                <span className="text-neon-pink font-semibold">{nickname}</span>
+                <UserBadge nickname={nickname} />
+              </div>
             </div>
           </div>
 
@@ -236,43 +344,67 @@ const LiveChat = () => {
               </div>
             ) : (
               <div className="space-y-3">
-                {messages.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className={`flex flex-col ${
-                      msg.nickname === nickname ? "items-end" : "items-start"
-                    }`}
-                  >
+                {messages.map((msg) => {
+                  const isOwn = msg.nickname === nickname;
+                  const isEmote = isEmoteMessage(msg.message);
+                  const hasFire = fireAnimations.has(msg.id);
+                  
+                  return (
                     <div
-                      className={`max-w-[85%] rounded-lg px-3 py-2 ${
-                        msg.nickname === nickname
-                          ? "bg-gradient-to-r from-neon-pink/20 to-neon-cyan/20 border border-neon-cyan/30"
-                          : "bg-muted/50 border border-muted"
-                      }`}
+                      key={msg.id}
+                      className={`flex flex-col ${isOwn ? "items-end" : "items-start"} animate-fade-in`}
                     >
-                      <div className="flex items-center gap-2 mb-1">
-                        <span
-                          className={`text-xs font-semibold ${
-                            msg.nickname === nickname
-                              ? "text-neon-cyan"
-                              : "text-neon-pink"
-                          }`}
-                        >
-                          {msg.nickname}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground">
-                          {formatTime(msg.created_at)}
-                        </span>
+                      <div
+                        className={`max-w-[85%] rounded-lg px-3 py-2 transition-all duration-300 ${
+                          isEmote 
+                            ? "bg-transparent text-3xl py-1" 
+                            : isOwn
+                              ? "chat-bubble-own"
+                              : "chat-bubble-other"
+                        } ${hasFire ? "fire-glow" : ""}`}
+                      >
+                        {!isEmote && (
+                          <div className="flex items-center gap-1 mb-1">
+                            <span
+                              className={`text-xs font-semibold ${
+                                isOwn ? "text-neon-cyan" : "text-neon-pink"
+                              }`}
+                            >
+                              {msg.nickname}
+                            </span>
+                            <UserBadge nickname={msg.nickname} />
+                            <span className="text-[10px] text-muted-foreground ml-1">
+                              {formatTime(msg.created_at)}
+                            </span>
+                          </div>
+                        )}
+                        <p className={`${isEmote ? "text-center" : "text-sm"} text-foreground break-words`}>
+                          {msg.message}
+                          <FireAnimation show={hasFire && msg.message.includes("🔥")} />
+                        </p>
                       </div>
-                      <p className="text-sm text-foreground break-words">
-                        {msg.message}
-                      </p>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </ScrollArea>
+
+          {/* Quick Emotes */}
+          <div className="px-4 py-2 border-t border-muted/50 flex items-center justify-center gap-2">
+            <span className="text-xs text-muted-foreground mr-2">Quick:</span>
+            {QUICK_EMOTES.map((emote) => (
+              <button
+                key={emote}
+                onClick={() => handleQuickEmote(emote)}
+                disabled={isLoading}
+                className="text-xl hover:scale-125 active:scale-95 transition-transform duration-150 disabled:opacity-50 p-1 rounded hover:bg-muted/30"
+                aria-label={`Skicka ${emote}`}
+              >
+                {emote}
+              </button>
+            ))}
+          </div>
 
           {/* Input */}
           <form
