@@ -119,7 +119,7 @@ const Footer = () => {
       {/* Coffee Code Studio Signature */}
       <div className="mt-12 pt-6 border-t border-white/5">
         <a
-          href="https://coffeecodestudio.com"
+          href="https://www.linkedin.com/in/rami-e-453b77330/"
           target="_blank"
           rel="noopener noreferrer"
           className="group flex items-center justify-center gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors duration-300 focus-neon rounded px-2 py-1"
