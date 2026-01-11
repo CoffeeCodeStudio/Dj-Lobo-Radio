@@ -17,6 +17,20 @@ interface ChatMessage {
 
 const QUICK_EMOTES = ["🔥", "❤️", "🎵", "🎧", "💃"];
 const DJ_NAMES = ["dj lobo", "djlobo", "lobo"];
+const PROTECTED_NAMES = ["admin", "administrator", "dj lobo", "djlobo", "lobo", "lobo radio", "moderator", "mod"];
+const RATE_LIMIT_MS = 3000; // 3 seconds between messages
+const MAX_MESSAGE_LENGTH = 200;
+
+// Simple profanity filter (can be expanded)
+const BLOCKED_WORDS = ["spam", "hack", "scam"]; // Add more as needed
+const filterProfanity = (text: string): string => {
+  let filtered = text;
+  BLOCKED_WORDS.forEach(word => {
+    const regex = new RegExp(word, 'gi');
+    filtered = filtered.replace(regex, '*'.repeat(word.length));
+  });
+  return filtered;
+};
 
 // Fire animation component
 const FireAnimation = ({ show }: { show: boolean }) => {
@@ -55,7 +69,9 @@ const LiveChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [fireAnimations, setFireAnimations] = useState<Set<string>>(new Set());
-  const [sessionId] = useState(() => crypto.randomUUID()); // Generate unique session ID
+  const [sessionId] = useState(() => crypto.randomUUID());
+  const [lastMessageTime, setLastMessageTime] = useState(0);
+  const [cooldownRemaining, setCooldownRemaining] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -63,6 +79,14 @@ const LiveChat = () => {
   const cleanupPresenceRef = useRef<(() => void) | null>(null);
   
   const { listenerCount, trackPresence } = usePresence();
+
+  // Cooldown timer
+  useEffect(() => {
+    if (cooldownRemaining > 0) {
+      const timer = setTimeout(() => setCooldownRemaining(prev => Math.max(0, prev - 100)), 100);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldownRemaining]);
   
   // Track presence when user joins
   useEffect(() => {
@@ -164,8 +188,19 @@ const LiveChat = () => {
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmedNickname = nickname.trim();
-    if (trimmedNickname.length < 2) {
+    const trimmedNickname = nickname.trim().toLowerCase();
+    
+    // Check protected names
+    if (PROTECTED_NAMES.some(name => trimmedNickname.includes(name))) {
+      toast({
+        title: "Ogiltigt namn",
+        description: "Det namnet är reserverat.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (nickname.trim().length < 2) {
       toast({
         title: "Ogiltigt namn",
         description: "Ditt smeknamn måste vara minst 2 tecken.",
@@ -173,7 +208,7 @@ const LiveChat = () => {
       });
       return;
     }
-    if (trimmedNickname.length > 20) {
+    if (nickname.trim().length > 20) {
       toast({
         title: "Ogiltigt namn",
         description: "Ditt smeknamn får vara max 20 tecken.",
@@ -190,10 +225,25 @@ const LiveChat = () => {
     const trimmedMessage = message.trim();
     
     if (!trimmedMessage) return;
-    if (trimmedMessage.length > 500) {
+    
+    // Rate limiting check
+    const now = Date.now();
+    const timeSinceLastMessage = now - lastMessageTime;
+    if (timeSinceLastMessage < RATE_LIMIT_MS) {
+      const remaining = RATE_LIMIT_MS - timeSinceLastMessage;
+      setCooldownRemaining(remaining);
+      toast({
+        title: "Vänta lite",
+        description: `Du kan skicka igen om ${Math.ceil(remaining / 1000)} sekunder.`,
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
       toast({
         title: "Meddelandet är för långt",
-        description: "Max 500 tecken per meddelande.",
+        description: `Max ${MAX_MESSAGE_LENGTH} tecken per meddelande.`,
         variant: "destructive",
       });
       return;
@@ -201,9 +251,12 @@ const LiveChat = () => {
 
     setIsLoading(true);
 
+    // Apply profanity filter
+    const filteredMessage = filterProfanity(trimmedMessage);
+
     const { error } = await supabase.from("chat_messages").insert({
       nickname: nickname.trim(),
-      message: trimmedMessage,
+      message: filteredMessage,
       session_id: sessionId,
     });
 
@@ -211,17 +264,32 @@ const LiveChat = () => {
       console.error("Error sending message:", error);
       toast({
         title: "Kunde inte skicka",
-        description: "Försök igen.",
+        description: error.message.includes("banned") ? "Du har blivit avstängd." : "Försök igen.",
         variant: "destructive",
       });
     } else {
       setMessage("");
+      setLastMessageTime(now);
     }
 
     setIsLoading(false);
   };
 
   const handleQuickEmote = async (emote: string) => {
+    // Rate limiting check
+    const now = Date.now();
+    const timeSinceLastMessage = now - lastMessageTime;
+    if (timeSinceLastMessage < RATE_LIMIT_MS) {
+      const remaining = RATE_LIMIT_MS - timeSinceLastMessage;
+      setCooldownRemaining(remaining);
+      toast({
+        title: "Vänta lite",
+        description: `Du kan skicka igen om ${Math.ceil(remaining / 1000)} sekunder.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
     const { error } = await supabase.from("chat_messages").insert({
@@ -234,9 +302,11 @@ const LiveChat = () => {
       console.error("Error sending emote:", error);
       toast({
         title: "Kunde inte skicka",
-        description: "Försök igen.",
+        description: error.message.includes("banned") ? "Du har blivit avstängd." : "Försök igen.",
         variant: "destructive",
       });
+    } else {
+      setLastMessageTime(now);
     }
 
     setIsLoading(false);

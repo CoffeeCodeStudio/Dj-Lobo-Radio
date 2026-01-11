@@ -74,11 +74,21 @@ const Admin = () => {
   };
 
   const handleDeleteMessage = async (id: string) => {
-    toast({ 
-      title: "Action Required", 
-      description: "Delete functionality requires backend setup. Message ID: " + id,
-      variant: "destructive" 
-    });
+    const { error } = await supabase
+      .from("chat_messages")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      toast({ 
+        title: "Error", 
+        description: "Failed to delete message: " + error.message,
+        variant: "destructive" 
+      });
+    } else {
+      toast({ title: "Deleted", description: "Message removed successfully" });
+      setMessages(prev => prev.filter(msg => msg.id !== id));
+    }
   };
 
   const handleBanUser = async (sessionId: string, nickname: string) => {
