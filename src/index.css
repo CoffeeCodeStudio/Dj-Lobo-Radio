@@ -237,4 +237,86 @@
     border: 1px solid hsla(var(--neon-pink), 0.5);
     color: hsl(var(--neon-pink));
   }
+
+  /* Accessibility: Focus ring matching neon aesthetic */
+  .focus-neon:focus-visible {
+    outline: 2px solid hsl(var(--neon-cyan));
+    outline-offset: 2px;
+    box-shadow: 0 0 10px hsla(var(--neon-cyan), 0.5);
+  }
+
+  /* Skip link for keyboard users */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: hsl(var(--neon-cyan));
+    color: hsl(var(--background));
+    padding: 0.75rem 1.5rem;
+    z-index: 100;
+    border-radius: var(--radius);
+    font-weight: 600;
+    transition: top 0.2s;
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .on-air-pulse,
+    .live-dot,
+    .visualizer-bar,
+    .animate-float {
+      animation: none !important;
+    }
+
+    .scroll-reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    * {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+
+  /* Tap-friendly interactive elements (min 44x44px) */
+  .tap-target {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Loading spinner */
+  .loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid hsla(var(--neon-cyan), 0.3);
+    border-top-color: hsl(var(--neon-cyan));
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* High contrast text helpers */
+  .text-high-contrast {
+    color: hsl(0, 0%, 100%);
+    text-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.5);
+  }
+
+  /* Active playing state */
+  .player-active {
+    background: linear-gradient(90deg, hsla(var(--neon-pink), 0.1), hsla(var(--neon-cyan), 0.1));
+    border-color: hsl(var(--neon-cyan));
+  }
 }

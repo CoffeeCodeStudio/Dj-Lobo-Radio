@@ -31,14 +31,22 @@ const CalendarSection = () => {
   const calendarSrc = `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(CALENDAR_ID)}&ctz=Europe%2FStockholm&mode=AGENDA&showTitle=0&showNav=1&showPrint=0&showTabs=0&showCalendars=0&bgcolor=%23000000`;
 
   return (
-    <section ref={sectionRef} id="calendar" className="py-24 px-6 relative">
+    <section 
+      ref={sectionRef} 
+      id="calendar" 
+      className="py-16 sm:py-24 px-4 sm:px-6 relative"
+      aria-labelledby="calendar-title"
+    >
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-12 scroll-reveal">
-          <h2 className="font-display text-4xl md:text-5xl font-bold text-neon-gradient mb-4 italic">
+        <div className="text-center mb-8 sm:mb-12 scroll-reveal">
+          <h2 
+            id="calendar-title"
+            className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-neon-gradient mb-3 sm:mb-4 italic"
+          >
             KALENDER
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base sm:text-lg">
             Kommande shower och events
           </p>
         </div>
@@ -49,11 +57,11 @@ const CalendarSection = () => {
             src={calendarSrc}
             style={{ border: 0 }}
             width="100%"
-            height="500"
+            height="400"
             frameBorder="0"
             scrolling="no"
-            className="rounded-lg"
-            title="DJ Lobo Radio Kalender"
+            className="rounded-lg sm:h-[500px]"
+            title="DJ Lobo Radio Kalender - kommande shower och events"
           ></iframe>
         </div>
       </div>

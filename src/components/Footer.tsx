@@ -8,69 +8,88 @@ const SOCIAL_LINKS = {
 
 const Footer = () => {
   return (
-    <footer className="py-16 px-6 pb-32 relative">
+    <footer className="py-12 sm:py-16 px-4 sm:px-6 pb-28 sm:pb-32 relative">
       <div className="max-w-7xl mx-auto text-center">
         {/* Logo */}
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="flex items-center text-neon-cyan text-2xl">
+        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+          <div className="flex items-center text-neon-cyan text-xl sm:text-2xl" aria-hidden="true">
             <span>((</span>
-            <Radio className="w-5 h-5 mx-1" />
+            <Radio className="w-4 h-4 sm:w-5 sm:h-5 mx-1" />
             <span>))</span>
           </div>
-          <h3 className="font-display text-2xl font-bold text-neon-gradient">
+          <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-gradient">
             DJ LOBO RADIO
           </h3>
         </div>
 
         {/* Description */}
-        <p className="text-muted-foreground max-w-md mx-auto mb-8">
+        <p className="text-muted-foreground max-w-md mx-auto mb-6 sm:mb-8 text-sm sm:text-base">
           Bringing the best of 80s and 90s music to your ears. Tune in and let the
           nostalgia flow.
         </p>
 
         {/* Social Links */}
-        <div className="flex justify-center gap-4 mb-8">
-          <a
-            href={SOCIAL_LINKS.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group"
-          >
-            <Instagram className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
-          </a>
-          <a
-            href={SOCIAL_LINKS.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group"
-          >
-            <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
-          </a>
-          <a
-            href={SOCIAL_LINKS.mixcloud}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group"
-          >
-            <Headphones className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
-          </a>
-        </div>
+        <nav aria-label="Sociala medier">
+          <ul className="flex justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <li>
+              <a
+                href={SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Följ DJ Lobo på Instagram (öppnas i nytt fönster)"
+                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group focus-neon"
+              >
+                <Instagram className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" aria-hidden="true" />
+              </a>
+            </li>
+            <li>
+              <a
+                href={SOCIAL_LINKS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Följ DJ Lobo på Facebook (öppnas i nytt fönster)"
+                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group focus-neon"
+              >
+                <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" aria-hidden="true" />
+              </a>
+            </li>
+            <li>
+              <a
+                href={SOCIAL_LINKS.mixcloud}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Lyssna på DJ Lobo på Mixcloud (öppnas i nytt fönster)"
+                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group focus-neon"
+              >
+                <Headphones className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" aria-hidden="true" />
+              </a>
+            </li>
+          </ul>
+        </nav>
 
         {/* Copyright */}
-        <p className="text-muted-foreground text-sm mb-4">
+        <p className="text-muted-foreground text-xs sm:text-sm mb-3 sm:mb-4">
           © 2026 DJ Lobo Radio. All rights reserved.
         </p>
 
         {/* Legal Links */}
-        <div className="flex justify-center gap-4 text-sm">
-          <a href="#" className="text-neon-cyan hover:underline">
-            Integritetspolicy
-          </a>
-          <span className="text-muted-foreground">•</span>
-          <a href="#" className="text-neon-cyan hover:underline">
-            Användarvillkor
-          </a>
-        </div>
+        <nav aria-label="Juridiska länkar">
+          <ul className="flex justify-center gap-3 sm:gap-4 text-xs sm:text-sm">
+            <li>
+              <a href="#" className="text-neon-cyan hover:underline focus-neon rounded px-1">
+                Integritetspolicy
+              </a>
+            </li>
+            <li aria-hidden="true">
+              <span className="text-muted-foreground">•</span>
+            </li>
+            <li>
+              <a href="#" className="text-neon-cyan hover:underline focus-neon rounded px-1">
+                Användarvillkor
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </footer>
   );
