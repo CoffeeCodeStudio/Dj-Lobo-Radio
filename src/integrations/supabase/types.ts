@@ -65,6 +65,33 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_images: {
+        Row: {
+          alt_text: string | null
+          created_at: string
+          id: string
+          image_url: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          alt_text?: string | null
+          created_at?: string
+          id?: string
+          image_url: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          alt_text?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_branding: {
         Row: {
           accent_color: string | null

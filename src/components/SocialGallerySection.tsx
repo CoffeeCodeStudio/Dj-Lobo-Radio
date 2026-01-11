@@ -1,21 +1,12 @@
-import { Instagram, Facebook, Youtube, Play, ExternalLink } from "lucide-react";
+import { Instagram, Facebook, Youtube, Play, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useGallery } from "@/hooks/useGallery";
 
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
   facebook: "https://www.facebook.com/djloboradiodjs/",
   youtube: "https://www.youtube.com/@djloboradio",
 };
-
-// Placeholder Instagram posts - replace with actual embed or API integration
-const INSTAGRAM_POSTS = [
-  { id: 1, placeholder: true },
-  { id: 2, placeholder: true },
-  { id: 3, placeholder: true },
-  { id: 4, placeholder: true },
-  { id: 5, placeholder: true },
-  { id: 6, placeholder: true },
-];
 
 // Placeholder video embeds - replace with actual video IDs
 const LIVE_SETS = [
@@ -43,6 +34,8 @@ const LIVE_SETS = [
 ];
 
 const SocialGallerySection = () => {
+  const { images, isLoading } = useGallery();
+
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="social-gallery-heading">
       <div className="max-w-7xl mx-auto">
@@ -59,8 +52,59 @@ const SocialGallerySection = () => {
           </p>
         </div>
 
-        {/* Social Action Bar */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
+        {/* Photo Gallery Section */}
+        <div className="mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-cyan flex items-center gap-3">
+              <ImageIcon className="w-6 h-6" />
+              Gallery
+            </h3>
+          </div>
+
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+            {isLoading ? (
+              // Loading skeleton
+              Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="aspect-square glass-card overflow-hidden animate-pulse bg-muted/20"
+                />
+              ))
+            ) : images.length > 0 ? (
+              images.map((image) => (
+                <div
+                  key={image.id}
+                  className="aspect-square glass-card overflow-hidden group relative hover:border-neon-pink/50 transition-all duration-300"
+                >
+                  <img
+                    src={image.image_url}
+                    alt={image.alt_text || "DJ Lobo gallery image"}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  
+                  {/* Hover overlay with neon glow */}
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      boxShadow: "inset 0 0 30px rgba(255, 0, 255, 0.2)",
+                    }}
+                  />
+                </div>
+              ))
+            ) : (
+              // Empty state
+              <div className="col-span-full text-center py-8 text-muted-foreground">
+                <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                <p>Inga bilder i galleriet ännu</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Follow on Instagram Button - Prominent placement */}
+        <div className="flex justify-center mb-16">
           <a
             href={SOCIAL_LINKS.instagram}
             target="_blank"
@@ -69,12 +113,12 @@ const SocialGallerySection = () => {
           >
             <Button
               size="lg"
-              className="relative overflow-hidden bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:from-[#9B4BC9] hover:via-[#FD3D3D] hover:to-[#F89257] text-white border-0 font-semibold text-base px-6 py-6 h-auto transition-all duration-300 group-hover:scale-105"
+              className="relative overflow-hidden bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:from-[#9B4BC9] hover:via-[#FD3D3D] hover:to-[#F89257] text-white border-0 font-semibold text-lg px-8 py-7 h-auto transition-all duration-300 group-hover:scale-105"
               style={{
-                boxShadow: "0 0 20px rgba(253, 29, 29, 0.4), 0 0 40px rgba(131, 58, 180, 0.3)",
+                boxShadow: "0 0 25px rgba(253, 29, 29, 0.5), 0 0 50px rgba(131, 58, 180, 0.4)",
               }}
             >
-              <Instagram className="w-5 h-5 mr-2" />
+              <Instagram className="w-6 h-6 mr-3" />
               Follow on Instagram
               <span 
                 className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -82,7 +126,10 @@ const SocialGallerySection = () => {
               />
             </Button>
           </a>
+        </div>
 
+        {/* Social Action Bar */}
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
           <a
             href={SOCIAL_LINKS.facebook}
             target="_blank"
@@ -126,51 +173,6 @@ const SocialGallerySection = () => {
               />
             </Button>
           </a>
-        </div>
-
-        {/* Instagram Feed Section */}
-        <div className="mb-16">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-cyan flex items-center gap-3">
-              <Instagram className="w-6 h-6" />
-              Latest from Instagram
-            </h3>
-            <a
-              href={SOCIAL_LINKS.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-neon-pink transition-colors flex items-center gap-1"
-            >
-              View all <ExternalLink className="w-4 h-4" />
-            </a>
-          </div>
-
-          {/* Instagram Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-            {INSTAGRAM_POSTS.map((post) => (
-              <a
-                key={post.id}
-                href={SOCIAL_LINKS.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="aspect-square glass-card overflow-hidden group relative hover:border-neon-pink/50 transition-all duration-300"
-              >
-                {/* Placeholder content */}
-                <div className="absolute inset-0 bg-gradient-to-br from-neon-pink/20 via-neon-purple/20 to-neon-cyan/20 flex items-center justify-center">
-                  <Instagram className="w-8 h-8 text-muted-foreground group-hover:text-neon-pink transition-colors" />
-                </div>
-                
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                  <span className="text-xs text-white font-medium">View Post</span>
-                </div>
-              </a>
-            ))}
-          </div>
-
-          <p className="text-center text-muted-foreground text-sm mt-4">
-            Connect your Instagram to display live posts
-          </p>
         </div>
 
         {/* Live Sets / Video Section */}

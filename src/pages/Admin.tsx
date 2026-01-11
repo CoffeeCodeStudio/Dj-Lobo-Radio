@@ -7,12 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trash2, Send, Users, MessageSquare, Shield, Ban, Radio, ArrowLeft, LogOut, Palette } from "lucide-react";
+import { Trash2, Send, Users, MessageSquare, Shield, Ban, Radio, ArrowLeft, LogOut, Palette, ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { usePresenceObserver } from "@/hooks/usePresence";
 import { useAuth } from "@/hooks/useAuth";
 import AdminLogin from "@/components/AdminLogin";
 import BrandingTab from "@/components/admin/BrandingTab";
+import GalleryTab from "@/components/admin/GalleryTab";
 
 interface ChatMessage {
   id: string;
@@ -283,10 +284,14 @@ const Admin = () => {
 
       <main className="container mx-auto px-4 py-8 relative z-10">
         <Tabs defaultValue="moderation" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-8 glass-card">
+          <TabsList className="grid w-full grid-cols-3 mb-8 glass-card">
             <TabsTrigger value="moderation" className="data-[state=active]:bg-primary/20">
               <MessageSquare className="w-4 h-4 mr-2" />
               Chat Moderation
+            </TabsTrigger>
+            <TabsTrigger value="gallery" className="data-[state=active]:bg-primary/20">
+              <ImageIcon className="w-4 h-4 mr-2" />
+              Gallery
             </TabsTrigger>
             <TabsTrigger value="branding" className="data-[state=active]:bg-primary/20">
               <Palette className="w-4 h-4 mr-2" />
@@ -537,6 +542,10 @@ const Admin = () => {
           </TabsContent>
 
           {/* Branding Tab */}
+          <TabsContent value="gallery">
+            <GalleryTab />
+          </TabsContent>
+
           <TabsContent value="branding">
             <BrandingTab />
           </TabsContent>
