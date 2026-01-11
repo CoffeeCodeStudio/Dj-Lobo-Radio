@@ -1,4 +1,4 @@
-import { Globe, ChevronDown } from "lucide-react";
+import { Globe, ChevronDown, Instagram, Facebook, Youtube } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
 type Language = "sv" | "en" | "es";
@@ -41,6 +41,12 @@ const Header = () => {
     }
   };
 
+  const socialLinks = {
+    instagram: "https://www.instagram.com/djloboradio",
+    facebook: "https://www.facebook.com/djloboradiodjs/",
+    youtube: "https://www.youtube.com/@djloboradio",
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 sm:py-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -58,6 +64,40 @@ const Header = () => {
             </div>
           </div>
         </a>
+
+        {/* Social Links - Center */}
+        <nav aria-label="Sociala medier" className="hidden sm:flex items-center gap-2">
+          <a
+            href={socialLinks.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Följ på Instagram"
+            className="tap-target w-10 h-10 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-all duration-300 group focus-neon"
+            style={{ boxShadow: "0 0 10px rgba(253, 29, 29, 0.2)" }}
+          >
+            <Instagram className="w-4 h-4 text-muted-foreground group-hover:text-[#E1306C] transition-colors" />
+          </a>
+          <a
+            href={socialLinks.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Följ på Facebook"
+            className="tap-target w-10 h-10 glass-card rounded-full flex items-center justify-center hover:border-neon-cyan/50 transition-all duration-300 group focus-neon"
+            style={{ boxShadow: "0 0 10px rgba(24, 119, 242, 0.2)" }}
+          >
+            <Facebook className="w-4 h-4 text-muted-foreground group-hover:text-[#1877F2] transition-colors" />
+          </a>
+          <a
+            href={socialLinks.youtube}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Prenumerera på YouTube"
+            className="tap-target w-10 h-10 glass-card rounded-full flex items-center justify-center hover:border-red-500/50 transition-all duration-300 group focus-neon"
+            style={{ boxShadow: "0 0 10px rgba(255, 0, 0, 0.2)" }}
+          >
+            <Youtube className="w-4 h-4 text-muted-foreground group-hover:text-[#FF0000] transition-colors" />
+          </a>
+        </nav>
 
         {/* Language Selector Dropdown */}
         <div className="relative" ref={dropdownRef}>

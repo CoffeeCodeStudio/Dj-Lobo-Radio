@@ -1,8 +1,9 @@
-import { Instagram, Facebook, Radio, ExternalLink } from "lucide-react";
+import { Instagram, Facebook, Youtube, Radio, ExternalLink } from "lucide-react";
 
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
   facebook: "https://www.facebook.com/djloboradiodjs/",
+  youtube: "https://www.youtube.com/@djloboradio",
   zenoPlayer: "https://zeno.fm/radio/dj-lobo-radio-o85p/",
 };
 
@@ -37,9 +38,10 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Följ DJ Lobo på Instagram (öppnas i nytt fönster)"
-                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group focus-neon"
+                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
+                style={{ boxShadow: "0 0 15px rgba(253, 29, 29, 0.3)" }}
               >
-                <Instagram className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" aria-hidden="true" />
+                <Instagram className="w-5 h-5 text-muted-foreground group-hover:text-[#E1306C] transition-colors" aria-hidden="true" />
               </a>
             </li>
             <li>
@@ -48,9 +50,22 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Följ DJ Lobo på Facebook (öppnas i nytt fönster)"
-                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group focus-neon"
+                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
+                style={{ boxShadow: "0 0 15px rgba(24, 119, 242, 0.3)" }}
               >
-                <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" aria-hidden="true" />
+                <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-[#1877F2] transition-colors" aria-hidden="true" />
+              </a>
+            </li>
+            <li>
+              <a
+                href={SOCIAL_LINKS.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Prenumerera på DJ Lobo på YouTube (öppnas i nytt fönster)"
+                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
+                style={{ boxShadow: "0 0 15px rgba(255, 0, 0, 0.3)" }}
+              >
+                <Youtube className="w-5 h-5 text-muted-foreground group-hover:text-[#FF0000] transition-colors" aria-hidden="true" />
               </a>
             </li>
             <li>
@@ -59,9 +74,10 @@ const Footer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Lyssna på DJ Lobo Radio på Zeno.fm (öppnas i nytt fönster)"
-                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group focus-neon"
+                className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
+                style={{ boxShadow: "0 0 15px rgba(0, 255, 255, 0.3)" }}
               >
-                <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" aria-hidden="true" />
+                <ExternalLink className="w-5 h-5 text-muted-foreground group-hover:text-neon-cyan transition-colors" aria-hidden="true" />
               </a>
             </li>
           </ul>
