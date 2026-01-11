@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Trash2, Send, Users, MessageSquare, Shield, Ban, Radio, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { usePresenceObserver } from "@/hooks/usePresence";
 
 interface ChatMessage {
   id: string;
@@ -31,6 +32,7 @@ const Admin = () => {
   const [bannedUsers, setBannedUsers] = useState<BannedUser[]>([]);
   const [adminMessage, setAdminMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  const { listenerCount, listeners } = usePresenceObserver();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -209,14 +211,38 @@ const Admin = () => {
           <Card className="glass-card">
             <CardContent className="pt-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg icon-gradient-cyan flex items-center justify-center">
+                <div className="w-12 h-12 rounded-lg icon-gradient-cyan flex items-center justify-center relative">
                   <Users className="w-6 h-6 text-white" />
+                  {listenerCount > 0 && (
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                  )}
                 </div>
                 <div>
-                  <p className="text-2xl font-display font-bold text-foreground">--</p>
-                  <p className="text-sm text-muted-foreground">Total Listeners</p>
+                  <p className="text-2xl font-display font-bold text-foreground">{listenerCount}</p>
+                  <p className="text-sm text-muted-foreground">Live Listeners</p>
                 </div>
               </div>
+              {/* Show listener names */}
+              {listeners.length > 0 && (
+                <div className="mt-3 pt-3 border-t border-border/50">
+                  <p className="text-xs text-muted-foreground mb-2">Active users:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {listeners.slice(0, 5).map((listener, idx) => (
+                      <span 
+                        key={idx}
+                        className="text-xs px-2 py-0.5 rounded-full bg-muted/50 text-foreground"
+                      >
+                        {listener.nickname}
+                      </span>
+                    ))}
+                    {listeners.length > 5 && (
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-muted/50 text-muted-foreground">
+                        +{listeners.length - 5} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
           

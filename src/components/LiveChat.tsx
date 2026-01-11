@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
+import { usePresence } from "@/hooks/usePresence";
 
 interface ChatMessage {
   id: string;
@@ -58,6 +59,22 @@ const LiveChat = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const prevMessageCountRef = useRef(0);
+  const cleanupPresenceRef = useRef<(() => void) | null>(null);
+  
+  const { listenerCount, trackPresence } = usePresence();
+  
+  // Track presence when user joins
+  useEffect(() => {
+    if (isJoined && nickname) {
+      cleanupPresenceRef.current = trackPresence(nickname);
+    }
+    
+    return () => {
+      if (cleanupPresenceRef.current) {
+        cleanupPresenceRef.current();
+      }
+    };
+  }, [isJoined, nickname, trackPresence]);
 
   // Initialize audio
   useEffect(() => {
@@ -306,6 +323,11 @@ const LiveChat = () => {
               >
                 LIVE CHAT
               </h2>
+              {/* Listener count */}
+              <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-muted/50 border border-muted">
+                <Users className="w-3.5 h-3.5 text-neon-cyan" aria-hidden="true" />
+                <span className="text-xs font-semibold text-neon-cyan">{listenerCount}</span>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               {/* Sound toggle */}
