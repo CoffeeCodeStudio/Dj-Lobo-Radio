@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Trash2, Send, Users, MessageSquare, Shield, Ban, Radio, ArrowLeft } from "lucide-react";
+import { Trash2, Send, Users, MessageSquare, Shield, Ban, Radio, ArrowLeft, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { usePresenceObserver } from "@/hooks/usePresence";
+import { useAuth } from "@/hooks/useAuth";
+import AdminLogin from "@/components/AdminLogin";
 
 interface ChatMessage {
   id: string;
@@ -33,18 +35,16 @@ const Admin = () => {
   const [adminMessage, setAdminMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const { listenerCount, listeners } = usePresenceObserver();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, isAdmin, loading: authLoading, signIn, signUp, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Placeholder for future Supabase auth
   useEffect(() => {
-    // For now, set authenticated to true to show the layout
-    // TODO: Replace with actual Supabase authentication
-    setIsAuthenticated(true);
-    fetchMessages();
-    fetchBannedUsers();
-  }, []);
+    if (user && isAdmin) {
+      fetchMessages();
+      fetchBannedUsers();
+    }
+  }, [user, isAdmin]);
 
   const fetchMessages = async () => {
     setLoading(true);
@@ -74,7 +74,6 @@ const Admin = () => {
   };
 
   const handleDeleteMessage = async (id: string) => {
-    // Note: This requires DELETE policy on chat_messages table
     toast({ 
       title: "Action Required", 
       description: "Delete functionality requires backend setup. Message ID: " + id,
@@ -131,12 +130,33 @@ const Admin = () => {
     }
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    toast({ title: "Signed out", description: "You have been logged out." });
+  };
+
   const formatTime = (dateString: string) => {
     return new Date(dateString).toLocaleString();
   };
 
-  // Login placeholder screen
-  if (!isAuthenticated) {
+  // Loading state
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="light-leak-purple" />
+        <div className="light-leak-blue" />
+        <div className="loading-spinner" />
+      </div>
+    );
+  }
+
+  // Not logged in - show login form
+  if (!user) {
+    return <AdminLogin onSignIn={signIn} onSignUp={signUp} />;
+  }
+
+  // Logged in but not admin
+  if (!isAdmin) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="light-leak-purple" />
@@ -144,33 +164,45 @@ const Admin = () => {
         
         <Card className="glass-card-neon w-full max-w-md relative z-10">
           <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 rounded-full icon-gradient-pink flex items-center justify-center mb-4">
-              <Shield className="w-8 h-8 text-white" />
+            <div className="mx-auto w-16 h-16 rounded-full bg-destructive/20 flex items-center justify-center mb-4">
+              <Shield className="w-8 h-8 text-destructive" />
             </div>
-            <CardTitle className="font-display text-2xl text-neon-gradient">Admin Login</CardTitle>
-            <CardDescription>Sign in to access the dashboard</CardDescription>
+            <CardTitle className="font-display text-2xl text-foreground">
+              Access Denied
+            </CardTitle>
+            <CardDescription>
+              You don't have admin privileges.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="p-4 rounded-lg bg-muted/50 border border-border text-center">
-              <p className="text-muted-foreground text-sm">
-                🔒 Supabase Authentication Coming Soon
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                This will be replaced with secure login
-              </p>
+            <p className="text-sm text-muted-foreground text-center">
+              Logged in as: {user.email}
+            </p>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={() => navigate("/")}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Go Home
+              </Button>
+              <Button 
+                variant="destructive" 
+                className="flex-1"
+                onClick={handleSignOut}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </Button>
             </div>
-            <Button 
-              className="w-full neon-glow-pink" 
-              onClick={() => setIsAuthenticated(true)}
-            >
-              Continue to Dashboard (Dev Mode)
-            </Button>
           </CardContent>
         </Card>
       </div>
     );
   }
 
+  // Authenticated admin view
   return (
     <div className="min-h-screen bg-background">
       <div className="light-leak-purple" />
@@ -194,14 +226,24 @@ const Admin = () => {
               </div>
               <div>
                 <h1 className="font-display text-xl text-neon-gradient">Admin Dashboard</h1>
-                <p className="text-xs text-muted-foreground">Lobo Radio Glow</p>
+                <p className="text-xs text-muted-foreground">{user.email}</p>
               </div>
             </div>
           </div>
-          <Badge variant="outline" className="border-primary/50 text-primary">
-            <Shield className="w-3 h-3 mr-1" />
-            Admin
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Badge variant="outline" className="border-primary/50 text-primary">
+              <Shield className="w-3 h-3 mr-1" />
+              Admin
+            </Badge>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={handleSignOut}
+              className="hover:bg-destructive/10 hover:text-destructive"
+            >
+              <LogOut className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -222,7 +264,6 @@ const Admin = () => {
                   <p className="text-sm text-muted-foreground">Live Listeners</p>
                 </div>
               </div>
-              {/* Show listener names */}
               {listeners.length > 0 && (
                 <div className="mt-3 pt-3 border-t border-border/50">
                   <p className="text-xs text-muted-foreground mb-2">Active users:</p>
