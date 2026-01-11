@@ -1,11 +1,13 @@
 import djLoboImage from "@/assets/dj-lobo-real.jpg";
-import { Radio, MessageCircle } from "lucide-react";
+import { Radio, MessageCircle, Loader2, WifiOff } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
 import { usePresence } from "@/hooks/usePresence";
+import { useStreamStatus } from "@/hooks/useStreamStatus";
 
 const HeroSection = () => {
   const { branding } = useBranding();
   const { listenerCount } = usePresence();
+  const { status } = useStreamStatus();
   
   const scrollToSchedule = () => {
     document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth" });
@@ -20,19 +22,57 @@ const HeroSection = () => {
       className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 pt-20 pb-32 relative"
       aria-labelledby="hero-title"
     >
-      {/* On Air Badge + Live Chat Counter */}
+      {/* Stream Status Badge + Live Chat Counter */}
       <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-        {/* On Air Badge */}
+        {/* Stream Status Badge */}
         <div 
-          className="glass-card-pink on-air-pulse px-4 sm:px-6 py-2 sm:py-3 flex items-center gap-2 sm:gap-3"
+          className={`px-4 sm:px-6 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 rounded-full border transition-all ${
+            status === 'live' 
+              ? 'glass-card-pink on-air-pulse border-neon-pink/30' 
+              : status === 'connecting'
+              ? 'glass-card border-neon-cyan/30'
+              : status === 'error'
+              ? 'glass-card border-red-500/30'
+              : 'glass-card border-muted'
+          }`}
           role="status"
           aria-live="polite"
-          aria-label="DJ Lobo är på luften just nu"
+          aria-label={
+            status === 'live' ? 'DJ Lobo är på luften just nu' :
+            status === 'connecting' ? 'Ansluter till streamen' :
+            status === 'error' ? 'Kunde inte ansluta till streamen' :
+            'Klicka på play för att lyssna'
+          }
         >
-          <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-neon-pink rounded-full live-dot" aria-hidden="true"></div>
-          <span className="font-display font-bold text-neon-pink tracking-wider text-sm sm:text-base">
-            PÅ LUFTEN
-          </span>
+          {status === 'live' ? (
+            <>
+              <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-neon-pink rounded-full live-dot" aria-hidden="true" />
+              <span className="font-display font-bold text-neon-pink tracking-wider text-sm sm:text-base">
+                PÅ LUFTEN
+              </span>
+            </>
+          ) : status === 'connecting' ? (
+            <>
+              <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-neon-cyan animate-spin" aria-hidden="true" />
+              <span className="font-display font-bold text-neon-cyan tracking-wider text-sm sm:text-base">
+                ANSLUTER...
+              </span>
+            </>
+          ) : status === 'error' ? (
+            <>
+              <WifiOff className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" aria-hidden="true" />
+              <span className="font-display font-bold text-red-400 tracking-wider text-sm sm:text-base">
+                OFFLINE
+              </span>
+            </>
+          ) : (
+            <>
+              <Radio className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" aria-hidden="true" />
+              <span className="font-display font-bold text-muted-foreground tracking-wider text-sm sm:text-base">
+                KLICKA PLAY ▶
+              </span>
+            </>
+          )}
         </div>
 
         {/* Live Chat Counter - FOMO indicator */}

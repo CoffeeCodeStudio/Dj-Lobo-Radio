@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, Loader2 } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, Loader2, WifiOff } from "lucide-react";
 import { Radio } from "lucide-react";
+import { useStreamStatus } from "@/hooks/useStreamStatus";
 
 const STREAM_URL = "https://stream.zeno.fm/gzzqvbuy0d7uv";
 
@@ -10,6 +11,7 @@ const NowPlayingBar = () => {
   const [volume, setVolume] = useState(70);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const { setStatus } = useStreamStatus();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -21,34 +23,72 @@ const NowPlayingBar = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handleWaiting = () => setIsLoading(true);
-    const handlePlaying = () => setIsLoading(false);
-    const handleCanPlay = () => setIsLoading(false);
+    const handleWaiting = () => {
+      setIsLoading(true);
+      setStatus('connecting');
+    };
+    
+    const handlePlaying = () => {
+      setIsLoading(false);
+      setStatus('live');
+    };
+    
+    const handleCanPlay = () => {
+      setIsLoading(false);
+    };
+
+    const handleError = () => {
+      setIsLoading(false);
+      setIsPlaying(false);
+      setStatus('error', 'Kunde inte ansluta till streamen');
+    };
+
+    const handlePause = () => {
+      if (!audio.ended) {
+        setStatus('offline');
+      }
+    };
+
+    const handleStalled = () => {
+      setStatus('connecting');
+    };
 
     audio.addEventListener("waiting", handleWaiting);
     audio.addEventListener("playing", handlePlaying);
     audio.addEventListener("canplay", handleCanPlay);
+    audio.addEventListener("error", handleError);
+    audio.addEventListener("pause", handlePause);
+    audio.addEventListener("stalled", handleStalled);
 
     return () => {
       audio.removeEventListener("waiting", handleWaiting);
       audio.removeEventListener("playing", handlePlaying);
       audio.removeEventListener("canplay", handleCanPlay);
+      audio.removeEventListener("error", handleError);
+      audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("stalled", handleStalled);
     };
-  }, []);
+  }, [setStatus]);
+
+  const { status } = useStreamStatus();
 
   const togglePlay = async () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
+        setStatus('offline');
       } else {
         setIsLoading(true);
+        setStatus('connecting');
         try {
           await audioRef.current.play();
           setIsPlaying(true);
+          setStatus('live');
         } catch (error) {
           console.error("Error playing audio:", error);
           setIsLoading(false);
+          setStatus('error', 'Kunde inte spela upp');
         }
       }
     }
