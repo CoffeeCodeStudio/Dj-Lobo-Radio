@@ -7,6 +7,88 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
 import { usePresence } from "@/hooks/usePresence";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+const chatTranslations = {
+  sv: {
+    liveChat: "LIVE CHAT",
+    chatWithListeners: "Chatta med andra lyssnare i realtid!",
+    enterNickname: "Ange ditt smeknamn...",
+    nicknameLabel: "Ange ditt smeknamn",
+    nicknameHelp: "2-20 tecken",
+    joinChat: "GÅ MED I CHATTEN",
+    invalidName: "Ogiltigt namn",
+    nameReserved: "Det namnet är reserverat.",
+    nameTooShort: "Ditt smeknamn måste vara minst 2 tecken.",
+    nameTooLong: "Ditt smeknamn får vara max 20 tecken.",
+    waitAMoment: "Vänta lite",
+    sendAgainIn: "Du kan skicka igen om",
+    seconds: "sekunder",
+    messageTooLong: "Meddelandet är för långt",
+    maxChars: "Max",
+    charsPerMessage: "tecken per meddelande",
+    couldNotSend: "Kunde inte skicka",
+    youAreBanned: "Du har blivit avstängd.",
+    tryAgain: "Försök igen.",
+    noMessagesYet: "Inga meddelanden ännu. Bli först!",
+    typeMessage: "Skriv ett meddelande...",
+    send: "Skicka",
+    chatMessages: "Chattmeddelanden",
+    soundForNewMessages: "Ljud för nya meddelanden",
+  },
+  en: {
+    liveChat: "LIVE CHAT",
+    chatWithListeners: "Chat with other listeners in real time!",
+    enterNickname: "Enter your nickname...",
+    nicknameLabel: "Enter your nickname",
+    nicknameHelp: "2-20 characters",
+    joinChat: "JOIN CHAT",
+    invalidName: "Invalid name",
+    nameReserved: "That name is reserved.",
+    nameTooShort: "Your nickname must be at least 2 characters.",
+    nameTooLong: "Your nickname can be max 20 characters.",
+    waitAMoment: "Wait a moment",
+    sendAgainIn: "You can send again in",
+    seconds: "seconds",
+    messageTooLong: "Message too long",
+    maxChars: "Max",
+    charsPerMessage: "characters per message",
+    couldNotSend: "Could not send",
+    youAreBanned: "You have been banned.",
+    tryAgain: "Try again.",
+    noMessagesYet: "No messages yet. Be the first!",
+    typeMessage: "Type a message...",
+    send: "Send",
+    chatMessages: "Chat messages",
+    soundForNewMessages: "Sound for new messages",
+  },
+  es: {
+    liveChat: "CHAT EN VIVO",
+    chatWithListeners: "¡Chatea con otros oyentes en tiempo real!",
+    enterNickname: "Ingresa tu apodo...",
+    nicknameLabel: "Ingresa tu apodo",
+    nicknameHelp: "2-20 caracteres",
+    joinChat: "UNIRSE AL CHAT",
+    invalidName: "Nombre inválido",
+    nameReserved: "Ese nombre está reservado.",
+    nameTooShort: "Tu apodo debe tener al menos 2 caracteres.",
+    nameTooLong: "Tu apodo puede tener máximo 20 caracteres.",
+    waitAMoment: "Espera un momento",
+    sendAgainIn: "Puedes enviar de nuevo en",
+    seconds: "segundos",
+    messageTooLong: "Mensaje muy largo",
+    maxChars: "Máximo",
+    charsPerMessage: "caracteres por mensaje",
+    couldNotSend: "No se pudo enviar",
+    youAreBanned: "Has sido baneado.",
+    tryAgain: "Inténtalo de nuevo.",
+    noMessagesYet: "No hay mensajes aún. ¡Sé el primero!",
+    typeMessage: "Escribe un mensaje...",
+    send: "Enviar",
+    chatMessages: "Mensajes del chat",
+    soundForNewMessages: "Sonido para nuevos mensajes",
+  },
+};
 
 interface ChatMessage {
   id: string;
@@ -79,6 +161,8 @@ const LiveChat = () => {
   const cleanupPresenceRef = useRef<(() => void) | null>(null);
   
   const { listenerCount, trackPresence } = usePresence();
+  const { language } = useLanguage();
+  const t = chatTranslations[language];
 
   // Cooldown timer
   useEffect(() => {
@@ -193,8 +277,8 @@ const LiveChat = () => {
     // Check protected names
     if (PROTECTED_NAMES.some(name => trimmedNickname.includes(name))) {
       toast({
-        title: "Ogiltigt namn",
-        description: "Det namnet är reserverat.",
+        title: t.invalidName,
+        description: t.nameReserved,
         variant: "destructive",
       });
       return;
@@ -202,16 +286,16 @@ const LiveChat = () => {
     
     if (nickname.trim().length < 2) {
       toast({
-        title: "Ogiltigt namn",
-        description: "Ditt smeknamn måste vara minst 2 tecken.",
+        title: t.invalidName,
+        description: t.nameTooShort,
         variant: "destructive",
       });
       return;
     }
     if (nickname.trim().length > 20) {
       toast({
-        title: "Ogiltigt namn",
-        description: "Ditt smeknamn får vara max 20 tecken.",
+        title: t.invalidName,
+        description: t.nameTooLong,
         variant: "destructive",
       });
       return;
@@ -233,8 +317,8 @@ const LiveChat = () => {
       const remaining = RATE_LIMIT_MS - timeSinceLastMessage;
       setCooldownRemaining(remaining);
       toast({
-        title: "Vänta lite",
-        description: `Du kan skicka igen om ${Math.ceil(remaining / 1000)} sekunder.`,
+        title: t.waitAMoment,
+        description: `${t.sendAgainIn} ${Math.ceil(remaining / 1000)} ${t.seconds}.`,
         variant: "destructive",
       });
       return;
@@ -242,8 +326,8 @@ const LiveChat = () => {
     
     if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
       toast({
-        title: "Meddelandet är för långt",
-        description: `Max ${MAX_MESSAGE_LENGTH} tecken per meddelande.`,
+        title: t.messageTooLong,
+        description: `${t.maxChars} ${MAX_MESSAGE_LENGTH} ${t.charsPerMessage}.`,
         variant: "destructive",
       });
       return;
@@ -263,8 +347,8 @@ const LiveChat = () => {
     if (error) {
       console.error("Error sending message:", error);
       toast({
-        title: "Kunde inte skicka",
-        description: error.message.includes("banned") ? "Du har blivit avstängd." : "Försök igen.",
+        title: t.couldNotSend,
+        description: error.message.includes("banned") ? t.youAreBanned : t.tryAgain,
         variant: "destructive",
       });
     } else {
@@ -283,8 +367,8 @@ const LiveChat = () => {
       const remaining = RATE_LIMIT_MS - timeSinceLastMessage;
       setCooldownRemaining(remaining);
       toast({
-        title: "Vänta lite",
-        description: `Du kan skicka igen om ${Math.ceil(remaining / 1000)} sekunder.`,
+        title: t.waitAMoment,
+        description: `${t.sendAgainIn} ${Math.ceil(remaining / 1000)} ${t.seconds}.`,
         variant: "destructive",
       });
       return;
@@ -301,8 +385,8 @@ const LiveChat = () => {
     if (error) {
       console.error("Error sending emote:", error);
       toast({
-        title: "Kunde inte skicka",
-        description: error.message.includes("banned") ? "Du har blivit avstängd." : "Försök igen.",
+        title: t.couldNotSend,
+        description: error.message.includes("banned") ? t.youAreBanned : t.tryAgain,
         variant: "destructive",
       });
     } else {
@@ -340,20 +424,20 @@ const LiveChat = () => {
               id="chat-join-title"
               className="font-display text-2xl sm:text-3xl font-bold text-neon-gradient mb-2"
             >
-              LIVE CHAT
+              {t.liveChat}
             </h2>
             <p className="text-muted-foreground mb-6">
-              Chatta med andra lyssnare i realtid!
+              {t.chatWithListeners}
             </p>
             <form onSubmit={handleJoin} className="space-y-4">
               <div>
                 <label htmlFor="nickname-input" className="sr-only">
-                  Ange ditt smeknamn
+                  {t.nicknameLabel}
                 </label>
                 <Input
                   id="nickname-input"
                   type="text"
-                  placeholder="Ange ditt smeknamn..."
+                  placeholder={t.enterNickname}
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
                   className="bg-background/50 border-muted focus:border-neon-cyan text-center text-lg"
@@ -361,16 +445,16 @@ const LiveChat = () => {
                   aria-describedby="nickname-help"
                 />
                 <p id="nickname-help" className="text-xs text-muted-foreground mt-2">
-                  2-20 tecken
+                  {t.nicknameHelp}
                 </p>
               </div>
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-neon-pink to-neon-cyan hover:opacity-90 text-white font-display font-bold tracking-wider"
-                aria-label="Gå med i chatten"
+                aria-label={t.joinChat}
               >
                 <Users className="w-4 h-4 mr-2" aria-hidden="true" />
-                GÅ MED I CHATTEN
+                {t.joinChat}
               </Button>
             </form>
           </div>
@@ -396,7 +480,7 @@ const LiveChat = () => {
                 id="chat-title"
                 className="font-display font-bold text-neon-gradient"
               >
-                LIVE CHAT
+                {t.liveChat}
               </h2>
               {/* Listener count */}
               <div className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-muted/50 border border-muted">
@@ -415,7 +499,7 @@ const LiveChat = () => {
                 <Switch
                   checked={soundEnabled}
                   onCheckedChange={setSoundEnabled}
-                  aria-label="Ljud för nya meddelanden"
+                  aria-label={t.soundForNewMessages}
                   className="data-[state=checked]:bg-neon-cyan"
                 />
               </div>
@@ -430,14 +514,14 @@ const LiveChat = () => {
           <ScrollArea 
             className="h-64 sm:h-80 p-4" 
             ref={scrollRef}
-            aria-label="Chattmeddelanden"
+            aria-label={t.chatMessages}
             role="log"
             aria-live="polite"
           >
             {messages.length === 0 ? (
               <div className="text-center text-muted-foreground py-8">
                 <MessageCircle className="w-8 h-8 mx-auto mb-2 opacity-50" aria-hidden="true" />
-                <p>Inga meddelanden ännu. Bli först!</p>
+                <p>{t.noMessagesYet}</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -496,7 +580,7 @@ const LiveChat = () => {
                 onClick={() => handleQuickEmote(emote)}
                 disabled={isLoading}
                 className="text-xl hover:scale-125 active:scale-95 transition-transform duration-150 disabled:opacity-50 p-1 rounded hover:bg-muted/30"
-                aria-label={`Skicka ${emote}`}
+                aria-label={`${t.send} ${emote}`}
               >
                 {emote}
               </button>
@@ -509,25 +593,25 @@ const LiveChat = () => {
             className="p-4 border-t border-muted flex gap-2"
           >
             <label htmlFor="message-input" className="sr-only">
-              Skriv ett meddelande
+              {t.typeMessage}
             </label>
             <Input
               id="message-input"
               ref={inputRef}
               type="text"
-              placeholder="Skriv ett meddelande..."
+              placeholder={t.typeMessage}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="flex-1 bg-background/50 border-muted focus:border-neon-cyan"
               maxLength={500}
               disabled={isLoading}
-              aria-label="Meddelande"
+              aria-label={t.typeMessage}
             />
             <Button
               type="submit"
               disabled={isLoading || !message.trim()}
               className="bg-gradient-to-r from-neon-pink to-neon-cyan hover:opacity-90 text-white"
-              aria-label="Skicka meddelande"
+              aria-label={t.send}
             >
               <Send className="w-4 h-4" aria-hidden="true" />
             </Button>

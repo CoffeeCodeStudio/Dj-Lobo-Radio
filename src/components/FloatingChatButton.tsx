@@ -1,11 +1,38 @@
 import { useState, useEffect } from "react";
 import { MessageCircle, ChevronDown } from "lucide-react";
 import { usePresence } from "@/hooks/usePresence";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+const translations = {
+  sv: {
+    chatLive: "Chatta live",
+    withDJAndFans: "med DJ Lobo & fans",
+    liveChat: "Live Chat",
+    goToChat: "Gå till Live Chat",
+    chattingNow: "chattar nu",
+  },
+  en: {
+    chatLive: "Chat live",
+    withDJAndFans: "with DJ Lobo & fans",
+    liveChat: "Live Chat",
+    goToChat: "Go to Live Chat",
+    chattingNow: "chatting now",
+  },
+  es: {
+    chatLive: "Chatea en vivo",
+    withDJAndFans: "con DJ Lobo y fans",
+    liveChat: "Chat en Vivo",
+    goToChat: "Ir al Chat en Vivo",
+    chattingNow: "chateando ahora",
+  },
+};
 
 const FloatingChatButton = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [showTooltip, setShowTooltip] = useState(false);
   const { listenerCount } = usePresence();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   // Hide button when user is near the chat section
   useEffect(() => {
@@ -42,8 +69,8 @@ const FloatingChatButton = () => {
         }`}
       >
         <div className="glass-card px-4 py-2 rounded-lg whitespace-nowrap text-sm font-medium">
-          <span className="text-neon-cyan">Chatta live</span>
-          <span className="text-muted-foreground"> med DJ Lobo & fans</span>
+          <span className="text-neon-cyan">{t.chatLive}</span>
+          <span className="text-muted-foreground"> {t.withDJAndFans}</span>
         </div>
         {/* Tooltip arrow */}
         <div className="absolute -bottom-1 right-6 w-2 h-2 bg-card border-r border-b border-white/10 rotate-45" />
@@ -60,7 +87,7 @@ const FloatingChatButton = () => {
         style={{
           boxShadow: "0 0 20px rgba(255, 0, 255, 0.4), 0 0 40px rgba(255, 0, 255, 0.2)",
         }}
-        aria-label="Gå till Live Chat"
+        aria-label={t.goToChat}
       >
         {/* Pulsing notification dot */}
         <span className="absolute -top-1 -right-1 flex h-4 w-4">
@@ -77,7 +104,7 @@ const FloatingChatButton = () => {
         
         {/* Text */}
         <span className="text-sm font-semibold text-foreground hidden sm:inline">
-          Live Chat
+          {t.liveChat}
         </span>
 
         {/* Animated arrow */}
@@ -88,7 +115,7 @@ const FloatingChatButton = () => {
       {listenerCount > 0 && (
         <div className="sm:hidden mt-2 text-center">
           <span className="text-xs text-muted-foreground">
-            <span className="text-neon-cyan font-semibold">{listenerCount}</span> chattar nu
+            <span className="text-neon-cyan font-semibold">{listenerCount}</span> {t.chattingNow}
           </span>
         </div>
       )}
