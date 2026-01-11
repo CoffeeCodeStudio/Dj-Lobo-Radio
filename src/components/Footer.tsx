@@ -1,5 +1,11 @@
 import { Instagram, Facebook, Headphones, Radio } from "lucide-react";
 
+const SOCIAL_LINKS = {
+  instagram: "https://www.instagram.com/djloboradio",
+  facebook: "https://www.facebook.com/djloboradiodjs/",
+  mixcloud: "https://www.mixcloud.com/DjLobo75/",
+};
+
 const Footer = () => {
   return (
     <footer className="py-16 px-6 pb-32 relative">
@@ -25,22 +31,28 @@ const Footer = () => {
         {/* Social Links */}
         <div className="flex justify-center gap-4 mb-8">
           <a
-            href="#"
-            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors"
+            href={SOCIAL_LINKS.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group"
           >
-            <Instagram className="w-5 h-5 text-muted-foreground hover:text-neon-pink transition-colors" />
+            <Instagram className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
           </a>
           <a
-            href="#"
-            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors"
+            href={SOCIAL_LINKS.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group"
           >
-            <Facebook className="w-5 h-5 text-muted-foreground hover:text-neon-pink transition-colors" />
+            <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
           </a>
           <a
-            href="#"
-            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors"
+            href={SOCIAL_LINKS.mixcloud}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-12 h-12 glass-card rounded-full flex items-center justify-center hover:border-neon-pink/50 transition-colors group"
           >
-            <Headphones className="w-5 h-5 text-muted-foreground hover:text-neon-pink transition-colors" />
+            <Headphones className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
           </a>
         </div>
 
