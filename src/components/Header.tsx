@@ -1,7 +1,6 @@
 import { Globe, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-
-type Language = "sv" | "en" | "es";
+import { useLanguage, Language } from "@/contexts/LanguageContext";
 
 interface LanguageOption {
   code: Language;
@@ -16,7 +15,7 @@ const languages: LanguageOption[] = [
 ];
 
 const Header = () => {
-  const [language, setLanguage] = useState<Language>("sv");
+  const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

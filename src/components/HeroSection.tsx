@@ -3,11 +3,59 @@ import { Radio, MessageCircle, Loader2, WifiOff } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
 import { usePresence } from "@/hooks/usePresence";
 import { useStreamStatus } from "@/hooks/useStreamStatus";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+const translations = {
+  sv: {
+    onAir: "PÅ LUFTEN",
+    connecting: "ANSLUTER...",
+    offline: "OFFLINE",
+    clickPlay: "KLICKA PLAY ▶",
+    onAirLabel: "DJ Lobo är på luften just nu",
+    connectingLabel: "Ansluter till streamen",
+    errorLabel: "Kunde inte ansluta till streamen",
+    offlineLabel: "Klicka på play för att lyssna",
+    fansChatting: "fans chattar",
+    fansChatLabel: "fans chattar just nu, klicka för att gå till chatten",
+    seeSchedule: "SE SCHEMA",
+    scrollToSchedule: "Scrolla ner till schemat",
+  },
+  en: {
+    onAir: "ON AIR",
+    connecting: "CONNECTING...",
+    offline: "OFFLINE",
+    clickPlay: "CLICK PLAY ▶",
+    onAirLabel: "DJ Lobo is on air right now",
+    connectingLabel: "Connecting to stream",
+    errorLabel: "Could not connect to stream",
+    offlineLabel: "Click play to listen",
+    fansChatting: "fans chatting",
+    fansChatLabel: "fans chatting right now, click to go to chat",
+    seeSchedule: "SEE SCHEDULE",
+    scrollToSchedule: "Scroll down to schedule",
+  },
+  es: {
+    onAir: "EN VIVO",
+    connecting: "CONECTANDO...",
+    offline: "FUERA DE LÍNEA",
+    clickPlay: "PULSA PLAY ▶",
+    onAirLabel: "DJ Lobo está en vivo ahora",
+    connectingLabel: "Conectando al stream",
+    errorLabel: "No se pudo conectar al stream",
+    offlineLabel: "Pulsa play para escuchar",
+    fansChatting: "fans chateando",
+    fansChatLabel: "fans chateando ahora, haz clic para ir al chat",
+    seeSchedule: "VER HORARIO",
+    scrollToSchedule: "Desplázate hasta el horario",
+  },
+};
 
 const HeroSection = () => {
   const { branding } = useBranding();
   const { listenerCount } = usePresence();
   const { status } = useStreamStatus();
+  const { language } = useLanguage();
+  const t = translations[language];
   
   const scrollToSchedule = () => {
     document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth" });
@@ -38,38 +86,38 @@ const HeroSection = () => {
           role="status"
           aria-live="polite"
           aria-label={
-            status === 'live' ? 'DJ Lobo är på luften just nu' :
-            status === 'connecting' ? 'Ansluter till streamen' :
-            status === 'error' ? 'Kunde inte ansluta till streamen' :
-            'Klicka på play för att lyssna'
+            status === 'live' ? t.onAirLabel :
+            status === 'connecting' ? t.connectingLabel :
+            status === 'error' ? t.errorLabel :
+            t.offlineLabel
           }
         >
           {status === 'live' ? (
             <>
               <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-neon-pink rounded-full live-dot" aria-hidden="true" />
               <span className="font-display font-bold text-neon-pink tracking-wider text-sm sm:text-base">
-                PÅ LUFTEN
+                {t.onAir}
               </span>
             </>
           ) : status === 'connecting' ? (
             <>
               <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-neon-cyan animate-spin" aria-hidden="true" />
               <span className="font-display font-bold text-neon-cyan tracking-wider text-sm sm:text-base">
-                ANSLUTER...
+                {t.connecting}
               </span>
             </>
           ) : status === 'error' ? (
             <>
               <WifiOff className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" aria-hidden="true" />
               <span className="font-display font-bold text-red-400 tracking-wider text-sm sm:text-base">
-                OFFLINE
+                {t.offline}
               </span>
             </>
           ) : (
             <>
               <Radio className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" aria-hidden="true" />
               <span className="font-display font-bold text-muted-foreground tracking-wider text-sm sm:text-base">
-                KLICKA PLAY ▶
+                {t.clickPlay}
               </span>
             </>
           )}
@@ -80,12 +128,12 @@ const HeroSection = () => {
           <button
             onClick={() => document.getElementById("live-chat-section")?.scrollIntoView({ behavior: "smooth" })}
             className="glass-card px-4 sm:px-5 py-2 sm:py-3 flex items-center gap-2 hover:border-neon-cyan/50 transition-all hover:scale-105 cursor-pointer group"
-            aria-label={`${listenerCount} fans chattar just nu, klicka för att gå till chatten`}
+            aria-label={`${listenerCount} ${t.fansChatLabel}`}
           >
             <MessageCircle className="w-4 h-4 text-neon-cyan group-hover:animate-bounce" aria-hidden="true" />
             <span className="text-sm sm:text-base">
               <span className="font-bold text-neon-cyan">{listenerCount}</span>
-              <span className="text-muted-foreground ml-1.5 hidden sm:inline">fans chattar</span>
+              <span className="text-muted-foreground ml-1.5 hidden sm:inline">{t.fansChatting}</span>
               <span className="text-muted-foreground ml-1.5 sm:hidden">💬</span>
             </span>
           </button>
@@ -132,10 +180,10 @@ const HeroSection = () => {
       {/* CTA Button */}
       <button
         onClick={scrollToSchedule}
-        aria-label="Scrolla ner till schemat"
+        aria-label={t.scrollToSchedule}
         className="tap-target glass-card px-6 sm:px-8 py-3 sm:py-4 font-display font-bold tracking-wider hover:bg-muted/50 hover:border-neon-cyan/50 transition-all hover:scale-105 focus-neon rounded-lg"
       >
-        SE SCHEMA
+        {t.seeSchedule}
       </button>
     </section>
   );
