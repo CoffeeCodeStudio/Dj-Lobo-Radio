@@ -97,6 +97,7 @@ export type Database = {
           accent_color: string | null
           background_image_url: string | null
           created_at: string
+          google_calendar_id: string | null
           hero_image_url: string | null
           id: string
           logo_url: string | null
@@ -111,6 +112,7 @@ export type Database = {
           accent_color?: string | null
           background_image_url?: string | null
           created_at?: string
+          google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
           logo_url?: string | null
@@ -125,6 +127,7 @@ export type Database = {
           accent_color?: string | null
           background_image_url?: string | null
           created_at?: string
+          google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
           logo_url?: string | null
