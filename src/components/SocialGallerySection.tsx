@@ -240,7 +240,7 @@ const SocialGallerySection = () => {
           </a>
         </div>
 
-        {/* Latest Video Section */}
+        {/* Latest Video Section - Placeholder */}
         <div className="mb-16">
           <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-pink mb-6 flex items-center justify-center gap-3">
             <Youtube className="w-6 h-6" />
@@ -249,22 +249,40 @@ const SocialGallerySection = () => {
           
           <div className="max-w-3xl mx-auto">
             <div className="glass-card overflow-hidden group hover:border-neon-pink/50 transition-all duration-300">
-              {/* YouTube Embed */}
+              {/* Placeholder Image */}
               <div className="aspect-video relative">
-                <iframe
-                  src={`https://www.youtube.com/embed/${featuredVideoId}?rel=0&modestbranding=1`}
-                  title="DJ Lobo Latest Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full"
-                  loading="lazy"
+                <img
+                  src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=1200&h=675&fit=crop"
+                  alt="DJ Lobo - Coming Soon"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
+                
+                {/* Coming Soon Overlay */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50">
+                  <div 
+                    className="px-8 py-4 rounded-full bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-bold text-lg uppercase tracking-wider mb-4"
+                    style={{
+                      boxShadow: "0 0 40px rgba(255, 0, 255, 0.5), 0 0 80px rgba(0, 255, 255, 0.3)",
+                    }}
+                  >
+                    Coming Soon
+                  </div>
+                  <p className="text-white/80 text-sm">DJ Lobo Exclusive Content</p>
+                </div>
+
+                {/* Exclusive badge */}
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1.5 rounded text-sm font-semibold flex items-center gap-1.5 bg-neon-pink/90 text-white">
+                    <Play className="w-4 h-4" />
+                    Featured
+                  </span>
+                </div>
               </div>
               
               {/* Video Info */}
               <div className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#FF0000] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-neon-pink flex items-center justify-center">
                     <Youtube className="w-4 h-4 text-white" />
                   </div>
                   <span className="font-medium text-foreground">DJ Lobo Producciones</span>
