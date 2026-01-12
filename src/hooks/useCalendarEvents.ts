@@ -10,47 +10,8 @@ export interface CalendarEvent {
   timeFormatted: string;
 }
 
-// Helper to get upcoming day name
-const getUpcomingDay = (daysFromNow: number): string => {
-  const date = new Date(Date.now() + daysFromNow * 24 * 60 * 60 * 1000);
-  const dayNames = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
-  return dayNames[date.getDay()];
-};
-
-const PLACEHOLDER_EVENTS: CalendarEvent[] = [
-  {
-    id: "placeholder-1",
-    title: "🎧 DJ Lobo Live - 80s & 90s Classics",
-    location: "Online Stream @ djloboradio.com",
-    date: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000),
-    dateFormatted: getUpcomingDay(1),
-    timeFormatted: "20:00",
-  },
-  {
-    id: "placeholder-2",
-    title: "🔥 Latin Night Fiesta",
-    location: "Online Stream @ djloboradio.com",
-    date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-    dateFormatted: getUpcomingDay(3),
-    timeFormatted: "21:00",
-  },
-  {
-    id: "placeholder-3",
-    title: "💃 Salsa & Reggaeton Mix",
-    location: "Online Stream @ djloboradio.com",
-    date: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
-    dateFormatted: getUpcomingDay(5),
-    timeFormatted: "19:00",
-  },
-  {
-    id: "placeholder-4",
-    title: "🕺 Retro Disco Weekend",
-    location: "Online Stream @ djloboradio.com",
-    date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    dateFormatted: getUpcomingDay(7),
-    timeFormatted: "22:00",
-  },
-];
+// Empty placeholder until real calendar is connected
+const PLACEHOLDER_EVENTS: CalendarEvent[] = [];
 
 export const useCalendarEvents = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
