@@ -1,7 +1,7 @@
 import { Globe, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
-import djLoboLogo from "@/assets/dj-lobo-logo.jpg";
+import djLoboLogo from "@/assets/dj-lobo-logo.png";
 
 interface LanguageOption {
   code: Language;
@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-2 sm:py-3 pointer-events-none">
+    <header className="absolute top-0 left-0 right-0 z-50 px-4 sm:px-6 py-2 sm:py-3 pointer-events-none">
       <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
         {/* Logo */}
         <a 
