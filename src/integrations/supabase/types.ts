@@ -100,6 +100,9 @@ export type Database = {
           google_calendar_id: string | null
           hero_image_url: string | null
           id: string
+          live_set_video_1: string | null
+          live_set_video_2: string | null
+          live_set_video_3: string | null
           logo_url: string | null
           primary_glow_color: string | null
           profile_image_url: string | null
@@ -116,6 +119,9 @@ export type Database = {
           google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
+          live_set_video_1?: string | null
+          live_set_video_2?: string | null
+          live_set_video_3?: string | null
           logo_url?: string | null
           primary_glow_color?: string | null
           profile_image_url?: string | null
@@ -132,6 +138,9 @@ export type Database = {
           google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
+          live_set_video_1?: string | null
+          live_set_video_2?: string | null
+          live_set_video_3?: string | null
           logo_url?: string | null
           primary_glow_color?: string | null
           profile_image_url?: string | null

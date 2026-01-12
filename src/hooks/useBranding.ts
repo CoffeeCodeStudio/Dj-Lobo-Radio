@@ -13,6 +13,9 @@ export interface SiteBranding {
   site_name: string | null;
   tagline: string | null;
   youtube_video_id: string | null;
+  live_set_video_1: string | null;
+  live_set_video_2: string | null;
+  live_set_video_3: string | null;
   updated_at: string;
 }
 

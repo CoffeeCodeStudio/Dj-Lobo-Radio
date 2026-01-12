@@ -254,46 +254,88 @@ const SocialGallerySection = () => {
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <a
-                key={i}
-                href={SOCIAL_LINKS.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass-card overflow-hidden group hover:border-neon-cyan/50 transition-all duration-300"
-              >
-                {/* Video Placeholder */}
-                <div className="aspect-video relative bg-gradient-to-br from-muted/50 to-muted/20 flex items-center justify-center">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div 
-                      className="w-16 h-16 rounded-full bg-neon-pink/20 flex items-center justify-center group-hover:bg-neon-pink/40 transition-colors"
-                      style={{
-                        boxShadow: "0 0 20px rgba(255, 0, 255, 0.3)",
-                      }}
+            {[
+              branding?.live_set_video_1,
+              branding?.live_set_video_2,
+              branding?.live_set_video_3,
+            ].map((videoId, i) => (
+              videoId ? (
+                <div
+                  key={i}
+                  className="glass-card overflow-hidden group hover:border-neon-cyan/50 transition-all duration-300"
+                >
+                  {/* YouTube Embed */}
+                  <div className="aspect-video relative">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                      title={`DJ Lobo Live Set ${i + 1}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 w-full h-full"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Video Info */}
+                  <div className="p-4 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full bg-[#FF0000] flex items-center justify-center">
+                        <Youtube className="w-3 h-3 text-white" />
+                      </div>
+                      <span className="font-medium text-sm text-foreground">Live Set #{i + 1}</span>
+                    </div>
+                    <a
+                      href={`https://www.youtube.com/watch?v=${videoId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-neon-cyan hover:underline flex items-center gap-1"
                     >
-                      <Play className="w-8 h-8 text-neon-pink ml-1" />
+                      {t.watchOnYoutube}
+                      <Play className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={i}
+                  href={SOCIAL_LINKS.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-card overflow-hidden group hover:border-neon-cyan/50 transition-all duration-300"
+                >
+                  {/* Video Placeholder */}
+                  <div className="aspect-video relative bg-gradient-to-br from-muted/50 to-muted/20 flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div 
+                        className="w-16 h-16 rounded-full bg-neon-pink/20 flex items-center justify-center group-hover:bg-neon-pink/40 transition-colors"
+                        style={{
+                          boxShadow: "0 0 20px rgba(255, 0, 255, 0.3)",
+                        }}
+                      >
+                        <Play className="w-8 h-8 text-neon-pink ml-1" />
+                      </div>
+                    </div>
+
+                    {/* Platform badge */}
+                    <div className="absolute top-3 left-3">
+                      <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 bg-red-600 text-white">
+                        <Youtube className="w-3 h-3" />
+                        YouTube
+                      </span>
                     </div>
                   </div>
 
-                  {/* Platform badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 bg-red-600 text-white">
-                      <Youtube className="w-3 h-3" />
-                      YouTube
-                    </span>
+                  {/* Video Info */}
+                  <div className="p-4">
+                    <h4 className="font-semibold text-foreground group-hover:text-neon-cyan transition-colors line-clamp-2">
+                      Live Set #{i + 1}
+                    </h4>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {t.clickToWatch}
+                    </p>
                   </div>
-                </div>
-
-                {/* Video Info */}
-                <div className="p-4">
-                  <h4 className="font-semibold text-foreground group-hover:text-neon-cyan transition-colors line-clamp-2">
-                    Live Set #{i}
-                  </h4>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {t.clickToWatch}
-                  </p>
-                </div>
-              </a>
+                </a>
+              )
             ))}
           </div>
         </div>
