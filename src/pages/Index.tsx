@@ -8,6 +8,8 @@ import LiveChat from "@/components/LiveChat";
 import Footer from "@/components/Footer";
 import NowPlayingBar from "@/components/NowPlayingBar";
 import FloatingChatButton from "@/components/FloatingChatButton";
+import BookingForm from "@/components/BookingForm";
+import MixGrid from "@/components/MixGrid";
 
 const Index = () => {
   return (
@@ -30,8 +32,16 @@ const Index = () => {
             <AboutSection />
             <ScheduleSection />
             <CalendarSection />
+            <MixGrid />
             <SocialGallerySection />
-            <LiveChat />
+            
+            {/* Booking & Chat Section */}
+            <section className="py-16 sm:py-24">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <BookingForm />
+                <LiveChat />
+              </div>
+            </section>
           </div>
         </main>
         <Footer />
