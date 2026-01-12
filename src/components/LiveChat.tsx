@@ -213,8 +213,9 @@ const LiveChat = () => {
     if (!isJoined) return;
 
     const fetchMessages = async () => {
+      // Use the public view that hides session_id for privacy
       const { data, error } = await supabase
-        .from("chat_messages")
+        .from("chat_messages_public")
         .select("*")
         .order("created_at", { ascending: true })
         .limit(100);

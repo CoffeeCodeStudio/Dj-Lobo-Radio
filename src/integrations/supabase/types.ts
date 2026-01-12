@@ -175,7 +175,27 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      chat_messages_public: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          message: string | null
+          nickname: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          message?: string | null
+          nickname?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          message?: string | null
+          nickname?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
