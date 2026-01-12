@@ -440,6 +440,60 @@ const BrandingTab = () => {
           </CardContent>
         </Card>
 
+        {/* Live Sets Videos */}
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle className="font-display flex items-center gap-2">
+              <Youtube className="w-5 h-5 text-red-500" />
+              Live Sets & Videos
+            </CardTitle>
+            <CardDescription>3 featured videos shown in the gallery section</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {[1, 2, 3].map((num) => {
+              const fieldName = `live_set_video_${num}` as keyof typeof pendingChanges;
+              const currentValue = pendingChanges[fieldName] ?? branding?.[fieldName as keyof typeof branding] ?? "";
+              
+              return (
+                <div key={num} className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-neon-cyan/20 flex items-center justify-center">
+                      <span className="text-sm font-bold text-neon-cyan">{num}</span>
+                    </div>
+                    <Label htmlFor={`live-set-${num}`}>Live Set #{num}</Label>
+                  </div>
+                  <Input
+                    id={`live-set-${num}`}
+                    placeholder="YouTube video ID (t.ex. ABC123)"
+                    value={currentValue as string}
+                    onChange={(e) => setPendingChanges((prev) => ({ ...prev, [fieldName]: e.target.value || null }))}
+                    className="bg-input border-border"
+                  />
+                  
+                  {/* Video Preview */}
+                  {currentValue && (
+                    <div className="aspect-video rounded-lg overflow-hidden border border-border/50 max-w-md">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${currentValue}?rel=0&modestbranding=1`}
+                        title={`Live Set ${num} Preview`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+            
+            <p className="text-xs text-muted-foreground">
+              💡 Hitta video-ID i YouTube URL: youtube.com/watch?v=<strong>VIDEO_ID</strong>
+              <br />
+              DJ Lobo kanal: <a href="https://www.youtube.com/@djloboproducciones3211" target="_blank" rel="noopener noreferrer" className="text-neon-cyan hover:underline">@djloboproducciones3211</a>
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Color Theme */}
         <Card className="glass-card-pink">
           <CardHeader>
