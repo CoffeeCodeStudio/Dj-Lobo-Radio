@@ -10,27 +10,45 @@ const SOCIAL_LINKS = {
   youtube: "https://www.youtube.com/@djloboproducciones3211",
 };
 
-// DJ Lobo Producciones channel videos (hardcoded until API key is configured)
-// Channel: https://www.youtube.com/@djloboproducciones3211
-const DJ_LOBO_VIDEOS = [
-  { id: "ea8_sn1xlcE", title: "DJ Lobo - Mix Session" },
-  { id: "ZXIiJpKb3uc", title: "DJ Lobo - Live Set 1" },
-  { id: "IEf-9Mm1HyY", title: "DJ Lobo - Live Set 2" },
-  { id: "zD6La1f3gF8", title: "DJ Lobo - Party Mix" },
-  { id: "dQw4w9WgXcQ", title: "DJ Lobo - Club Night" },
-  { id: "L_jWHffIx5E", title: "DJ Lobo - Festival Set" },
+// Static placeholder videos until API integration is ready
+const PLACEHOLDER_VIDEOS = [
+  { 
+    id: 1, 
+    title: "DJ Lobo Exclusive", 
+    subtitle: "Coming Soon",
+    image: "https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=600&h=400&fit=crop"
+  },
+  { 
+    id: 2, 
+    title: "Live Mix Session", 
+    subtitle: "Coming Soon",
+    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop"
+  },
+  { 
+    id: 3, 
+    title: "Festival Set 2024", 
+    subtitle: "Coming Soon",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop"
+  },
+  { 
+    id: 4, 
+    title: "Club Night Special", 
+    subtitle: "Coming Soon",
+    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&h=400&fit=crop"
+  },
+  { 
+    id: 5, 
+    title: "80s & 90s Retro Mix", 
+    subtitle: "Coming Soon",
+    image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=400&fit=crop"
+  },
+  { 
+    id: 6, 
+    title: "Summer Party Vibes", 
+    subtitle: "Coming Soon",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=400&fit=crop"
+  },
 ];
-
-// Helper to get YouTube thumbnail URL
-const getYouTubeThumbnail = (videoId: string, quality: 'default' | 'mq' | 'hq' | 'maxres' = 'hq') => {
-  const qualityMap = {
-    default: 'default',
-    mq: 'mqdefault',
-    hq: 'hqdefault',
-    maxres: 'maxresdefault'
-  };
-  return `https://img.youtube.com/vi/${videoId}/${qualityMap[quality]}.jpg`;
-};
 
 const translations = {
   sv: {
@@ -80,8 +98,8 @@ const SocialGallerySection = () => {
   const { branding } = useBranding();
   const t = translations[language];
   
-  // Use video ID from branding or fall back to first video in list
-  const videoId = branding?.youtube_video_id || DJ_LOBO_VIDEOS[0].id;
+  // Featured video from branding (shown as main video)
+  const featuredVideoId = branding?.youtube_video_id || "ea8_sn1xlcE";
 
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="social-gallery-heading">
@@ -234,7 +252,7 @@ const SocialGallerySection = () => {
               {/* YouTube Embed */}
               <div className="aspect-video relative">
                 <iframe
-                  src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                  src={`https://www.youtube.com/embed/${featuredVideoId}?rel=0&modestbranding=1`}
                   title="DJ Lobo Latest Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
@@ -265,7 +283,7 @@ const SocialGallerySection = () => {
           </div>
         </div>
 
-        {/* Videos from DJ Lobo Producciones Channel */}
+        {/* Coming Soon Video Previews */}
         <div>
           <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-cyan mb-6 flex items-center gap-3">
             <Play className="w-6 h-6" />
@@ -273,47 +291,37 @@ const SocialGallerySection = () => {
           </h3>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {DJ_LOBO_VIDEOS.map((video) => (
-              <a
+            {PLACEHOLDER_VIDEOS.map((video) => (
+              <div
                 key={video.id}
-                href={`https://www.youtube.com/watch?v=${video.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass-card overflow-hidden group hover:border-neon-cyan/50 transition-all duration-300"
+                className="glass-card overflow-hidden group hover:border-neon-cyan/50 transition-all duration-300 cursor-default"
               >
-                {/* YouTube Thumbnail Preview */}
+                {/* Neon/DJ Themed Thumbnail */}
                 <div className="aspect-video relative">
                   <img
-                    src={getYouTubeThumbnail(video.id, 'hq')}
+                    src={video.image}
                     alt={video.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     loading="lazy"
-                    onError={(e) => {
-                      // Fallback to medium quality if high quality doesn't exist
-                      const target = e.target as HTMLImageElement;
-                      if (target.src.includes('hqdefault')) {
-                        target.src = getYouTubeThumbnail(video.id, 'mq');
-                      }
-                    }}
                   />
                   
-                  {/* Play button overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-colors">
+                  {/* Overlay with Coming Soon badge */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition-colors">
                     <div 
-                      className="w-16 h-16 rounded-full bg-[#FF0000] flex items-center justify-center group-hover:scale-110 transition-transform"
+                      className="px-6 py-3 rounded-full bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-bold text-sm uppercase tracking-wider"
                       style={{
-                        boxShadow: "0 0 20px rgba(255, 0, 0, 0.5)",
+                        boxShadow: "0 0 30px rgba(255, 0, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.3)",
                       }}
                     >
-                      <Play className="w-8 h-8 text-white ml-1" fill="white" />
+                      {video.subtitle}
                     </div>
                   </div>
 
-                  {/* YouTube badge */}
+                  {/* DJ Lobo Exclusive badge */}
                   <div className="absolute top-3 left-3">
-                    <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 bg-[#FF0000] text-white">
-                      <Youtube className="w-3 h-3" />
-                      YouTube
+                    <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 bg-neon-pink/90 text-white">
+                      <Play className="w-3 h-3" />
+                      Exclusive
                     </span>
                   </div>
                 </div>
@@ -324,11 +332,11 @@ const SocialGallerySection = () => {
                     {video.title}
                   </h4>
                   <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-                    <Play className="w-3 h-3" />
-                    {t.clickToWatch}
+                    <Youtube className="w-3 h-3" />
+                    DJ Lobo Producciones
                   </p>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
           
