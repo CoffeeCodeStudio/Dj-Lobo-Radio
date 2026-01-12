@@ -14,7 +14,8 @@ import {
   Monitor,
   User,
   Layout,
-  Sparkles
+  Sparkles,
+  Youtube
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useBranding, SiteBranding } from "@/hooks/useBranding";
@@ -397,6 +398,45 @@ const BrandingTab = () => {
                 Recommended: High-resolution image, will be darkened for readability
               </p>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* YouTube Video */}
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle className="font-display flex items-center gap-2">
+              <Youtube className="w-5 h-5 text-red-500" />
+              YouTube Video
+            </CardTitle>
+            <CardDescription>Featured video shown on the landing page</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="youtube-video-id">Video ID</Label>
+              <Input
+                id="youtube-video-id"
+                placeholder="e.g. dQw4w9WgXcQ"
+                value={pendingChanges.youtube_video_id ?? branding?.youtube_video_id ?? ""}
+                onChange={(e) => setPendingChanges((prev) => ({ ...prev, youtube_video_id: e.target.value }))}
+                className="bg-input border-border"
+              />
+              <p className="text-xs text-muted-foreground">
+                Kopiera video-ID från YouTube URL (t.ex. youtube.com/watch?v=<strong>ABC123</strong>)
+              </p>
+            </div>
+            
+            {/* Video Preview */}
+            {(pendingChanges.youtube_video_id || branding?.youtube_video_id) && (
+              <div className="aspect-video rounded-lg overflow-hidden border border-border/50">
+                <iframe
+                  src={`https://www.youtube.com/embed/${pendingChanges.youtube_video_id || branding?.youtube_video_id}?rel=0&modestbranding=1`}
+                  title="YouTube Video Preview"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+            )}
           </CardContent>
         </Card>
 
