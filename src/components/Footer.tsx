@@ -1,4 +1,5 @@
-import { Instagram, Facebook, Youtube, Radio, ExternalLink } from "lucide-react";
+import { Instagram, Facebook, Youtube, ExternalLink } from "lucide-react";
+import djLoboLogo from "@/assets/dj-lobo-logo.jpg";
 
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
@@ -7,58 +8,19 @@ const SOCIAL_LINKS = {
   zenoPlayer: "https://zeno.fm/radio/dj-lobo-radio-o85p/",
 };
 
+const LINKEDIN_URL = "https://www.linkedin.com/in/rami-e-453b77330/";
+
 const Footer = () => {
   return (
-    <footer className="py-12 sm:py-16 px-4 sm:px-6 pb-24 sm:pb-32 relative">
-      {/* Coffee Code Studio Signature - Fixed position on mobile */}
-      <div className="sm:hidden fixed bottom-[78px] left-0 right-0 z-50 py-2 bg-background/90 backdrop-blur-sm border-t border-white/5">
-        <a
-          href="https://www.linkedin.com/in/rami-e-453b77330/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center justify-center gap-1.5 text-xs focus-neon rounded px-2 py-1"
-          aria-label="Besök Coffee Code Studio (öppnas i nytt fönster)"
-        >
-          <span 
-            className="text-neon-cyan font-bold"
-            style={{ textShadow: "0 0 12px rgba(0, 255, 255, 0.6)" }}
-          >
-            &lt;
-          </span>
-          <span 
-            className="text-base"
-            style={{ 
-              filter: "drop-shadow(0 0 8px rgba(0, 255, 255, 0.5))",
-            }}
-          >
-            ☕️
-          </span>
-          <span 
-            className="text-neon-cyan font-bold"
-            style={{ textShadow: "0 0 12px rgba(0, 255, 255, 0.6)" }}
-          >
-            &gt;
-          </span>
-          <span 
-            className="ml-1 font-semibold tracking-wide text-white"
-            style={{ textShadow: "0 0 10px rgba(0, 255, 255, 0.4)" }}
-          >
-            Coffee Code Studio
-          </span>
-        </a>
-      </div>
-
+    <footer className="py-12 sm:py-16 px-4 sm:px-6 pb-32 sm:pb-36 relative">
       <div className="max-w-7xl mx-auto text-center">
         {/* Logo */}
-        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-          <div className="flex items-center text-neon-cyan text-xl sm:text-2xl" aria-hidden="true">
-            <span>((</span>
-            <Radio className="w-4 h-4 sm:w-5 sm:h-5 mx-1" />
-            <span>))</span>
-          </div>
-          <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-gradient">
-            DJ LOBO RADIO
-          </h3>
+        <div className="flex items-center justify-center mb-4 sm:mb-6">
+          <img 
+            src={djLoboLogo} 
+            alt="DJ Lobo Radio Logo" 
+            className="h-16 sm:h-20 w-auto object-contain"
+          />
         </div>
 
         {/* Description */}
@@ -152,44 +114,47 @@ const Footer = () => {
             </li>
           </ul>
         </nav>
-      </div>
 
-      {/* Desktop Signature - Hidden on mobile */}
-      <div className="hidden sm:block mt-12 pt-6 border-t border-white/5">
-        <a
-          href="https://www.linkedin.com/in/rami-e-453b77330/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center justify-center gap-1.5 text-sm text-muted-foreground/80 hover:text-white transition-colors duration-300 focus-neon rounded px-2 py-1"
-          aria-label="Besök Coffee Code Studio (öppnas i nytt fönster)"
-        >
-          <span 
-            className="transition-all duration-300 text-neon-cyan font-bold"
-            style={{ textShadow: "0 0 12px rgba(0, 255, 255, 0.5)" }}
-          >
-            &lt;
-          </span>
-          <span 
-            className="text-lg transition-all duration-300 group-hover:scale-110"
-            style={{ 
-              filter: "drop-shadow(0 0 8px rgba(0, 255, 255, 0.5))",
+        {/* Coffee Code Studio Signature - Always visible */}
+        <div className="mt-8 pt-6 border-t border-white/10">
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg glass-card hover:scale-105 transition-all duration-300 focus-neon"
+            aria-label="Besök Coffee Code Studio på LinkedIn (öppnas i nytt fönster)"
+            style={{
+              boxShadow: "0 0 20px rgba(0, 255, 255, 0.3)",
             }}
           >
-            ☕️
-          </span>
-          <span 
-            className="transition-all duration-300 text-neon-cyan font-bold"
-            style={{ textShadow: "0 0 12px rgba(0, 255, 255, 0.5)" }}
-          >
-            &gt;
-          </span>
-          <span 
-            className="ml-1 font-semibold tracking-wide"
-            style={{ textShadow: "0 0 8px rgba(0, 255, 255, 0.3)" }}
-          >
-            Coffee Code Studio
-          </span>
-        </a>
+            <span 
+              className="text-neon-cyan font-bold text-lg"
+              style={{ textShadow: "0 0 15px rgba(0, 255, 255, 0.8)" }}
+            >
+              &lt;
+            </span>
+            <span 
+              className="text-xl"
+              style={{ 
+                filter: "drop-shadow(0 0 10px rgba(0, 255, 255, 0.6))",
+              }}
+            >
+              ☕️
+            </span>
+            <span 
+              className="text-neon-cyan font-bold text-lg"
+              style={{ textShadow: "0 0 15px rgba(0, 255, 255, 0.8)" }}
+            >
+              &gt;
+            </span>
+            <span 
+              className="ml-1 font-semibold tracking-wide text-white text-sm sm:text-base"
+              style={{ textShadow: "0 0 12px rgba(0, 255, 255, 0.5)" }}
+            >
+              Coffee Code Studio
+            </span>
+          </a>
+        </div>
       </div>
     </footer>
   );
