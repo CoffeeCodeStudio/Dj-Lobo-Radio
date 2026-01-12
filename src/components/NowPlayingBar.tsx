@@ -116,42 +116,37 @@ const NowPlayingBar = () => {
     >
       <audio ref={audioRef} src={STREAM_URL} preload="none" />
       
-      {/* Desktop Layout */}
+      {/* Desktop Layout - Compact */}
       <div className="hidden sm:block">
-        {/* Book Now Button - Above player controls */}
-        <div className="flex justify-center pt-3 pb-1">
-          <BookNowButton />
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
           {/* Play Button and Visualizer */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <button
               onClick={togglePlay}
               disabled={isLoading}
               aria-label={isPlaying ? "Pausa radio" : "Spela radio"}
               aria-pressed={isPlaying}
-              className="tap-target w-14 h-14 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-110 transition-transform focus-neon disabled:opacity-70"
+              className="tap-target w-11 h-11 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-110 transition-transform focus-neon disabled:opacity-70"
             >
               {isLoading ? (
-                <Loader2 className="w-6 h-6 text-white animate-spin" aria-hidden="true" />
+                <Loader2 className="w-5 h-5 text-white animate-spin" aria-hidden="true" />
               ) : isPlaying ? (
-                <Pause className="w-6 h-6 text-white" aria-hidden="true" />
+                <Pause className="w-5 h-5 text-white" aria-hidden="true" />
               ) : (
-                <Play className="w-6 h-6 text-white ml-1" aria-hidden="true" />
+                <Play className="w-5 h-5 text-white ml-0.5" aria-hidden="true" />
               )}
             </button>
 
             {/* Audio Visualizer */}
-            <div className="flex items-end gap-1 h-8" aria-hidden="true">
+            <div className="flex items-end gap-0.5 h-6" aria-hidden="true">
               {[1, 2, 3, 4, 5].map((bar) => (
                 <div
                   key={bar}
                   className={`w-1 bg-gradient-to-t from-neon-pink to-neon-cyan rounded-full ${
-                    isPlaying && !isLoading ? "visualizer-bar" : "h-2"
+                    isPlaying && !isLoading ? "visualizer-bar" : "h-1.5"
                   }`}
                   style={{
-                    height: isPlaying && !isLoading ? undefined : "8px",
+                    height: isPlaying && !isLoading ? undefined : "6px",
                   }}
                 ></div>
               ))}
@@ -160,19 +155,22 @@ const NowPlayingBar = () => {
 
           {/* Now Playing Info */}
           <div className="flex-1 text-center min-w-0">
-            <div className="flex items-center justify-center gap-2 text-neon-cyan text-xs mb-1">
-              <Radio className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
+            <div className="flex items-center justify-center gap-2 text-neon-cyan text-[10px] mb-0.5">
+              <Radio className="w-2.5 h-2.5 flex-shrink-0" aria-hidden="true" />
               <span className="font-medium tracking-wider">
                 {isLoading ? "ANSLUTER..." : isPlaying ? "SPELAR NU" : "NOW PLAYING"}
               </span>
             </div>
-            <p className="text-foreground font-medium text-base truncate">
+            <p className="text-foreground font-medium text-sm truncate">
               DJ Lobo Radio - 80s & 90s Hits
             </p>
           </div>
 
+          {/* Book Now Button - Compact */}
+          <BookNowButton />
+
           {/* Volume Control */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button 
               onClick={toggleMute}
               aria-label={isMuted ? "Slå på ljud" : "Tysta ljud"}
@@ -180,12 +178,12 @@ const NowPlayingBar = () => {
               className="tap-target text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
             >
               {isMuted ? (
-                <VolumeX className="w-5 h-5" aria-hidden="true" />
+                <VolumeX className="w-4 h-4" aria-hidden="true" />
               ) : (
-                <Volume2 className="w-5 h-5" aria-hidden="true" />
+                <Volume2 className="w-4 h-4" aria-hidden="true" />
               )}
             </button>
-            <div className="relative w-24 h-2 bg-muted rounded-full overflow-hidden">
+            <div className="relative w-20 h-1.5 bg-muted rounded-full overflow-hidden">
               <div
                 className="absolute left-0 top-0 h-full bg-gradient-to-r from-neon-cyan to-neon-pink rounded-full transition-all"
                 style={{ width: `${isMuted ? 0 : volume}%` }}
@@ -205,35 +203,35 @@ const NowPlayingBar = () => {
         </div>
       </div>
 
-      {/* Mobile Slim Layout - max 70px */}
+      {/* Mobile Slim Layout - 56px */}
       <div className="sm:hidden">
-        <div className="h-[70px] px-4 flex items-center justify-between gap-3">
+        <div className="h-14 px-3 flex items-center justify-between gap-2">
           {/* Play Button */}
           <button
             onClick={togglePlay}
             disabled={isLoading}
             aria-label={isPlaying ? "Pausa radio" : "Spela radio"}
             aria-pressed={isPlaying}
-            className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-105 active:scale-95 transition-transform focus-neon disabled:opacity-70"
+            className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-105 active:scale-95 transition-transform focus-neon disabled:opacity-70"
           >
             {isLoading ? (
-              <Loader2 className="w-5 h-5 text-white animate-spin" aria-hidden="true" />
+              <Loader2 className="w-4 h-4 text-white animate-spin" aria-hidden="true" />
             ) : isPlaying ? (
-              <Pause className="w-5 h-5 text-white" aria-hidden="true" />
+              <Pause className="w-4 h-4 text-white" aria-hidden="true" />
             ) : (
-              <Play className="w-5 h-5 text-white ml-0.5" aria-hidden="true" />
+              <Play className="w-4 h-4 text-white ml-0.5" aria-hidden="true" />
             )}
           </button>
 
           {/* Now Playing Info - Truncated */}
           <div className="flex-1 min-w-0 text-center">
-            <div className="flex items-center justify-center gap-1.5 text-neon-cyan text-[10px] mb-0.5">
-              <Radio className="w-2.5 h-2.5 flex-shrink-0" aria-hidden="true" />
+            <div className="flex items-center justify-center gap-1 text-neon-cyan text-[9px] mb-0.5">
+              <Radio className="w-2 h-2 flex-shrink-0" aria-hidden="true" />
               <span className="font-medium tracking-wider uppercase">
-                {isLoading ? "Ansluter..." : isPlaying ? "Live" : "Radio"}
+                {isLoading ? "..." : isPlaying ? "Live" : "Radio"}
               </span>
             </div>
-            <p className="text-foreground font-medium text-sm truncate px-1">
+            <p className="text-foreground font-medium text-xs truncate">
               DJ Lobo Radio
             </p>
           </div>
@@ -243,12 +241,12 @@ const NowPlayingBar = () => {
             onClick={toggleMute}
             aria-label={isMuted ? "Slå på ljud" : "Tysta ljud"}
             aria-pressed={isMuted}
-            className="flex-shrink-0 w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
+            className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
           >
             {isMuted ? (
-              <VolumeX className="w-5 h-5" aria-hidden="true" />
+              <VolumeX className="w-4 h-4" aria-hidden="true" />
             ) : (
-              <Volume2 className="w-5 h-5" aria-hidden="true" />
+              <Volume2 className="w-4 h-4" aria-hidden="true" />
             )}
           </button>
         </div>

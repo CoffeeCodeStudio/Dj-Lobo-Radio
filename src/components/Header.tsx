@@ -1,6 +1,7 @@
 import { Globe, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
+import djLoboLogo from "@/assets/dj-lobo-logo.jpg";
 
 interface LanguageOption {
   code: Language;
@@ -41,21 +42,19 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 sm:py-4 pointer-events-none">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-2 sm:py-3 pointer-events-none">
       <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
         {/* Logo */}
         <a 
           href="#" 
-          className="glass-card px-3 sm:px-4 py-2 focus-neon rounded-lg"
+          className="glass-card p-1.5 sm:p-2 focus-neon rounded-lg hover:scale-105 transition-transform"
           aria-label="DJ Lobo Radio - Hem"
         >
-          <div className="flex items-center gap-2 text-neon-cyan">
-            <div className="flex items-center" aria-hidden="true">
-              <span className="text-base sm:text-lg">((</span>
-              <span className="text-base sm:text-lg">•</span>
-              <span className="text-base sm:text-lg">))</span>
-            </div>
-          </div>
+          <img 
+            src={djLoboLogo} 
+            alt="DJ Lobo Radio Logo" 
+            className="h-10 sm:h-12 w-auto object-contain"
+          />
         </a>
 
         {/* Language Selector Dropdown */}
