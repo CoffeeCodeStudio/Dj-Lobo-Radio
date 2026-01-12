@@ -8,6 +8,7 @@ import { toast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
 import { usePresence } from "@/hooks/usePresence";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { logger } from "@/lib/logger";
 
 const chatTranslations = {
   sv: {
@@ -219,7 +220,7 @@ const LiveChat = () => {
         .limit(100);
 
       if (error) {
-        console.error("Error fetching messages:", error);
+        logger.error("Error fetching messages:", error);
         return;
       }
 
@@ -366,7 +367,7 @@ const LiveChat = () => {
     });
 
     if (error) {
-      console.error("Error sending message:", error);
+      logger.error("Error sending message:", error);
       toast({
         title: t.couldNotSend,
         description: error.message.includes("banned") ? t.youAreBanned : t.tryAgain,
@@ -404,7 +405,7 @@ const LiveChat = () => {
     });
 
     if (error) {
-      console.error("Error sending emote:", error);
+      logger.error("Error sending emote:", error);
       toast({
         title: t.couldNotSend,
         description: error.message.includes("banned") ? t.youAreBanned : t.tryAgain,

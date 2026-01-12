@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
+import { logger } from "@/lib/logger";
 
 type AppRole = "admin" | "moderator" | "user";
 
@@ -19,7 +20,7 @@ export const useAuth = () => {
       .maybeSingle();
 
     if (error) {
-      console.error("Error checking admin role:", error);
+      logger.error("Error checking admin role:", error);
       return false;
     }
     

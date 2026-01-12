@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 interface PresenceState {
   nickname: string;
@@ -35,10 +36,10 @@ export const usePresence = (channelName: string = "radio-listeners") => {
         setListenerCount(allListeners.length);
       })
       .on("presence", { event: "join" }, ({ newPresences }) => {
-        console.log("User joined:", newPresences);
+        logger.log("User joined:", newPresences);
       })
       .on("presence", { event: "leave" }, ({ leftPresences }) => {
-        console.log("User left:", leftPresences);
+        logger.log("User left:", leftPresences);
       })
       .subscribe(async (status) => {
         if (status === "SUBSCRIBED") {

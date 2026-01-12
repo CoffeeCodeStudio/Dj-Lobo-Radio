@@ -3,6 +3,7 @@ import { Play, Pause, Volume2, VolumeX, Loader2 } from "lucide-react";
 import { Radio } from "lucide-react";
 import { useStreamStatus } from "@/hooks/useStreamStatus";
 import BookNowButton from "./BookNowButton";
+import { logger } from "@/lib/logger";
 
 const STREAM_URL = "https://stream.zeno.fm/gzzqvbuy0d7uv";
 
@@ -87,7 +88,7 @@ const NowPlayingBar = () => {
           setIsPlaying(true);
           setStatus('live');
         } catch (error) {
-          console.error("Error playing audio:", error);
+          logger.error("Error playing audio:", error);
           setIsLoading(false);
           setStatus('error', 'Kunde inte spela upp');
         }
