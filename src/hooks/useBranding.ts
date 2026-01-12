@@ -12,6 +12,7 @@ export interface SiteBranding {
   accent_color: string | null;
   site_name: string | null;
   tagline: string | null;
+  youtube_video_id: string | null;
   updated_at: string;
 }
 

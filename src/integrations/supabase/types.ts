@@ -107,6 +107,7 @@ export type Database = {
           site_name: string | null
           tagline: string | null
           updated_at: string
+          youtube_video_id: string | null
         }
         Insert: {
           accent_color?: string | null
@@ -122,6 +123,7 @@ export type Database = {
           site_name?: string | null
           tagline?: string | null
           updated_at?: string
+          youtube_video_id?: string | null
         }
         Update: {
           accent_color?: string | null
@@ -137,6 +139,7 @@ export type Database = {
           site_name?: string | null
           tagline?: string | null
           updated_at?: string
+          youtube_video_id?: string | null
         }
         Relationships: []
       }

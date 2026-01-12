@@ -2,6 +2,7 @@ import { Instagram, Facebook, Youtube, Play, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGallery } from "@/hooks/useGallery";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useBranding } from "@/hooks/useBranding";
 
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
@@ -9,8 +10,8 @@ const SOCIAL_LINKS = {
   youtube: "https://www.youtube.com/@djloboproducciones3211",
 };
 
-// Latest YouTube video ID from DJ Lobo's channel
-const LATEST_VIDEO_ID = "dQw4w9WgXcQ"; // Replace with actual latest video ID
+// Default video ID (party vibes from DJ Lobo's style)
+const DEFAULT_VIDEO_ID = "XqZsoesa55w";
 
 const translations = {
   sv: {
@@ -57,7 +58,11 @@ const translations = {
 const SocialGallerySection = () => {
   const { images, isLoading } = useGallery();
   const { language } = useLanguage();
+  const { branding } = useBranding();
   const t = translations[language];
+  
+  // Use video ID from branding or fall back to default
+  const videoId = branding?.youtube_video_id || DEFAULT_VIDEO_ID;
 
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="social-gallery-heading">
@@ -210,7 +215,7 @@ const SocialGallerySection = () => {
               {/* YouTube Embed */}
               <div className="aspect-video relative">
                 <iframe
-                  src={`https://www.youtube.com/embed/${LATEST_VIDEO_ID}?rel=0&modestbranding=1`}
+                  src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
                   title="DJ Lobo Latest Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
