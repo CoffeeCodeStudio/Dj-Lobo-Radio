@@ -168,8 +168,9 @@ const SocialGallerySection = () => {
           </div>
         </div>
 
-        {/* Follow on Instagram Button - Prominent placement */}
-        <div className="flex justify-center mb-16">
+        {/* Social Buttons - Square, side by side */}
+        <div className="flex flex-wrap justify-center gap-4 mb-16">
+          {/* Instagram */}
           <a
             href={SOCIAL_LINKS.instagram}
             target="_blank"
@@ -178,23 +179,21 @@ const SocialGallerySection = () => {
           >
             <Button
               size="lg"
-              className="relative overflow-hidden bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:from-[#9B4BC9] hover:via-[#FD3D3D] hover:to-[#F89257] text-white border-0 font-semibold text-lg px-8 py-7 h-auto transition-all duration-300 group-hover:scale-105"
+              className="relative overflow-hidden bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737] hover:from-[#9B4BC9] hover:via-[#FD3D3D] hover:to-[#F89257] text-white border-0 font-semibold text-sm w-32 h-32 flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:scale-105 rounded-xl"
               style={{
-                boxShadow: "0 0 25px rgba(253, 29, 29, 0.5), 0 0 50px rgba(131, 58, 180, 0.4)",
+                boxShadow: "0 0 20px rgba(253, 29, 29, 0.5), 0 0 40px rgba(131, 58, 180, 0.3)",
               }}
             >
-              <Instagram className="w-6 h-6 mr-3" />
-              {t.followInstagram}
+              <Instagram className="w-8 h-8" />
+              <span className="text-xs text-center leading-tight">Instagram</span>
               <span 
-                className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
                 aria-hidden="true"
               />
             </Button>
           </a>
-        </div>
 
-        {/* Social Action Bar */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
+          {/* Facebook */}
           <a
             href={SOCIAL_LINKS.facebook}
             target="_blank"
@@ -203,20 +202,21 @@ const SocialGallerySection = () => {
           >
             <Button
               size="lg"
-              className="relative overflow-hidden bg-[#1877F2] hover:bg-[#2184F5] text-white border-0 font-semibold text-base px-6 py-6 h-auto transition-all duration-300 group-hover:scale-105"
+              className="relative overflow-hidden bg-[#1877F2] hover:bg-[#2184F5] text-white border-0 font-semibold text-sm w-32 h-32 flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:scale-105 rounded-xl"
               style={{
                 boxShadow: "0 0 20px rgba(24, 119, 242, 0.5), 0 0 40px rgba(24, 119, 242, 0.3)",
               }}
             >
-              <Facebook className="w-5 h-5 mr-2" />
-              {t.joinFacebook}
+              <Facebook className="w-8 h-8" />
+              <span className="text-xs text-center leading-tight">Facebook</span>
               <span 
-                className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
                 aria-hidden="true"
               />
             </Button>
           </a>
 
+          {/* YouTube */}
           <a
             href={SOCIAL_LINKS.youtube}
             target="_blank"
@@ -225,15 +225,15 @@ const SocialGallerySection = () => {
           >
             <Button
               size="lg"
-              className="relative overflow-hidden bg-[#FF0000] hover:bg-[#FF2222] text-white border-0 font-semibold text-base px-6 py-6 h-auto transition-all duration-300 group-hover:scale-105"
+              className="relative overflow-hidden bg-[#FF0000] hover:bg-[#FF2222] text-white border-0 font-semibold text-sm w-32 h-32 flex flex-col items-center justify-center gap-2 transition-all duration-300 group-hover:scale-105 rounded-xl"
               style={{
                 boxShadow: "0 0 20px rgba(255, 0, 0, 0.5), 0 0 40px rgba(255, 0, 0, 0.3)",
               }}
             >
-              <Youtube className="w-5 h-5 mr-2" />
-              {t.subscribeYoutube}
+              <Youtube className="w-8 h-8" />
+              <span className="text-xs text-center leading-tight">YouTube</span>
               <span 
-                className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
                 aria-hidden="true"
               />
             </Button>
