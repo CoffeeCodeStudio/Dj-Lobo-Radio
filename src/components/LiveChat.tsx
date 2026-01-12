@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { usePresence } from "@/hooks/usePresence";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { logger } from "@/lib/logger";
+import { validateAndCleanMessage, sanitizeMessage } from "@/lib/profanityFilter";
 
 const chatTranslations = {
   sv: {
@@ -103,17 +104,6 @@ const DJ_NAMES = ["dj lobo", "djlobo", "lobo"];
 const PROTECTED_NAMES = ["admin", "administrator", "dj lobo", "djlobo", "lobo", "lobo radio", "moderator", "mod"];
 const RATE_LIMIT_MS = 3000; // 3 seconds between messages
 const MAX_MESSAGE_LENGTH = 200;
-
-// Simple profanity filter (can be expanded)
-const BLOCKED_WORDS = ["spam", "hack", "scam"]; // Add more as needed
-const filterProfanity = (text: string): string => {
-  let filtered = text;
-  BLOCKED_WORDS.forEach(word => {
-    const regex = new RegExp(word, 'gi');
-    filtered = filtered.replace(regex, '*'.repeat(word.length));
-  });
-  return filtered;
-};
 
 // Fire animation component
 const FireAnimation = ({ show }: { show: boolean }) => {
@@ -358,12 +348,24 @@ const LiveChat = () => {
 
     setIsLoading(true);
 
-    // Apply profanity filter
-    const filteredMessage = filterProfanity(trimmedMessage);
+    // Validate and clean message with comprehensive profanity filter
+    const validation = validateAndCleanMessage(trimmedMessage, MAX_MESSAGE_LENGTH);
+    
+    if (!validation.isValid && validation.reason === 'blocked_content') {
+      toast({
+        title: t.couldNotSend,
+        description: language === 'sv' ? 'Meddelandet innehåller otillåtet innehåll.' : 
+                     language === 'es' ? 'El mensaje contiene contenido no permitido.' :
+                     'Message contains blocked content.',
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
 
     const { error } = await supabase.from("chat_messages").insert({
-      nickname: nickname.trim(),
-      message: filteredMessage,
+      nickname: sanitizeMessage(nickname.trim()),
+      message: validation.cleanedMessage,
       session_id: sessionId,
     });
 
