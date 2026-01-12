@@ -14,48 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      bookings: {
-        Row: {
-          created_at: string
-          email: string
-          event_date: string
-          event_type: string
-          id: string
-          location: string | null
-          message: string | null
-          name: string
-          phone: string | null
-          status: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          event_date: string
-          event_type: string
-          id?: string
-          location?: string | null
-          message?: string | null
-          name: string
-          phone?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          event_date?: string
-          event_type?: string
-          id?: string
-          location?: string | null
-          message?: string | null
-          name?: string
-          phone?: string | null
-          status?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       chat_bans: {
         Row: {
           created_at: string

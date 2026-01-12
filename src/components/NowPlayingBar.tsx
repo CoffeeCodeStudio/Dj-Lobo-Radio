@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Loader2 } from "lucide-react";
 import { Radio } from "lucide-react";
 import { useStreamStatus } from "@/hooks/useStreamStatus";
-import { useNowPlaying } from "@/hooks/useNowPlaying";
 import BookNowButton from "./BookNowButton";
 import { logger } from "@/lib/logger";
 
@@ -74,7 +73,6 @@ const NowPlayingBar = () => {
   }, [setStatus]);
 
   const { status } = useStreamStatus();
-  const { nowPlaying } = useNowPlaying();
 
   const togglePlay = async () => {
     if (audioRef.current) {
@@ -165,13 +163,8 @@ const NowPlayingBar = () => {
               </span>
             </div>
             <p className="text-foreground font-medium text-sm truncate">
-              {nowPlaying.title}
+              DJ Lobo Radio - 80s & 90s Hits
             </p>
-            {nowPlaying.artist && (
-              <p className="text-muted-foreground text-xs truncate">
-                {nowPlaying.artist}
-              </p>
-            )}
           </div>
 
           {/* Book Now Button - Compact */}
