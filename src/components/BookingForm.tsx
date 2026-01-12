@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Calendar, Send, Music, PartyPopper, Building2, Mic2, CheckCircle } from "lucide-react";
+import { Calendar, Send, Music, PartyPopper, Building2, Mic2, CheckCircle, MapPin } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -51,6 +52,8 @@ const translations = {
     error: "Kunde inte skicka",
     errorDesc: "Försök igen senare.",
     required: "Obligatoriskt fält",
+    location: "Plats",
+    locationPlaceholder: "Stad eller lokal",
   },
   en: {
     title: "Book DJ Lobo",
@@ -80,6 +83,8 @@ const translations = {
     error: "Could not send",
     errorDesc: "Please try again later.",
     required: "Required field",
+    location: "Location",
+    locationPlaceholder: "City or venue",
   },
   es: {
     title: "Reserva a DJ Lobo",
@@ -109,6 +114,8 @@ const translations = {
     error: "No se pudo enviar",
     errorDesc: "Intenta de nuevo más tarde.",
     required: "Campo obligatorio",
+    location: "Ubicación",
+    locationPlaceholder: "Ciudad o lugar",
   },
 };
 
@@ -134,6 +141,7 @@ const BookingForm = ({ className = "" }: BookingFormProps) => {
   const [formData, setFormData] = useState({
     eventType: "",
     date: undefined as Date | undefined,
+    location: "",
     name: "",
     email: "",
     phone: "",
@@ -154,22 +162,26 @@ const BookingForm = ({ className = "" }: BookingFormProps) => {
 
     setIsSubmitting(true);
 
-    // Simulate form submission - in production, this would send to an API/email service
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
-      // Log booking request (in production, send to backend)
-      console.log("Booking request:", {
-        ...formData,
-        date: formData.date ? format(formData.date, "yyyy-MM-dd") : null,
+      const { error } = await supabase.from("bookings").insert({
+        event_type: formData.eventType,
+        event_date: formData.date ? format(formData.date, "yyyy-MM-dd") : null,
+        location: formData.location || null,
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim() || null,
+        message: formData.message.trim() || null,
       });
+
+      if (error) throw error;
 
       setIsSubmitted(true);
       toast({
         title: t.success,
         description: t.successDesc,
       });
-    } catch {
+    } catch (err) {
+      console.error("Booking error:", err);
       toast({
         title: t.error,
         description: t.errorDesc,
@@ -198,6 +210,7 @@ const BookingForm = ({ className = "" }: BookingFormProps) => {
             setFormData({
               eventType: "",
               date: undefined,
+              location: "",
               name: "",
               email: "",
               phone: "",
@@ -266,33 +279,49 @@ const BookingForm = ({ className = "" }: BookingFormProps) => {
           </Select>
         </div>
 
-        {/* Date Picker */}
-        <div className="space-y-2">
-          <Label>{t.date} *</Label>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="w-full justify-start text-left font-normal glass-card border-primary/30"
-              >
-                <Calendar className="mr-2 h-4 w-4" />
-                {formData.date ? (
-                  format(formData.date, "PPP", { locale: language === "sv" ? sv : undefined })
-                ) : (
-                  <span className="text-muted-foreground">{t.selectDate}</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <CalendarPicker
-                mode="single"
-                selected={formData.date}
-                onSelect={(date) => setFormData({ ...formData, date })}
-                disabled={(date) => date < new Date()}
-                initialFocus
+        {/* Date & Location Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label>{t.date} *</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start text-left font-normal glass-card border-primary/30"
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  {formData.date ? (
+                    format(formData.date, "PPP", { locale: language === "sv" ? sv : undefined })
+                  ) : (
+                    <span className="text-muted-foreground">{t.selectDate}</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <CalendarPicker
+                  mode="single"
+                  selected={formData.date}
+                  onSelect={(date) => setFormData({ ...formData, date })}
+                  disabled={(date) => date < new Date()}
+                  initialFocus
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="location">{t.location}</Label>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                id="location"
+                type="text"
+                placeholder={t.locationPlaceholder}
+                value={formData.location}
+                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                className="glass-card border-primary/30 pl-9"
               />
-            </PopoverContent>
-          </Popover>
+            </div>
+          </div>
         </div>
 
         {/* Name & Email Row */}
