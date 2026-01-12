@@ -10,8 +10,8 @@ const SOCIAL_LINKS = {
   youtube: "https://www.youtube.com/@djloboproducciones3211",
 };
 
-// Default video ID (party vibes from DJ Lobo's style)
-const DEFAULT_VIDEO_ID = "XqZsoesa55w";
+// Default video ID from DJ Lobo's channel
+const DEFAULT_VIDEO_ID = "ea8_sn1xlcE";
 
 const translations = {
   sv: {
