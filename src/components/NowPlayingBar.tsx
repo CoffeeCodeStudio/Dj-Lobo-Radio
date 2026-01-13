@@ -2,10 +2,47 @@ import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Loader2 } from "lucide-react";
 import { Radio } from "lucide-react";
 import { useStreamStatus } from "@/hooks/useStreamStatus";
+import { useLanguage } from "@/contexts/LanguageContext";
 import BookNowButton from "./BookNowButton";
 import { logger } from "@/lib/logger";
 
 const STREAM_URL = "https://stream.zeno.fm/gzzqvbuy0d7uv";
+
+const translations = {
+  sv: {
+    connecting: "ANSLUTER...",
+    nowPlaying: "SPELAR NU",
+    idle: "KLICKA PLAY",
+    pauseRadio: "Pausa radio",
+    playRadio: "Spela radio",
+    unmute: "Slå på ljud",
+    mute: "Tysta ljud",
+    volume: "Volym",
+    radioPlayer: "Radiospelare",
+  },
+  en: {
+    connecting: "CONNECTING...",
+    nowPlaying: "NOW PLAYING",
+    idle: "CLICK PLAY",
+    pauseRadio: "Pause radio",
+    playRadio: "Play radio",
+    unmute: "Unmute",
+    mute: "Mute",
+    volume: "Volume",
+    radioPlayer: "Radio player",
+  },
+  es: {
+    connecting: "CONECTANDO...",
+    nowPlaying: "REPRODUCIENDO",
+    idle: "PULSA PLAY",
+    pauseRadio: "Pausar radio",
+    playRadio: "Reproducir radio",
+    unmute: "Activar sonido",
+    mute: "Silenciar",
+    volume: "Volumen",
+    radioPlayer: "Reproductor de radio",
+  },
+};
 
 const NowPlayingBar = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,6 +51,8 @@ const NowPlayingBar = () => {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { setStatus } = useStreamStatus();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   useEffect(() => {
     if (audioRef.current) {
@@ -113,7 +152,7 @@ const NowPlayingBar = () => {
         isPlaying ? "player-active border-neon-cyan/50" : "border-neon-cyan/30"
       }`}
       role="region"
-      aria-label="Radiospelare"
+      aria-label={t.radioPlayer}
     >
       <audio ref={audioRef} src={STREAM_URL} preload="none" />
       
@@ -125,7 +164,7 @@ const NowPlayingBar = () => {
             <button
               onClick={togglePlay}
               disabled={isLoading}
-              aria-label={isPlaying ? "Pausa radio" : "Spela radio"}
+              aria-label={isPlaying ? t.pauseRadio : t.playRadio}
               aria-pressed={isPlaying}
               className="tap-target w-11 h-11 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-110 transition-transform focus-neon disabled:opacity-70"
             >
@@ -159,7 +198,7 @@ const NowPlayingBar = () => {
             <div className="flex items-center justify-center gap-2 text-neon-cyan text-[10px] mb-0.5">
               <Radio className="w-2.5 h-2.5 flex-shrink-0" aria-hidden="true" />
               <span className="font-medium tracking-wider">
-                {isLoading ? "ANSLUTER..." : isPlaying ? "SPELAR NU" : "NOW PLAYING"}
+                {isLoading ? t.connecting : isPlaying ? t.nowPlaying : t.idle}
               </span>
             </div>
             <p className="text-foreground font-medium text-sm truncate">
@@ -174,7 +213,7 @@ const NowPlayingBar = () => {
           <div className="flex items-center gap-2">
             <button 
               onClick={toggleMute}
-              aria-label={isMuted ? "Slå på ljud" : "Tysta ljud"}
+              aria-label={isMuted ? t.unmute : t.mute}
               aria-pressed={isMuted}
               className="tap-target text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
             >
@@ -196,7 +235,7 @@ const NowPlayingBar = () => {
                 max="100"
                 value={volume}
                 onChange={handleVolumeChange}
-                aria-label={`Volym: ${volume}%`}
+                aria-label={`${t.volume}: ${volume}%`}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
             </div>
@@ -211,7 +250,7 @@ const NowPlayingBar = () => {
           <button
             onClick={togglePlay}
             disabled={isLoading}
-            aria-label={isPlaying ? "Pausa radio" : "Spela radio"}
+            aria-label={isPlaying ? t.pauseRadio : t.playRadio}
             aria-pressed={isPlaying}
             className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-105 active:scale-95 transition-transform focus-neon disabled:opacity-70"
           >

@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const translations = {
   sv: {
-    onAir: "PÅ LUFTEN",
+    onAir: "ON AIR",
     connecting: "ANSLUTER...",
     offline: "OFFLINE",
     clickPlay: "KLICKA PLAY ▶",
@@ -19,6 +19,8 @@ const translations = {
     fansChatLabel: "fans chattar just nu, klicka för att gå till chatten",
     seeSchedule: "SE SCHEMA",
     scrollToSchedule: "Scrolla ner till schemat",
+    tagline: "Din port till",
+    retroVibes: "RETRO RADIO VIBES",
   },
   en: {
     onAir: "ON AIR",
@@ -33,9 +35,11 @@ const translations = {
     fansChatLabel: "fans chatting right now, click to go to chat",
     seeSchedule: "SEE SCHEDULE",
     scrollToSchedule: "Scroll down to schedule",
+    tagline: "Your gateway to",
+    retroVibes: "RETRO RADIO VIBES",
   },
   es: {
-    onAir: "EN VIVO",
+    onAir: "ON AIR",
     connecting: "CONECTANDO...",
     offline: "FUERA DE LÍNEA",
     clickPlay: "PULSA PLAY ▶",
@@ -47,6 +51,8 @@ const translations = {
     fansChatLabel: "fans chateando ahora, haz clic para ir al chat",
     seeSchedule: "VER HORARIO",
     scrollToSchedule: "Desplázate hasta el horario",
+    tagline: "Tu puerta a los",
+    retroVibes: "RETRO RADIO VIBES",
   },
 };
 
@@ -163,7 +169,7 @@ const HeroSection = () => {
 
       {/* Tagline */}
       <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-2 text-center">
-        Din port till <span className="text-neon-pink font-semibold">80s</span>,{" "}
+        {t.tagline} <span className="text-neon-pink font-semibold">80s</span>,{" "}
         <span className="text-neon-cyan font-semibold">90s</span> &{" "}
         <span className="text-neon-pink font-semibold">Latin</span>
       </p>
@@ -172,7 +178,7 @@ const HeroSection = () => {
       <div className="flex items-center gap-2 sm:gap-3 text-neon-cyan mb-6 sm:mb-8" aria-hidden="true">
         <Radio className="w-4 h-4 sm:w-5 sm:h-5" />
         <span className="font-display text-xs sm:text-sm tracking-widest">
-          RETRO RADIO VIBES
+          {t.retroVibes}
         </span>
         <Radio className="w-4 h-4 sm:w-5 sm:h-5" />
       </div>

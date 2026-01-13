@@ -1,5 +1,6 @@
 import { Instagram, Facebook, Youtube, ExternalLink } from "lucide-react";
 import djLoboLogo from "@/assets/dj-lobo-logo.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
@@ -10,7 +11,46 @@ const SOCIAL_LINKS = {
 
 const LINKEDIN_URL = "https://www.linkedin.com/in/rami-e-453b77330/";
 
+const translations = {
+  sv: {
+    description: "Bringing the best of 80s and 90s music to your ears. Tune in and let the nostalgia flow.",
+    copyright: "© 2026 DJ Lobo Radio. All rights reserved.",
+    privacyPolicy: "Integritetspolicy",
+    terms: "Användarvillkor",
+    followInstagram: "Följ DJ Lobo på Instagram (öppnas i nytt fönster)",
+    followFacebook: "Följ DJ Lobo på Facebook (öppnas i nytt fönster)",
+    subscribeYoutube: "Prenumerera på DJ Lobo på YouTube (öppnas i nytt fönster)",
+    listenZeno: "Lyssna på DJ Lobo Radio på Zeno.fm (öppnas i nytt fönster)",
+    visitStudio: "Besök Coffee Code Studio på LinkedIn (öppnas i nytt fönster)",
+  },
+  en: {
+    description: "Bringing the best of 80s and 90s music to your ears. Tune in and let the nostalgia flow.",
+    copyright: "© 2026 DJ Lobo Radio. All rights reserved.",
+    privacyPolicy: "Privacy Policy",
+    terms: "Terms of Service",
+    followInstagram: "Follow DJ Lobo on Instagram (opens in new window)",
+    followFacebook: "Follow DJ Lobo on Facebook (opens in new window)",
+    subscribeYoutube: "Subscribe to DJ Lobo on YouTube (opens in new window)",
+    listenZeno: "Listen to DJ Lobo Radio on Zeno.fm (opens in new window)",
+    visitStudio: "Visit Coffee Code Studio on LinkedIn (opens in new window)",
+  },
+  es: {
+    description: "Trayendo lo mejor de la música de los 80s y 90s a tus oídos. Sintoniza y deja que fluya la nostalgia.",
+    copyright: "© 2026 DJ Lobo Radio. Todos los derechos reservados.",
+    privacyPolicy: "Política de Privacidad",
+    terms: "Términos de Servicio",
+    followInstagram: "Seguir a DJ Lobo en Instagram (abre en nueva ventana)",
+    followFacebook: "Seguir a DJ Lobo en Facebook (abre en nueva ventana)",
+    subscribeYoutube: "Suscribirse a DJ Lobo en YouTube (abre en nueva ventana)",
+    listenZeno: "Escuchar DJ Lobo Radio en Zeno.fm (abre en nueva ventana)",
+    visitStudio: "Visitar Coffee Code Studio en LinkedIn (abre en nueva ventana)",
+  },
+};
+
 const Footer = () => {
+  const { language } = useLanguage();
+  const t = translations[language];
+
   return (
     <footer className="py-12 sm:py-16 px-4 sm:px-6 pb-32 sm:pb-36 relative">
       <div className="max-w-7xl mx-auto text-center">
@@ -25,8 +65,7 @@ const Footer = () => {
 
         {/* Description */}
         <p className="text-muted-foreground/80 max-w-md mx-auto mb-6 sm:mb-8 text-sm sm:text-base px-2">
-          Bringing the best of 80s and 90s music to your ears. Tune in and let the
-          nostalgia flow.
+          {t.description}
         </p>
 
         {/* Social Links */}
@@ -37,7 +76,7 @@ const Footer = () => {
                 href={SOCIAL_LINKS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Följ DJ Lobo på Instagram (öppnas i nytt fönster)"
+                aria-label={t.followInstagram}
                 className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
                 style={{ boxShadow: "0 0 15px rgba(253, 29, 29, 0.3)" }}
               >
@@ -49,7 +88,7 @@ const Footer = () => {
                 href={SOCIAL_LINKS.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Följ DJ Lobo på Facebook (öppnas i nytt fönster)"
+                aria-label={t.followFacebook}
                 className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
                 style={{ boxShadow: "0 0 15px rgba(24, 119, 242, 0.3)" }}
               >
@@ -61,7 +100,7 @@ const Footer = () => {
                 href={SOCIAL_LINKS.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Prenumerera på DJ Lobo på YouTube (öppnas i nytt fönster)"
+                aria-label={t.subscribeYoutube}
                 className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
                 style={{ boxShadow: "0 0 15px rgba(255, 0, 0, 0.3)" }}
               >
@@ -73,7 +112,7 @@ const Footer = () => {
                 href={SOCIAL_LINKS.zenoPlayer}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Lyssna på DJ Lobo Radio på Zeno.fm (öppnas i nytt fönster)"
+                aria-label={t.listenZeno}
                 className="tap-target w-12 h-12 glass-card rounded-full flex items-center justify-center transition-all duration-300 group focus-neon hover:scale-110"
                 style={{ boxShadow: "0 0 15px rgba(0, 255, 255, 0.3)" }}
               >
@@ -85,7 +124,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <p className="text-muted-foreground/70 text-xs sm:text-sm mb-3 sm:mb-4">
-          © 2026 DJ Lobo Radio. All rights reserved.
+          {t.copyright}
         </p>
 
         {/* Legal Links */}
@@ -95,9 +134,8 @@ const Footer = () => {
               <a 
                 href="#" 
                 className="text-neon-cyan hover:underline focus-neon rounded px-1"
-                aria-label="Läs vår integritetspolicy"
               >
-                Integritetspolicy
+                {t.privacyPolicy}
               </a>
             </li>
             <li aria-hidden="true">
@@ -107,9 +145,8 @@ const Footer = () => {
               <a 
                 href="#" 
                 className="text-neon-cyan hover:underline focus-neon rounded px-1"
-                aria-label="Läs våra användarvillkor"
               >
-                Användarvillkor
+                {t.terms}
               </a>
             </li>
           </ul>
@@ -122,7 +159,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg glass-card hover:scale-105 transition-all duration-300 focus-neon"
-            aria-label="Besök Coffee Code Studio på LinkedIn (öppnas i nytt fönster)"
+            aria-label={t.visitStudio}
             style={{
               boxShadow: "0 0 20px rgba(0, 255, 255, 0.3)",
             }}
