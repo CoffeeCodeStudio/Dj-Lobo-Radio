@@ -2,10 +2,76 @@ import { useEffect, useRef } from "react";
 import djLoboAboutImage from "@/assets/dj-lobo-about.jpg";
 import { Music, Headphones, Zap, Disc } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+const translations = {
+  sv: {
+    title: "OM DJ LOBO",
+    bio1: "DJ Lobo har arbetat som professionell DJ i över",
+    years: "20 år",
+    bio1b: ". Med rötter i Göteborg har han gjort hundratals spelningar på nattklubbar, företagsevent, bröllop och privatfester – från Club Mamba till Salsa Latino Night på Kajuteriet Malmö.",
+    bio2: "Hans unika mix av",
+    classics: "80- och 90-talsklassiker",
+    combined: "kombinerat med het",
+    latin: "latinmusik",
+    bio2b: "skapar en oförglömlig atmosfär. Oavsett om det är synth-pop, eurodance, salsa eller reggaeton – DJ Lobo tar dig på en musikalisk resa!",
+    yearsLabel: "År",
+    eventsLabel: "Events",
+    listenersLabel: "Lyssnare",
+    feature1Title: "80 & 90-tal",
+    feature1Desc: "Synth-pop, eurodance och discoklassiker",
+    feature2Title: "Latin Vibes",
+    feature2Desc: "Salsa, reggaeton och tropical hits",
+    feature3Title: "Club & Events",
+    feature3Desc: "Bröllop, företag och privatfester",
+  },
+  en: {
+    title: "ABOUT DJ LOBO",
+    bio1: "DJ Lobo has been working as a professional DJ for over",
+    years: "20 years",
+    bio1b: ". With roots in Gothenburg, he has performed hundreds of gigs at nightclubs, corporate events, weddings and private parties – from Club Mamba to Salsa Latino Night at Kajuteriet Malmö.",
+    bio2: "His unique mix of",
+    classics: "80s and 90s classics",
+    combined: "combined with hot",
+    latin: "Latin music",
+    bio2b: "creates an unforgettable atmosphere. Whether it's synth-pop, eurodance, salsa or reggaeton – DJ Lobo takes you on a musical journey!",
+    yearsLabel: "Years",
+    eventsLabel: "Events",
+    listenersLabel: "Listeners",
+    feature1Title: "80s & 90s",
+    feature1Desc: "Synth-pop, eurodance and disco classics",
+    feature2Title: "Latin Vibes",
+    feature2Desc: "Salsa, reggaeton and tropical hits",
+    feature3Title: "Club & Events",
+    feature3Desc: "Weddings, corporate and private parties",
+  },
+  es: {
+    title: "SOBRE DJ LOBO",
+    bio1: "DJ Lobo ha trabajado como DJ profesional durante más de",
+    years: "20 años",
+    bio1b: ". Con raíces en Gotemburgo, ha realizado cientos de actuaciones en discotecas, eventos corporativos, bodas y fiestas privadas – desde Club Mamba hasta Salsa Latino Night en Kajuteriet Malmö.",
+    bio2: "Su mezcla única de",
+    classics: "clásicos de los 80 y 90",
+    combined: "combinada con ardiente",
+    latin: "música latina",
+    bio2b: "crea una atmósfera inolvidable. Ya sea synth-pop, eurodance, salsa o reggaeton – ¡DJ Lobo te lleva en un viaje musical!",
+    yearsLabel: "Años",
+    eventsLabel: "Eventos",
+    listenersLabel: "Oyentes",
+    feature1Title: "80s & 90s",
+    feature1Desc: "Synth-pop, eurodance y clásicos disco",
+    feature2Title: "Latin Vibes",
+    feature2Desc: "Salsa, reggaeton y tropical hits",
+    feature3Title: "Club & Eventos",
+    feature3Desc: "Bodas, empresas y fiestas privadas",
+  },
+};
 
 const AboutSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { branding } = useBranding();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   // Use dynamic hero image if available, otherwise use the default
   const heroImage = branding?.hero_image_url || djLoboAboutImage;
@@ -34,28 +100,28 @@ const AboutSection = () => {
   }, []);
 
   const stats = [
-    { value: "20+", label: "Years", ariaLabel: "Över 20 års erfarenhet" },
-    { value: "500+", label: "Events", ariaLabel: "Över 500 spelningar" },
-    { value: "100K+", label: "Listeners", ariaLabel: "Över 100 000 lyssnare" },
+    { value: "20+", label: t.yearsLabel, ariaLabel: "Över 20 års erfarenhet" },
+    { value: "500+", label: t.eventsLabel, ariaLabel: "Över 500 spelningar" },
+    { value: "100K+", label: t.listenersLabel, ariaLabel: "Över 100 000 lyssnare" },
   ];
 
   const features = [
     {
       icon: Music,
-      title: "80 & 90-tal",
-      description: "Synth-pop, eurodance och discoklassiker",
+      title: t.feature1Title,
+      description: t.feature1Desc,
       gradient: "icon-gradient-pink",
     },
     {
       icon: Disc,
-      title: "Latin Vibes",
-      description: "Salsa, reggaeton och tropical hits",
+      title: t.feature2Title,
+      description: t.feature2Desc,
       gradient: "icon-gradient-cyan",
     },
     {
       icon: Headphones,
-      title: "Club & Events",
-      description: "Bröllop, företag och privatfester",
+      title: t.feature3Title,
+      description: t.feature3Desc,
       gradient: "icon-gradient-purple",
     },
   ];
@@ -75,17 +141,14 @@ const AboutSection = () => {
               id="about-title"
               className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-neon-gradient mb-6 sm:mb-8"
             >
-              OM DJ LOBO
+              {t.title}
             </h2>
             <p className="text-muted-foreground text-base sm:text-lg mb-4 leading-relaxed">
-              DJ Lobo har arbetat som professionell DJ i över <span className="text-neon-pink font-semibold">20 år</span>. 
-              Med rötter i Göteborg har han gjort hundratals spelningar på nattklubbar, företagsevent, bröllop och privatfester 
-              – från Club Mamba till Salsa Latino Night på Kajuteriet Malmö.
+              {t.bio1} <span className="text-neon-pink font-semibold">{t.years}</span>{t.bio1b}
             </p>
             <p className="text-muted-foreground text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
-              Hans unika mix av <span className="text-neon-cyan font-semibold">80- och 90-talsklassiker</span> kombinerat med 
-              het <span className="text-neon-pink font-semibold">latinmusik</span> skapar en oförglömlig atmosfär. 
-              Oavsett om det är synth-pop, eurodance, salsa eller reggaeton – DJ Lobo tar dig på en musikalisk resa!
+              {t.bio2} <span className="text-neon-cyan font-semibold">{t.classics}</span> {t.combined}{" "}
+              <span className="text-neon-pink font-semibold">{t.latin}</span> {t.bio2b}
             </p>
 
             {/* Stats */}

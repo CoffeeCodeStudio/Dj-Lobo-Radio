@@ -1,9 +1,30 @@
 import { useEffect, useRef } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const CALENDAR_ID = "djloboradio2016@gmail.com";
 
+const translations = {
+  sv: {
+    title: "KALENDER",
+    subtitle: "Kommande shower och events",
+    calendarTitle: "DJ Lobo Radio Kalender - kommande shower och events",
+  },
+  en: {
+    title: "CALENDAR",
+    subtitle: "Upcoming shows and events",
+    calendarTitle: "DJ Lobo Radio Calendar - upcoming shows and events",
+  },
+  es: {
+    title: "CALENDARIO",
+    subtitle: "Próximos shows y eventos",
+    calendarTitle: "Calendario de DJ Lobo Radio - próximos shows y eventos",
+  },
+};
+
 const CalendarSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const { language } = useLanguage();
+  const t = translations[language];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,10 +65,10 @@ const CalendarSection = () => {
             id="calendar-title"
             className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-neon-gradient mb-3 sm:mb-4 italic"
           >
-            KALENDER
+            {t.title}
           </h2>
           <p className="text-muted-foreground text-base sm:text-lg">
-            Kommande shower och events
+            {t.subtitle}
           </p>
         </div>
 
@@ -61,7 +82,7 @@ const CalendarSection = () => {
             frameBorder="0"
             scrolling="no"
             className="rounded-lg sm:h-[500px]"
-            title="DJ Lobo Radio Kalender - kommande shower och events"
+            title={t.calendarTitle}
           ></iframe>
         </div>
       </div>

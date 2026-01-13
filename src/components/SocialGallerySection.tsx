@@ -63,6 +63,11 @@ const translations = {
     clickToWatch: "Klicka för att titta",
     latestVideo: "Senaste Videon",
     watchOnYoutube: "Se på YouTube",
+    comingSoon: "Kommer Snart",
+    exclusiveContent: "DJ Lobo exklusivt innehåll",
+    featured: "Utvald",
+    exclusive: "Exklusivt",
+    seeAllVideos: "Se alla videos på YouTube",
   },
   en: {
     connectTitle: "CONNECT WITH DJ LOBO",
@@ -76,6 +81,11 @@ const translations = {
     clickToWatch: "Click to watch",
     latestVideo: "Latest Video",
     watchOnYoutube: "Watch on YouTube",
+    comingSoon: "Coming Soon",
+    exclusiveContent: "DJ Lobo exclusive content",
+    featured: "Featured",
+    exclusive: "Exclusive",
+    seeAllVideos: "See all videos on YouTube",
   },
   es: {
     connectTitle: "CONECTA CON DJ LOBO",
@@ -89,6 +99,11 @@ const translations = {
     clickToWatch: "Clic para ver",
     latestVideo: "Último Video",
     watchOnYoutube: "Ver en YouTube",
+    comingSoon: "Próximamente",
+    exclusiveContent: "Contenido exclusivo de DJ Lobo",
+    featured: "Destacado",
+    exclusive: "Exclusivo",
+    seeAllVideos: "Ver todos los videos en YouTube",
   },
 };
 
@@ -194,16 +209,16 @@ const SocialGallerySection = () => {
                       boxShadow: "0 0 40px rgba(255, 0, 255, 0.5), 0 0 80px rgba(0, 255, 255, 0.3)",
                     }}
                   >
-                    Coming Soon
+                    {t.comingSoon}
                   </div>
-                  <p className="text-white/80 text-sm">DJ Lobo Exclusive Content</p>
+                  <p className="text-white/80 text-sm">{t.exclusiveContent}</p>
                 </div>
 
                 {/* Exclusive badge */}
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1.5 rounded text-sm font-semibold flex items-center gap-1.5 bg-neon-pink/90 text-white">
                     <Play className="w-4 h-4" />
-                    Featured
+                    {t.featured}
                   </span>
                 </div>
               </div>
@@ -268,7 +283,7 @@ const SocialGallerySection = () => {
                   <div className="absolute top-3 left-3">
                     <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 bg-neon-pink/90 text-white">
                       <Play className="w-3 h-3" />
-                      Exclusive
+                      {t.exclusive}
                     </span>
                   </div>
                 </div>
@@ -296,7 +311,7 @@ const SocialGallerySection = () => {
               className="inline-flex items-center gap-2 text-neon-cyan hover:text-neon-pink transition-colors"
             >
               <Youtube className="w-5 h-5" />
-              Se alla videos på YouTube
+              {t.seeAllVideos}
               <Play className="w-4 h-4" />
             </a>
           </div>
