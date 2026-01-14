@@ -1,4 +1,5 @@
 import { Instagram, Facebook, Youtube, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 import djLoboLogo from "@/assets/dj-lobo-logo.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -131,23 +132,23 @@ const Footer = () => {
         <nav aria-label="Juridiska länkar">
           <ul className="flex justify-center gap-3 sm:gap-4 text-xs sm:text-sm">
             <li>
-              <a 
-                href="#" 
+              <Link 
+                to="/privacy" 
                 className="text-neon-cyan hover:underline focus-neon rounded px-1"
               >
                 {t.privacyPolicy}
-              </a>
+              </Link>
             </li>
             <li aria-hidden="true">
               <span className="text-muted-foreground">•</span>
             </li>
             <li>
-              <a 
-                href="#" 
+              <Link 
+                to="/terms" 
                 className="text-neon-cyan hover:underline focus-neon rounded px-1"
               >
                 {t.terms}
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
