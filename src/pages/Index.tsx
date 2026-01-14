@@ -8,6 +8,7 @@ import LiveChat from "@/components/LiveChat";
 import Footer from "@/components/Footer";
 import NowPlayingBar from "@/components/NowPlayingBar";
 import FloatingChatButton from "@/components/FloatingChatButton";
+import AnimatedMeshBackground from "@/components/AnimatedMeshBackground";
 
 const Index = () => {
   return (
@@ -16,6 +17,9 @@ const Index = () => {
       <a href="#main-content" className="skip-link">
         Hoppa till huvudinnehåll
       </a>
+
+      {/* Animated mesh gradient background */}
+      <AnimatedMeshBackground />
 
       {/* Light leak backgrounds */}
       <div className="light-leak-purple" aria-hidden="true"></div>

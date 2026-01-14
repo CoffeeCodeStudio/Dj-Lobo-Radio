@@ -444,5 +444,41 @@
       animation: none !important;
       display: none;
     }
+    .bpm-pulse-card {
+      animation: none !important;
+    }
+  }
+
+  /* BPM Pulse Animation - 124 BPM = 484ms per beat */
+  @keyframes bpm-pulse {
+    0%, 100% {
+      box-shadow: 
+        0 0 8px hsla(var(--neon-pink), 0.2),
+        0 0 16px hsla(var(--neon-cyan), 0.1),
+        inset 0 0 8px hsla(var(--neon-pink), 0.05);
+      border-color: hsla(260, 30%, 30%, 0.5);
+    }
+    50% {
+      box-shadow: 
+        0 0 20px hsla(var(--neon-pink), 0.5),
+        0 0 40px hsla(var(--neon-cyan), 0.3),
+        0 0 60px hsla(var(--neon-pink), 0.15),
+        inset 0 0 15px hsla(var(--neon-cyan), 0.1);
+      border-color: hsla(var(--neon-cyan), 0.5);
+    }
+  }
+
+  /* Hover state intensifies the glow */
+  .glass-card:hover {
+    animation-play-state: paused;
+  }
+
+  .glass-card:hover[style*="bpm-pulse"] {
+    box-shadow: 
+      0 0 30px hsla(var(--neon-pink), 0.6),
+      0 0 60px hsla(var(--neon-cyan), 0.4),
+      0 0 90px hsla(var(--neon-pink), 0.2),
+      inset 0 0 20px hsla(var(--neon-cyan), 0.15) !important;
+    border-color: hsla(var(--neon-cyan), 0.7) !important;
   }
 }
