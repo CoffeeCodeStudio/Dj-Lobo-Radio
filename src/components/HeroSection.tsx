@@ -62,60 +62,57 @@ const HeroSection = () => {
   const { status } = useStreamStatus();
   const { language } = useLanguage();
   const t = translations[language];
-
+  
   const scrollToSchedule = () => {
     document.getElementById("schedule")?.scrollIntoView({ behavior: "smooth" });
   };
 
   // Use dynamic profile image if available, otherwise use the default
-
+  const profileImage = branding?.profile_image_url || djLoboImage;
   const siteName = branding?.site_name || "DJ LOBO";
 
   return (
-    <section
+    <section 
       className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 pt-20 pb-32 relative"
       aria-labelledby="hero-title"
     >
       {/* Stream Status Badge + Live Chat Counter */}
       <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-6 sm:mb-8">
         {/* Stream Status Badge */}
-        <div
+        <div 
           className={`px-4 sm:px-6 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 rounded-full border transition-all ${
-            status === "live"
-              ? "glass-card-pink on-air-pulse border-neon-pink/30"
-              : status === "connecting"
-                ? "glass-card border-neon-cyan/30"
-                : status === "error"
-                  ? "glass-card border-red-500/30"
-                  : "glass-card border-muted"
+            status === 'live' 
+              ? 'glass-card-pink on-air-pulse border-neon-pink/30' 
+              : status === 'connecting'
+              ? 'glass-card border-neon-cyan/30'
+              : status === 'error'
+              ? 'glass-card border-red-500/30'
+              : 'glass-card border-muted'
           }`}
           role="status"
           aria-live="polite"
           aria-label={
-            status === "live"
-              ? t.onAirLabel
-              : status === "connecting"
-                ? t.connectingLabel
-                : status === "error"
-                  ? t.errorLabel
-                  : t.offlineLabel
+            status === 'live' ? t.onAirLabel :
+            status === 'connecting' ? t.connectingLabel :
+            status === 'error' ? t.errorLabel :
+            t.offlineLabel
           }
         >
-          {status === "live" ? (
+          {status === 'live' ? (
             <>
               <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-neon-pink rounded-full live-dot" aria-hidden="true" />
               <span className="font-display font-bold text-neon-pink tracking-wider text-sm sm:text-base">
                 {t.onAir}
               </span>
             </>
-          ) : status === "connecting" ? (
+          ) : status === 'connecting' ? (
             <>
               <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-neon-cyan animate-spin" aria-hidden="true" />
               <span className="font-display font-bold text-neon-cyan tracking-wider text-sm sm:text-base">
                 {t.connecting}
               </span>
             </>
-          ) : status === "error" ? (
+          ) : status === 'error' ? (
             <>
               <WifiOff className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" aria-hidden="true" />
               <span className="font-display font-bold text-red-400 tracking-wider text-sm sm:text-base">
@@ -159,14 +156,11 @@ const HeroSection = () => {
           />
         </div>
         {/* Pulsing glow effect behind image synced to 124 BPM */}
-        <div
-          className="absolute inset-0 rounded-full bg-gradient-to-br from-neon-pink/30 to-neon-cyan/30 blur-3xl -z-10 scale-110 bpm-pulse-124"
-          aria-hidden="true"
-        ></div>
+        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-neon-pink/30 to-neon-cyan/30 blur-3xl -z-10 scale-110 bpm-pulse-124" aria-hidden="true"></div>
       </div>
 
       {/* Title */}
-      <h1
+      <h1 
         id="hero-title"
         className="font-display text-5xl sm:text-6xl md:text-8xl font-black text-neon-gradient mb-3 sm:mb-4 tracking-wider text-high-contrast"
       >
@@ -183,7 +177,9 @@ const HeroSection = () => {
       {/* Radio vibes */}
       <div className="flex items-center gap-2 sm:gap-3 text-neon-cyan mb-6 sm:mb-8" aria-hidden="true">
         <Radio className="w-4 h-4 sm:w-5 sm:h-5" />
-        <span className="font-display text-xs sm:text-sm tracking-widest">{t.retroVibes}</span>
+        <span className="font-display text-xs sm:text-sm tracking-widest">
+          {t.retroVibes}
+        </span>
         <Radio className="w-4 h-4 sm:w-5 sm:h-5" />
       </div>
 
