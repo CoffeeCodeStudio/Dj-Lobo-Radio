@@ -1,7 +1,7 @@
 import { Globe, ChevronDown } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
-import djLoboLogo from "@/assets/dj-lobo-badge.png";
+import djLoboLogo from "";
 
 interface LanguageOption {
   code: Language;
@@ -45,16 +45,12 @@ const Header = () => {
     <header className="absolute top-0 left-0 right-0 z-50 px-4 sm:px-6 py-2 sm:py-3 pointer-events-none">
       <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
         {/* Logo */}
-        <a 
-          href="#" 
+        <a
+          href="#"
           className="glass-card p-1.5 sm:p-2 focus-neon rounded-lg hover:scale-105 transition-transform"
           aria-label="DJ Lobo Radio - Hem"
         >
-          <img 
-            src={djLoboLogo} 
-            alt="DJ Lobo Radio Logo" 
-            className="h-10 sm:h-12 w-auto object-contain"
-          />
+          <img src={djLoboLogo} alt="DJ Lobo Radio Logo" className="h-10 sm:h-12 w-auto object-contain" />
         </a>
 
         {/* Language Selector Dropdown */}
@@ -71,9 +67,9 @@ const Header = () => {
               <span aria-hidden="true">{currentLang.flag}</span>
               <span className="hidden sm:inline">{currentLang.label}</span>
             </span>
-            <ChevronDown 
-              className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`} 
-              aria-hidden="true" 
+            <ChevronDown
+              className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? "rotate-180" : ""}`}
+              aria-hidden="true"
             />
           </button>
 
@@ -96,9 +92,7 @@ const Header = () => {
                   }}
                   onKeyDown={(e) => handleKeyDown(e, lang.code)}
                   className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors focus-neon ${
-                    language === lang.code
-                      ? "bg-neon-cyan/10 text-neon-cyan"
-                      : "hover:bg-muted/50 text-foreground"
+                    language === lang.code ? "bg-neon-cyan/10 text-neon-cyan" : "hover:bg-muted/50 text-foreground"
                   }`}
                 >
                   <span aria-hidden="true">{lang.flag}</span>
