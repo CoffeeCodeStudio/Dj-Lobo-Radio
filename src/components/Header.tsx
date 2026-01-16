@@ -48,7 +48,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
         {/* Logo */}
         <a href="#" className="glass-card p-1.5 sm:p-2 focus-neon rounded-lg hover:scale-105 transition-transform" aria-label="DJ Lobo Radio - Hem">
-          <img alt="DJ Lobo Radio Logo" className="h-10 sm:h-12 w-auto object-contain" src="/lovable-uploads/d7a552ee-7bb3-4dcb-9586-43d61b794a27.jpg" />
+          <img alt="DJ Lobo Radio Logo" className="h-10 sm:h-12 w-auto object-contain" src="/lovable-uploads/debdb1fa-8898-46e0-977a-3613e7cbad43.png" />
         </a>
 
         {/* Language Selector Dropdown */}
