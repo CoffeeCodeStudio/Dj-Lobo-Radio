@@ -1,5 +1,6 @@
 import { Instagram, Facebook, Youtube, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useBranding } from "@/hooks/useBranding";
 import djLoboLogo from "@/assets/dj-lobo-logo.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 const SOCIAL_LINKS = {
@@ -48,12 +49,16 @@ const Footer = () => {
   const {
     language
   } = useLanguage();
+  const { branding } = useBranding();
   const t = translations[language];
+  
+  // Use dynamic logo if available, otherwise use fallback
+  const logoUrl = branding?.logo_url || djLoboLogo;
   return <footer className="py-12 sm:py-16 px-4 sm:px-6 pb-32 sm:pb-36 relative">
       <div className="max-w-7xl mx-auto text-center">
         {/* Logo */}
         <div className="flex items-center justify-center mb-4 sm:mb-6">
-          <img alt="DJ Lobo Radio Logo" className="h-16 sm:h-20 w-auto object-contain" src="/lovable-uploads/f751a09b-06dc-405e-8e94-91b6fc306fdc.png" />
+          <img alt="DJ Lobo Radio Logo" className="h-16 sm:h-20 w-auto object-contain" src={logoUrl} />
         </div>
 
         {/* Description */}
