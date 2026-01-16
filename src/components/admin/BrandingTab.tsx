@@ -15,7 +15,8 @@ import {
   User,
   Layout,
   Sparkles,
-  Youtube
+  Youtube,
+  Instagram
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useBranding, SiteBranding } from "@/hooks/useBranding";
@@ -683,6 +684,70 @@ const BrandingTab = () => {
                 placeholder="Bringing the best of 80s and 90s music"
                 className="mt-1.5"
               />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Social Media Integration */}
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle className="font-display flex items-center gap-2">
+              <Instagram className="w-5 h-5 text-pink-500" />
+              Social Media Integration
+            </CardTitle>
+            <CardDescription>Connect your YouTube channel and Instagram account</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* YouTube Channel */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Youtube className="w-5 h-5 text-red-500" />
+                <Label htmlFor="youtube-channel-id">YouTube Channel ID</Label>
+              </div>
+              <Input
+                id="youtube-channel-id"
+                placeholder="e.g. UC... eller @djloboproducciones3211"
+                value={pendingChanges.youtube_channel_id ?? branding?.youtube_channel_id ?? ""}
+                onChange={(e) => setPendingChanges((prev) => ({ ...prev, youtube_channel_id: e.target.value }))}
+                className="bg-input border-border"
+              />
+              <p className="text-xs text-muted-foreground">
+                Kanal-ID hittas i YouTube Studio → Inställningar → Kanal → Grundläggande info
+              </p>
+            </div>
+
+            {/* Instagram Username */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Instagram className="w-5 h-5 text-pink-500" />
+                <Label htmlFor="instagram-username">Instagram Username</Label>
+              </div>
+              <Input
+                id="instagram-username"
+                placeholder="e.g. djloboradio"
+                value={pendingChanges.instagram_username ?? branding?.instagram_username ?? ""}
+                onChange={(e) => setPendingChanges((prev) => ({ ...prev, instagram_username: e.target.value }))}
+                className="bg-input border-border"
+              />
+              <p className="text-xs text-muted-foreground">
+                Ditt Instagram-användarnamn (utan @)
+              </p>
+            </div>
+
+            {/* Instagram Access Token */}
+            <div className="space-y-3">
+              <Label htmlFor="instagram-token">Instagram Access Token (valfritt)</Label>
+              <Input
+                id="instagram-token"
+                type="password"
+                placeholder="Access token för att hämta inlägg automatiskt"
+                value={pendingChanges.instagram_access_token ?? branding?.instagram_access_token ?? ""}
+                onChange={(e) => setPendingChanges((prev) => ({ ...prev, instagram_access_token: e.target.value }))}
+                className="bg-input border-border"
+              />
+              <p className="text-xs text-muted-foreground">
+                Behövs endast om du vill visa Instagram-inlägg automatiskt på sidan
+              </p>
             </div>
           </CardContent>
         </Card>

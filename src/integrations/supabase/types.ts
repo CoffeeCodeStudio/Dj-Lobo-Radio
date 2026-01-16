@@ -142,6 +142,8 @@ export type Database = {
           google_calendar_id: string | null
           hero_image_url: string | null
           id: string
+          instagram_access_token: string | null
+          instagram_username: string | null
           live_set_video_1: string | null
           live_set_video_2: string | null
           live_set_video_3: string | null
@@ -152,6 +154,7 @@ export type Database = {
           site_name: string | null
           tagline: string | null
           updated_at: string
+          youtube_channel_id: string | null
           youtube_video_id: string | null
         }
         Insert: {
@@ -161,6 +164,8 @@ export type Database = {
           google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
+          instagram_access_token?: string | null
+          instagram_username?: string | null
           live_set_video_1?: string | null
           live_set_video_2?: string | null
           live_set_video_3?: string | null
@@ -171,6 +176,7 @@ export type Database = {
           site_name?: string | null
           tagline?: string | null
           updated_at?: string
+          youtube_channel_id?: string | null
           youtube_video_id?: string | null
         }
         Update: {
@@ -180,6 +186,8 @@ export type Database = {
           google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
+          instagram_access_token?: string | null
+          instagram_username?: string | null
           live_set_video_1?: string | null
           live_set_video_2?: string | null
           live_set_video_3?: string | null
@@ -190,6 +198,7 @@ export type Database = {
           site_name?: string | null
           tagline?: string | null
           updated_at?: string
+          youtube_channel_id?: string | null
           youtube_video_id?: string | null
         }
         Relationships: []
