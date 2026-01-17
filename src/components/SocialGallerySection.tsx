@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Instagram, Facebook, Youtube, Play, ImageIcon, Headphones } from "lucide-react";
+import { Instagram, Facebook, Youtube, Play, ImageIcon, Headphones, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGallery } from "@/hooks/useGallery";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -12,55 +12,6 @@ const SOCIAL_LINKS = {
   youtube: "https://www.youtube.com/@djloboproducciones3211",
   mixcloud: "https://www.mixcloud.com/DjLobo75/",
 };
-
-// IDs 2 and 5 are Mixcloud-connected cards
-const MIXCLOUD_CARD_IDS = [2, 5];
-
-// Static placeholder videos until API integration is ready
-const PLACEHOLDER_VIDEOS = [
-  { 
-    id: 1, 
-    title: "DJ Lobo Exclusive", 
-    subtitle: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=600&h=400&fit=crop",
-    mixcloud: false,
-  },
-  { 
-    id: 2, 
-    title: "Live Mix Session", 
-    subtitle: "Mixcloud",
-    image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop",
-    mixcloud: true,
-  },
-  { 
-    id: 3, 
-    title: "Festival Set 2024", 
-    subtitle: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop",
-    mixcloud: false,
-  },
-  { 
-    id: 4, 
-    title: "Club Night Special", 
-    subtitle: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&h=400&fit=crop",
-    mixcloud: false,
-  },
-  { 
-    id: 5, 
-    title: "80s & 90s Retro Mix", 
-    subtitle: "Mixcloud",
-    image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=600&h=400&fit=crop",
-    mixcloud: true,
-  },
-  { 
-    id: 6, 
-    title: "Summer Party Vibes", 
-    subtitle: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&h=400&fit=crop",
-    mixcloud: false,
-  },
-];
 
 const translations = {
   sv: {
@@ -80,6 +31,8 @@ const translations = {
     featured: "Utvald",
     exclusive: "Exklusivt",
     seeAllVideos: "Se alla videos på YouTube",
+    instagramPosts: "Instagram",
+    viewOnInstagram: "Se på Instagram",
   },
   en: {
     connectTitle: "CONNECT WITH DJ LOBO",
@@ -98,6 +51,8 @@ const translations = {
     featured: "Featured",
     exclusive: "Exclusive",
     seeAllVideos: "See all videos on YouTube",
+    instagramPosts: "Instagram",
+    viewOnInstagram: "View on Instagram",
   },
   es: {
     connectTitle: "CONECTA CON DJ LOBO",
@@ -116,7 +71,16 @@ const translations = {
     featured: "Destacado",
     exclusive: "Exclusivo",
     seeAllVideos: "Ver todos los videos en YouTube",
+    instagramPosts: "Instagram",
+    viewOnInstagram: "Ver en Instagram",
   },
+};
+
+// Helper to extract Instagram post ID from URL
+const extractInstagramId = (url: string): string | null => {
+  if (!url) return null;
+  const match = url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
+  return match ? match[1] : null;
 };
 
 const SocialGallerySection = () => {
@@ -130,12 +94,40 @@ const SocialGallerySection = () => {
   const [selectedMixcloudTitle, setSelectedMixcloudTitle] = useState("");
   
   // Featured video from branding (shown as main video)
-  const featuredVideoId = branding?.youtube_video_id || "ea8_sn1xlcE";
+  const featuredVideoId = branding?.youtube_video_id;
+
+  // Get featured videos from branding (only show if they have values)
+  const featuredVideos = [
+    branding?.live_set_video_1,
+    branding?.live_set_video_2,
+    branding?.live_set_video_3,
+    branding?.live_set_video_4,
+    branding?.live_set_video_5,
+  ].filter((id): id is string => !!id && id.trim() !== "");
+
+  // Get Instagram post URLs from branding
+  const instagramPosts = [
+    branding?.instagram_post_1,
+    branding?.instagram_post_2,
+    branding?.instagram_post_3,
+    branding?.instagram_post_4,
+    branding?.instagram_post_5,
+    branding?.instagram_post_6,
+  ].filter((url): url is string => !!url && url.trim() !== "");
 
   const handleMixcloudClick = (title: string) => {
     setSelectedMixcloudTitle(title);
     setMixcloudModalOpen(true);
   };
+
+  // Build dynamic social links
+  const instagramLink = branding?.instagram_username 
+    ? `https://www.instagram.com/${branding.instagram_username}`
+    : SOCIAL_LINKS.instagram;
+  
+  const youtubeLink = branding?.youtube_channel_id
+    ? `https://www.youtube.com/${branding.youtube_channel_id.startsWith('@') ? branding.youtube_channel_id : `channel/${branding.youtube_channel_id}`}`
+    : SOCIAL_LINKS.youtube;
 
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="social-gallery-heading">
@@ -204,8 +196,7 @@ const SocialGallerySection = () => {
           </div>
         </div>
 
-
-        {/* Latest Video Section - Placeholder */}
+        {/* Latest Video Section - Uses youtube_video_id from branding */}
         <div className="mb-16">
           <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-pink mb-6 flex items-center justify-center gap-3">
             <Youtube className="w-6 h-6" />
@@ -214,35 +205,56 @@ const SocialGallerySection = () => {
           
           <div className="max-w-3xl mx-auto">
             <div className="glass-card overflow-hidden group hover:border-neon-pink/50 transition-all duration-300">
-              {/* Placeholder Image */}
-              <div className="aspect-video relative">
-                <img
-                  src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=1200&h=675&fit=crop"
-                  alt="DJ Lobo - Coming Soon"
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                
-                {/* Coming Soon Overlay */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50">
-                  <div 
-                    className="px-8 py-4 rounded-full bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-bold text-lg uppercase tracking-wider mb-4"
-                    style={{
-                      boxShadow: "0 0 40px rgba(255, 0, 255, 0.5), 0 0 80px rgba(0, 255, 255, 0.3)",
-                    }}
-                  >
-                    {t.comingSoon}
+              {featuredVideoId ? (
+                // Show actual YouTube video
+                <div className="aspect-video relative">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${featuredVideoId}?rel=0&modestbranding=1`}
+                    title="DJ Lobo - Latest Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                  
+                  {/* Featured badge */}
+                  <div className="absolute top-4 left-4 z-10">
+                    <span className="px-3 py-1.5 rounded text-sm font-semibold flex items-center gap-1.5 bg-neon-pink/90 text-white">
+                      <Play className="w-4 h-4" />
+                      {t.featured}
+                    </span>
                   </div>
-                  <p className="text-white/80 text-sm">{t.exclusiveContent}</p>
                 </div>
+              ) : (
+                // Placeholder when no video is set
+                <div className="aspect-video relative">
+                  <img
+                    src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=1200&h=675&fit=crop"
+                    alt="DJ Lobo - Coming Soon"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  
+                  {/* Coming Soon Overlay */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50">
+                    <div 
+                      className="px-8 py-4 rounded-full bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-bold text-lg uppercase tracking-wider mb-4"
+                      style={{
+                        boxShadow: "0 0 40px rgba(255, 0, 255, 0.5), 0 0 80px rgba(0, 255, 255, 0.3)",
+                      }}
+                    >
+                      {t.comingSoon}
+                    </div>
+                    <p className="text-white/80 text-sm">{t.exclusiveContent}</p>
+                  </div>
 
-                {/* Exclusive badge */}
-                <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1.5 rounded text-sm font-semibold flex items-center gap-1.5 bg-neon-pink/90 text-white">
-                    <Play className="w-4 h-4" />
-                    {t.featured}
-                  </span>
+                  {/* Featured badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className="px-3 py-1.5 rounded text-sm font-semibold flex items-center gap-1.5 bg-neon-pink/90 text-white">
+                      <Play className="w-4 h-4" />
+                      {t.featured}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
               
               {/* Video Info */}
               <div className="p-4 flex items-center justify-between">
@@ -253,7 +265,7 @@ const SocialGallerySection = () => {
                   <span className="font-medium text-foreground">DJ Lobo Producciones</span>
                 </div>
                 <a
-                  href={SOCIAL_LINKS.youtube}
+                  href={youtubeLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-neon-cyan hover:underline flex items-center gap-1"
@@ -266,113 +278,137 @@ const SocialGallerySection = () => {
           </div>
         </div>
 
-        {/* Coming Soon Video Previews with 124 BPM pulse borders */}
-        <div>
-          <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-cyan mb-6 flex items-center gap-3">
-            <Play className="w-6 h-6" />
-            {t.liveSets}
-          </h3>
+        {/* Featured Videos Grid - Only show if there are videos */}
+        {featuredVideos.length > 0 && (
+          <div className="mb-16">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-neon-cyan mb-6 flex items-center gap-3">
+              <Play className="w-6 h-6" />
+              {t.liveSets}
+            </h3>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PLACEHOLDER_VIDEOS.map((video) => {
-              const isMixcloud = video.mixcloud;
-              
-              return (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredVideos.map((videoId, index) => (
                 <div
-                  key={video.id}
-                  onClick={isMixcloud ? () => handleMixcloudClick(video.title) : undefined}
-                  className={`glass-card overflow-hidden group transition-all duration-300 card-bpm-pulse video-card-hover ${
-                    isMixcloud 
-                      ? 'cursor-pointer hover:border-neon-pink/70' 
-                      : 'cursor-default hover:border-neon-cyan/50'
-                  }`}
+                  key={videoId}
+                  className="glass-card overflow-hidden group transition-all duration-300 card-bpm-pulse video-card-hover hover:border-neon-cyan/50"
                 >
-                  {/* Neon/DJ Themed Thumbnail */}
+                  {/* YouTube Embed */}
                   <div className="aspect-video relative">
-                    <img
-                      src={video.image}
-                      alt={video.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                      title={`Featured Video ${index + 1}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
                     />
                     
-                    {/* Overlay - different for Mixcloud vs Coming Soon */}
-                    <div className={`absolute inset-0 flex items-center justify-center transition-colors ${
-                      isMixcloud 
-                        ? 'bg-black/30 group-hover:bg-black/20' 
-                        : 'bg-black/40 group-hover:bg-black/50'
-                    }`}>
-                      {isMixcloud ? (
-                        <div 
-                          className="px-6 py-3 rounded-full bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-bold text-sm uppercase tracking-wider flex items-center gap-2 group-hover:scale-110 transition-transform"
-                          style={{
-                            boxShadow: "0 0 30px rgba(255, 0, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.4)",
-                          }}
-                        >
-                          <Headphones className="w-4 h-4" />
-                          Lyssna Nu
-                        </div>
-                      ) : (
-                        <div 
-                          className="px-6 py-3 rounded-full bg-gradient-to-r from-neon-pink to-neon-cyan text-white font-bold text-sm uppercase tracking-wider"
-                          style={{
-                            boxShadow: "0 0 30px rgba(255, 0, 255, 0.5), 0 0 60px rgba(0, 255, 255, 0.3)",
-                          }}
-                        >
-                          {video.subtitle}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Badge - different for Mixcloud */}
-                    <div className="absolute top-3 left-3">
-                      <span className={`px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 text-white ${
-                        isMixcloud ? 'bg-neon-cyan/90' : 'bg-neon-pink/90'
-                      }`}>
-                        {isMixcloud ? <Headphones className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-                        {isMixcloud ? 'Mixcloud' : t.exclusive}
+                    {/* Badge */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <span className="px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 text-white bg-neon-pink/90">
+                        <Play className="w-3 h-3" />
+                        {t.exclusive}
                       </span>
                     </div>
                   </div>
 
                   {/* Video Info */}
                   <div className="p-4">
-                    <h4 className="font-semibold text-foreground group-hover:text-neon-cyan transition-colors line-clamp-2">
-                      {video.title}
+                    <h4 className="font-semibold text-foreground group-hover:text-neon-cyan transition-colors">
+                      Live Set #{index + 1}
                     </h4>
                     <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-                      {isMixcloud ? (
-                        <>
-                          <Headphones className="w-3 h-3" />
-                          Mixcloud
-                        </>
-                      ) : (
-                        <>
-                          <Youtube className="w-3 h-3" />
-                          DJ Lobo Producciones
-                        </>
-                      )}
+                      <Youtube className="w-3 h-3" />
+                      DJ Lobo Producciones
                     </p>
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            
+            {/* Link to full channel */}
+            <div className="mt-8 text-center">
+              <a
+                href={youtubeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-neon-cyan hover:text-neon-pink transition-colors"
+              >
+                <Youtube className="w-5 h-5" />
+                {t.seeAllVideos}
+                <Play className="w-4 h-4" />
+              </a>
+            </div>
           </div>
-          
-          {/* Link to full channel */}
-          <div className="mt-8 text-center">
-            <a
-              href={SOCIAL_LINKS.youtube}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-neon-cyan hover:text-neon-pink transition-colors"
-            >
-              <Youtube className="w-5 h-5" />
-              {t.seeAllVideos}
-              <Play className="w-4 h-4" />
-            </a>
+        )}
+
+        {/* Instagram Posts Section - Only show if there are posts */}
+        {instagramPosts.length > 0 && (
+          <div className="mb-16">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-pink-500 mb-6 flex items-center gap-3">
+              <Instagram className="w-6 h-6" />
+              {t.instagramPosts}
+            </h3>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+              {instagramPosts.map((postUrl, index) => {
+                const postId = extractInstagramId(postUrl);
+                
+                return (
+                  <a
+                    key={index}
+                    href={postUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="aspect-square glass-card overflow-hidden group relative hover:border-pink-500/50 transition-all duration-300"
+                  >
+                    {/* Instagram embed image - using the embed URL pattern */}
+                    <div className="w-full h-full bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 flex items-center justify-center">
+                      <Instagram className="w-12 h-12 text-pink-500 group-hover:scale-110 transition-transform" />
+                    </div>
+                    
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <div className="text-center">
+                        <ExternalLink className="w-8 h-8 text-white mx-auto mb-2" />
+                        <span className="text-white text-xs">{t.viewOnInstagram}</span>
+                      </div>
+                    </div>
+                    
+                    {/* Post number badge */}
+                    <div className="absolute top-2 left-2">
+                      <span className="px-2 py-1 rounded text-xs font-semibold bg-pink-500/90 text-white">
+                        #{index + 1}
+                      </span>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+            
+            {/* Link to Instagram profile */}
+            <div className="mt-8 text-center">
+              <a
+                href={instagramLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-pink-500 hover:text-neon-pink transition-colors"
+              >
+                <Instagram className="w-5 h-5" />
+                {t.followInstagram}
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Show placeholder message if no videos or posts are configured */}
+        {featuredVideos.length === 0 && instagramPosts.length === 0 && !featuredVideoId && (
+          <div className="text-center py-12 glass-card mb-16">
+            <Play className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+            <h4 className="font-display text-xl font-bold text-muted-foreground mb-2">{t.comingSoon}</h4>
+            <p className="text-sm text-muted-foreground">{t.exclusiveContent}</p>
+          </div>
+        )}
       </div>
 
       {/* Mixcloud Modal */}

@@ -19,6 +19,14 @@ export interface SiteBranding {
   live_set_video_1: string | null;
   live_set_video_2: string | null;
   live_set_video_3: string | null;
+  live_set_video_4: string | null;
+  live_set_video_5: string | null;
+  instagram_post_1: string | null;
+  instagram_post_2: string | null;
+  instagram_post_3: string | null;
+  instagram_post_4: string | null;
+  instagram_post_5: string | null;
+  instagram_post_6: string | null;
   updated_at: string;
 }
 
