@@ -1,8 +1,8 @@
-import { Globe, ChevronDown } from "lucide-react";
+import { Globe, ChevronDown, Radio } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { useBranding } from "@/hooks/useBranding";
-import djLoboLogo from "@/assets/dj-lobo-badge.png";
+
 interface LanguageOption {
   code: Language;
   flag: string;
@@ -30,9 +30,6 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const currentLang = languages.find(l => l.code === language)!;
-  
-  // Use dynamic logo if available, otherwise use fallback
-  const logoUrl = branding?.logo_url || djLoboLogo;
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -53,7 +50,13 @@ const Header = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
         {/* Logo */}
         <a href="#" className="glass-card p-1.5 sm:p-2 focus-neon rounded-lg hover:scale-105 transition-transform" aria-label="DJ Lobo Radio - Hem">
-          <img alt="DJ Lobo Radio Logo" className="h-10 sm:h-12 w-auto object-contain" src={logoUrl} />
+          {branding?.logo_url ? (
+            <img alt="DJ Lobo Radio Logo" className="h-10 sm:h-12 w-auto object-contain" src={branding.logo_url} />
+          ) : (
+            <div className="h-10 sm:h-12 w-10 sm:w-12 flex items-center justify-center">
+              <Radio className="h-8 sm:h-10 w-8 sm:w-10 text-neon-cyan" />
+            </div>
+          )}
         </a>
 
         {/* Language Selector Dropdown */}
