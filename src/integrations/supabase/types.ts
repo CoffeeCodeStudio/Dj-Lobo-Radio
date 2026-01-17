@@ -143,10 +143,18 @@ export type Database = {
           hero_image_url: string | null
           id: string
           instagram_access_token: string | null
+          instagram_post_1: string | null
+          instagram_post_2: string | null
+          instagram_post_3: string | null
+          instagram_post_4: string | null
+          instagram_post_5: string | null
+          instagram_post_6: string | null
           instagram_username: string | null
           live_set_video_1: string | null
           live_set_video_2: string | null
           live_set_video_3: string | null
+          live_set_video_4: string | null
+          live_set_video_5: string | null
           logo_url: string | null
           primary_glow_color: string | null
           profile_image_url: string | null
@@ -165,10 +173,18 @@ export type Database = {
           hero_image_url?: string | null
           id?: string
           instagram_access_token?: string | null
+          instagram_post_1?: string | null
+          instagram_post_2?: string | null
+          instagram_post_3?: string | null
+          instagram_post_4?: string | null
+          instagram_post_5?: string | null
+          instagram_post_6?: string | null
           instagram_username?: string | null
           live_set_video_1?: string | null
           live_set_video_2?: string | null
           live_set_video_3?: string | null
+          live_set_video_4?: string | null
+          live_set_video_5?: string | null
           logo_url?: string | null
           primary_glow_color?: string | null
           profile_image_url?: string | null
@@ -187,10 +203,18 @@ export type Database = {
           hero_image_url?: string | null
           id?: string
           instagram_access_token?: string | null
+          instagram_post_1?: string | null
+          instagram_post_2?: string | null
+          instagram_post_3?: string | null
+          instagram_post_4?: string | null
+          instagram_post_5?: string | null
+          instagram_post_6?: string | null
           instagram_username?: string | null
           live_set_video_1?: string | null
           live_set_video_2?: string | null
           live_set_video_3?: string | null
+          live_set_video_4?: string | null
+          live_set_video_5?: string | null
           logo_url?: string | null
           primary_glow_color?: string | null
           profile_image_url?: string | null
