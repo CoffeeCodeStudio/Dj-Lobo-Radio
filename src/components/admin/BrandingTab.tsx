@@ -16,7 +16,8 @@ import {
   Layout,
   Sparkles,
   Youtube,
-  Instagram
+  Instagram,
+  Trash2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useBranding, SiteBranding } from "@/hooks/useBranding";
@@ -221,14 +222,26 @@ const BrandingTab = () => {
                   className="hidden"
                   onChange={(e) => handleFileSelect(e, "profile")}
                 />
-                <Button 
-                  variant="outline" 
-                  onClick={() => profileInputRef.current?.click()}
-                  disabled={uploading === "profile"}
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload New Photo
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => profileInputRef.current?.click()}
+                    disabled={uploading === "profile"}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload New Photo
+                  </Button>
+                  {(getImagePreview("profile") || branding?.profile_image_url) && (
+                    <Button 
+                      variant="destructive" 
+                      size="icon"
+                      onClick={() => setPendingChanges((prev) => ({ ...prev, profile_image_url: null }))}
+                      title="Ta bort profilbild"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
                 <p className="text-xs text-muted-foreground">
                   Recommended: Square image, at least 400x400px, max 5MB
                 </p>
@@ -331,14 +344,26 @@ const BrandingTab = () => {
                   className="hidden"
                   onChange={(e) => handleFileSelect(e, "logo")}
                 />
-                <Button 
-                  variant="outline" 
-                  onClick={() => logoInputRef.current?.click()}
-                  disabled={uploading === "logo"}
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload Logo
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => logoInputRef.current?.click()}
+                    disabled={uploading === "logo"}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload Logo
+                  </Button>
+                  {(getImagePreview("logo") || branding?.logo_url) && (
+                    <Button 
+                      variant="destructive" 
+                      size="icon"
+                      onClick={() => setPendingChanges((prev) => ({ ...prev, logo_url: null }))}
+                      title="Ta bort logo"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
                 <p className="text-xs text-muted-foreground">
                   Recommended: PNG with transparent background, max 5MB
                 </p>
