@@ -15,7 +15,6 @@ export interface SiteBranding {
   youtube_video_id: string | null;
   youtube_channel_id: string | null;
   instagram_username: string | null;
-  instagram_access_token: string | null;
   live_set_video_1: string | null;
   live_set_video_2: string | null;
   live_set_video_3: string | null;

@@ -142,7 +142,6 @@ export type Database = {
           google_calendar_id: string | null
           hero_image_url: string | null
           id: string
-          instagram_access_token: string | null
           instagram_post_1: string | null
           instagram_post_2: string | null
           instagram_post_3: string | null
@@ -172,7 +171,6 @@ export type Database = {
           google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
-          instagram_access_token?: string | null
           instagram_post_1?: string | null
           instagram_post_2?: string | null
           instagram_post_3?: string | null
@@ -202,7 +200,6 @@ export type Database = {
           google_calendar_id?: string | null
           hero_image_url?: string | null
           id?: string
-          instagram_access_token?: string | null
           instagram_post_1?: string | null
           instagram_post_2?: string | null
           instagram_post_3?: string | null
@@ -224,6 +221,27 @@ export type Database = {
           updated_at?: string
           youtube_channel_id?: string | null
           youtube_video_id?: string | null
+        }
+        Relationships: []
+      }
+      site_secrets: {
+        Row: {
+          created_at: string
+          id: string
+          instagram_access_token: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          instagram_access_token?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          instagram_access_token?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

@@ -806,21 +806,11 @@ const BrandingTab = () => {
               </p>
             </div>
 
-            {/* Instagram Access Token */}
-            <div className="space-y-3">
-              <Label htmlFor="instagram-token">Instagram Access Token (valfritt)</Label>
-              <Input
-                id="instagram-token"
-                type="password"
-                placeholder="Access token för att hämta inlägg automatiskt"
-                value={pendingChanges.instagram_access_token ?? branding?.instagram_access_token ?? ""}
-                onChange={(e) => setPendingChanges((prev) => ({ ...prev, instagram_access_token: e.target.value }))}
-                className="bg-input border-border"
-              />
-              <p className="text-xs text-muted-foreground">
-                Behövs endast om du vill visa Instagram-inlägg automatiskt på sidan
-              </p>
-            </div>
+            {/* Instagram Access Token - now stored securely in site_secrets table */}
+            <p className="text-xs text-muted-foreground p-2 bg-card/50 rounded">
+              <span className="font-medium">Instagram Access Token:</span> Hanteras nu separat för säkerhets skull. 
+              Kontakta administratören för att uppdatera token.
+            </p>
           </CardContent>
         </Card>
       </div>
