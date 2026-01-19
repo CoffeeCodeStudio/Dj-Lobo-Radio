@@ -19,7 +19,7 @@ const translations = {
     success: "Tack! Vi återkommer snart.",
     error: "Något gick fel. Försök igen.",
     followUs: "Följ oss",
-    location: "Stockholm, Sverige",
+    location: "Göteborg, Sverige",
   },
   en: {
     title: "Contact",
@@ -32,7 +32,7 @@ const translations = {
     success: "Thank you! We'll get back to you soon.",
     error: "Something went wrong. Please try again.",
     followUs: "Follow us",
-    location: "Stockholm, Sweden",
+    location: "Gothenburg, Sweden",
   },
   es: {
     title: "Contacto",
@@ -45,7 +45,7 @@ const translations = {
     success: "¡Gracias! Te responderemos pronto.",
     error: "Algo salió mal. Por favor, inténtalo de nuevo.",
     followUs: "Síguenos",
-    location: "Estocolmo, Suecia",
+    location: "Gotemburgo, Suecia",
   },
 };
 
@@ -173,8 +173,8 @@ const ContactSection = () => {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Email</p>
-              <a href="mailto:info@djloboradio.com" className="text-foreground hover:text-neon-cyan transition-colors">
-                info@djloboradio.com
+              <a href="mailto:info@djloboproducciones.com" className="text-foreground hover:text-neon-cyan transition-colors">
+                info@djloboproducciones.com
               </a>
             </div>
           </div>

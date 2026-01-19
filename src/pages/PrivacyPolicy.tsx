@@ -23,7 +23,7 @@ const translations = {
     
     section5Title: "Kontakta oss",
     section5Text: "Har du frågor om din data eller vill begära borttagning? Kontakta oss på:",
-    contactEmail: "info@djloboradio.com",
+    contactEmail: "info@djloboproducciones.com",
   },
   en: {
     title: "Privacy Policy",
@@ -45,7 +45,7 @@ const translations = {
     
     section5Title: "Contact us",
     section5Text: "Have questions about your data or want to request deletion? Contact us at:",
-    contactEmail: "info@djloboradio.com",
+    contactEmail: "info@djloboproducciones.com",
   },
   es: {
     title: "Política de Privacidad",
@@ -67,7 +67,7 @@ const translations = {
     
     section5Title: "Contáctanos",
     section5Text: "¿Tienes preguntas sobre tus datos o quieres solicitar su eliminación? Contáctanos en:",
-    contactEmail: "info@djloboradio.com",
+    contactEmail: "info@djloboproducciones.com",
   },
 };
 

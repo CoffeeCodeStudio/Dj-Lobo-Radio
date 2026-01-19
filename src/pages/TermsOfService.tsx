@@ -26,7 +26,7 @@ const translations = {
     
     section6Title: "Kontakt",
     section6Text: "Frågor om villkoren? Kontakta oss på:",
-    contactEmail: "info@djloboradio.com",
+    contactEmail: "info@djloboproducciones.com",
   },
   en: {
     title: "Terms of Service",
@@ -51,7 +51,7 @@ const translations = {
     
     section6Title: "Contact",
     section6Text: "Questions about the terms? Contact us at:",
-    contactEmail: "info@djloboradio.com",
+    contactEmail: "info@djloboproducciones.com",
   },
   es: {
     title: "Términos de Servicio",
@@ -76,7 +76,7 @@ const translations = {
     
     section6Title: "Contacto",
     section6Text: "¿Preguntas sobre los términos? Contáctanos en:",
-    contactEmail: "info@djloboradio.com",
+    contactEmail: "info@djloboproducciones.com",
   },
 };
 
