@@ -52,7 +52,17 @@ export const useCalendarEvents = () => {
       const now = new Date().toISOString();
       const maxDate = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString();
       
-      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?key=AIzaSyBNlYH01_9Hc5S1J9vuFmu2nUqBZJNAXxs&timeMin=${now}&timeMax=${maxDate}&singleEvents=true&orderBy=startTime&maxResults=6`;
+      // API key from environment variable for easier rotation and security
+      const apiKey = import.meta.env.VITE_GOOGLE_CALENDAR_API_KEY;
+      if (!apiKey) {
+        console.error("Google Calendar API key not configured");
+        setEvents(PLACEHOLDER_EVENTS);
+        setIsPlaceholder(true);
+        setLoading(false);
+        return;
+      }
+      
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?key=${apiKey}&timeMin=${now}&timeMax=${maxDate}&singleEvents=true&orderBy=startTime&maxResults=6`;
       
       const response = await fetch(url);
       
