@@ -1,0 +1,234 @@
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Mail, Phone, MapPin, Instagram, Youtube, Send } from "lucide-react";
+import { useBranding } from "@/hooks/useBranding";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+
+const translations = {
+  sv: {
+    title: "Kontakt",
+    subtitle: "Har du frågor? Tveka inte att höra av dig!",
+    name: "Namn",
+    email: "E-post",
+    message: "Meddelande",
+    send: "Skicka meddelande",
+    sending: "Skickar...",
+    success: "Tack! Vi återkommer snart.",
+    error: "Något gick fel. Försök igen.",
+    followUs: "Följ oss",
+    location: "Stockholm, Sverige",
+  },
+  en: {
+    title: "Contact",
+    subtitle: "Have questions? Don't hesitate to get in touch!",
+    name: "Name",
+    email: "Email",
+    message: "Message",
+    send: "Send message",
+    sending: "Sending...",
+    success: "Thank you! We'll get back to you soon.",
+    error: "Something went wrong. Please try again.",
+    followUs: "Follow us",
+    location: "Stockholm, Sweden",
+  },
+  es: {
+    title: "Contacto",
+    subtitle: "¿Tienes preguntas? ¡No dudes en contactarnos!",
+    name: "Nombre",
+    email: "Correo electrónico",
+    message: "Mensaje",
+    send: "Enviar mensaje",
+    sending: "Enviando...",
+    success: "¡Gracias! Te responderemos pronto.",
+    error: "Algo salió mal. Por favor, inténtalo de nuevo.",
+    followUs: "Síguenos",
+    location: "Estocolmo, Suecia",
+  },
+};
+
+const ContactSection = () => {
+  const { language } = useLanguage();
+  const { branding } = useBranding();
+  const { toast } = useToast();
+  const t = translations[language];
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    
+    toast({
+      title: t.success,
+      variant: "default",
+    });
+    
+    setFormData({ name: "", email: "", message: "" });
+    setIsSubmitting(false);
+  };
+
+  const instagramUrl = branding?.instagram_username
+    ? `https://www.instagram.com/${branding.instagram_username}`
+    : "https://www.instagram.com/djloboradio";
+    
+  const youtubeUrl = branding?.youtube_channel_id
+    ? `https://www.youtube.com/channel/${branding.youtube_channel_id}`
+    : "https://www.youtube.com/@djloboradio";
+
+  return (
+    <section
+      id="kontakt"
+      className="py-16 sm:py-24"
+      aria-labelledby="contact-title"
+    >
+      <div className="text-center mb-12">
+        <h2
+          id="contact-title"
+          className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-neon-gradient mb-4"
+        >
+          {t.title}
+        </h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          {t.subtitle}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        {/* Contact Form */}
+        <div className="glass-card p-6 sm:p-8 rounded-xl">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                {t.name}
+              </label>
+              <Input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+                className="bg-background/50 border-muted focus:border-neon-cyan"
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                {t.email}
+              </label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                required
+                className="bg-background/50 border-muted focus:border-neon-cyan"
+              />
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                {t.message}
+              </label>
+              <Textarea
+                id="message"
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                required
+                rows={5}
+                className="bg-background/50 border-muted focus:border-neon-cyan resize-none"
+              />
+            </div>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-purple hover:to-neon-cyan transition-all duration-300"
+            >
+              {isSubmitting ? (
+                t.sending
+              ) : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  {t.send}
+                </>
+              )}
+            </Button>
+          </form>
+        </div>
+
+        {/* Contact Info */}
+        <div className="space-y-6">
+          {/* Contact Cards */}
+          <div className="glass-card p-6 rounded-xl flex items-center gap-4 hover:border-neon-cyan/50 transition-colors group">
+            <div className="w-12 h-12 rounded-full bg-neon-cyan/10 flex items-center justify-center group-hover:bg-neon-cyan/20 transition-colors">
+              <Mail className="w-6 h-6 text-neon-cyan" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Email</p>
+              <a href="mailto:info@djloboradio.com" className="text-foreground hover:text-neon-cyan transition-colors">
+                info@djloboradio.com
+              </a>
+            </div>
+          </div>
+
+          <div className="glass-card p-6 rounded-xl flex items-center gap-4 hover:border-neon-pink/50 transition-colors group">
+            <div className="w-12 h-12 rounded-full bg-neon-pink/10 flex items-center justify-center group-hover:bg-neon-pink/20 transition-colors">
+              <Phone className="w-6 h-6 text-neon-pink" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Telefon</p>
+              <a href="tel:+46701234567" className="text-foreground hover:text-neon-pink transition-colors">
+                +46 70 123 45 67
+              </a>
+            </div>
+          </div>
+
+          <div className="glass-card p-6 rounded-xl flex items-center gap-4 hover:border-neon-purple/50 transition-colors group">
+            <div className="w-12 h-12 rounded-full bg-neon-purple/10 flex items-center justify-center group-hover:bg-neon-purple/20 transition-colors">
+              <MapPin className="w-6 h-6 text-neon-purple" />
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Plats</p>
+              <p className="text-foreground">{t.location}</p>
+            </div>
+          </div>
+
+          {/* Social Links */}
+          <div className="glass-card p-6 rounded-xl">
+            <p className="text-sm text-muted-foreground mb-4">{t.followUs}</p>
+            <div className="flex gap-4">
+              <a
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center hover:scale-110 transition-transform"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-6 h-6 text-white" />
+              </a>
+              <a
+                href={youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center hover:scale-110 transition-transform"
+                aria-label="YouTube"
+              >
+                <Youtube className="w-6 h-6 text-white" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ContactSection;
