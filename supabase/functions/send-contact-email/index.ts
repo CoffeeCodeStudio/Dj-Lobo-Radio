@@ -60,7 +60,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const emailResponse = await resend.emails.send({
       from: "DJ Lobo Radio <info@djloboradio.com>",
-      to: ["info@djloboproducciones.com"],
+      to: ["djloboproducciones75@gmail.com"],
       reply_to: email,
       subject: `Nytt kontaktmeddelande från ${sanitizedName}`,
       html: `
