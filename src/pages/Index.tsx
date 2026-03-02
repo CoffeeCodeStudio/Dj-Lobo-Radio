@@ -2,7 +2,6 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import BookingSection from "@/components/BookingSection";
 import CalendarSection from "@/components/CalendarSection";
-import SoundCloudMixes from "@/components/SoundCloudMixes";
 import Footer from "@/components/Footer";
 import NowPlayingBar from "@/components/NowPlayingBar";
 import FloatingChatButton from "@/components/FloatingChatButton";
@@ -23,7 +22,6 @@ const Index = () => {
             </div>
             <BookingSection />
             <CalendarSection />
-            <SoundCloudMixes preview />
           </div>
         </main>
         <Footer />
