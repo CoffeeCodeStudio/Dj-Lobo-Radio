@@ -8,12 +8,11 @@ import { lazy, Suspense } from "react";
 import Layout from "@/components/Layout";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
-
 // Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));
 const ListenPage = lazy(() => import("./pages/ListenPage"));
-const GalleryPage = lazy(() => import("./pages/GalleryPage"));
-const EquipmentPage = lazy(() => import("./pages/EquipmentPage"));
+const MediaPage = lazy(() => import("./pages/MediaPage"));
+const SpelningarPage = lazy(() => import("./pages/SpelningarPage"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
@@ -40,11 +39,14 @@ const App = () => (
                 <Route element={<Layout />}>
                   <Route path="/" element={<Index />} />
                   <Route path="/lyssna" element={<ListenPage />} />
+                  <Route path="/media" element={<MediaPage />} />
+                  <Route path="/spelningar" element={<SpelningarPage />} />
+                  {/* Legacy redirects */}
                   <Route path="/radio" element={<Navigate to="/lyssna" replace />} />
-                  <Route path="/mixes" element={<Navigate to="/lyssna" replace />} />
-                  <Route path="/galleri" element={<GalleryPage />} />
-                  <Route path="/referenser" element={<Navigate to="/galleri" replace />} />
-                  <Route path="/utrustning" element={<EquipmentPage />} />
+                  <Route path="/mixes" element={<Navigate to="/media" replace />} />
+                  <Route path="/galleri" element={<Navigate to="/media" replace />} />
+                  <Route path="/referenser" element={<Navigate to="/media" replace />} />
+                  <Route path="/utrustning" element={<Navigate to="/spelningar" replace />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<TermsOfService />} />
@@ -52,7 +54,6 @@ const App = () => (
                 </Route>
               </Routes>
             </Suspense>
-            
           </ErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>

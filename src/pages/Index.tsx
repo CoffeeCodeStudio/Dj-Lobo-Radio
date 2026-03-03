@@ -1,7 +1,6 @@
 import HeroSection from "@/components/HeroSection";
-import BookingSection from "@/components/BookingSection";
-import CalendarSection from "@/components/CalendarSection";
-import SoundCloudMixes from "@/components/SoundCloudMixes";
+import AboutSection from "@/components/AboutSection";
+import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
@@ -11,12 +10,13 @@ const Index = () => {
       <div id="hem">
         <HeroSection />
       </div>
-      <BookingSection />
       <ErrorBoundary>
-        <CalendarSection />
+        <AboutSection />
       </ErrorBoundary>
       <ErrorBoundary>
-        <SoundCloudMixes preview />
+        <div id="kontakt">
+          <ContactSection />
+        </div>
       </ErrorBoundary>
       <Footer />
     </div>

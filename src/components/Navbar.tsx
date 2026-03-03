@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Radio, Globe, ChevronDown } from "lucide-react";
+import { Menu, X, Radio, Globe, ChevronDown, Home, Headphones, CalendarDays } from "lucide-react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { useBranding } from "@/hooks/useBranding";
 import { optimizeLogo } from "@/lib/imageOptimizer";
@@ -7,16 +7,16 @@ import { Link, useLocation } from "react-router-dom";
 
 interface NavItem {
   id: string;
-  href?: string;
+  href: string;
   label: { sv: string; en: string; es: string };
+  icon: React.ElementType;
 }
 
 const navItems: NavItem[] = [
-  { id: "hem", label: { sv: "Hem", en: "Home", es: "Inicio" } },
-  { id: "boka", label: { sv: "Boka spelning", en: "Book Event", es: "Reservar" } },
-  { id: "lyssna", href: "/lyssna", label: { sv: "DJ Lobo Radio", en: "DJ Lobo Radio", es: "DJ Lobo Radio" } },
-  { id: "galleri", href: "/galleri", label: { sv: "Galleri", en: "Gallery", es: "Galería" } },
-  { id: "utrustning", href: "/utrustning", label: { sv: "Utrustning", en: "Equipment", es: "Equipo" } },
+  { id: "hem", href: "/", label: { sv: "Hem", en: "Home", es: "Inicio" }, icon: Home },
+  { id: "radio", href: "/lyssna", label: { sv: "Radio", en: "Radio", es: "Radio" }, icon: Radio },
+  { id: "media", href: "/media", label: { sv: "Media", en: "Media", es: "Media" }, icon: Headphones },
+  { id: "spelningar", href: "/spelningar", label: { sv: "Spelningar", en: "Shows", es: "Shows" }, icon: CalendarDays },
 ];
 
 interface LanguageOption { code: Language; flag: string; label: string; }
@@ -55,32 +55,9 @@ const Navbar = () => {
     return () => { document.body.style.overflow = ""; };
   }, [isMenuOpen]);
 
-  const handleNavClick = (item: NavItem) => {
-    setIsMenuOpen(false);
-    if (item.href) return; // Link handles navigation
-    if (item.id === "hem") {
-      if (location.pathname !== "/") {
-        window.location.href = "/";
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-      return;
-    }
-    if (location.pathname !== "/") {
-      window.location.href = `/#${item.id}`;
-      return;
-    }
-    const el = document.getElementById(item.id);
-    if (el) {
-      const navHeight = 80;
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navHeight, behavior: "smooth" });
-    }
-  };
-
   const isActive = (item: NavItem) => {
-    if (item.href) return location.pathname === item.href;
-    if (item.id === "hem") return location.pathname === "/";
-    return false;
+    if (item.href === "/") return location.pathname === "/";
+    return location.pathname.startsWith(item.href);
   };
 
   return (
@@ -111,37 +88,24 @@ const Navbar = () => {
               )}
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation — 4 clean items */}
             <div className="hidden lg:flex items-center gap-1">
-              {navItems.map((item) =>
-                item.href ? (
-                  <Link
-                    key={item.id}
-                    to={item.href}
-                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                      item.id === "lyssna"
-                        ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)] hover:shadow-[0_0_25px_rgba(255,0,128,0.5)]"
-                        : isActive(item)
-                        ? "text-neon-cyan bg-neon-cyan/10 shadow-[0_0_10px_rgba(0,255,255,0.3)]"
-                        : "text-foreground/80 hover:text-neon-cyan hover:bg-neon-cyan/5"
-                    }`}
-                  >
-                    {item.label[language]}
-                  </Link>
-                ) : (
-                  <button
-                    key={item.id}
-                    onClick={() => handleNavClick(item)}
-                    className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                      isActive(item)
-                        ? "text-neon-cyan bg-neon-cyan/10 shadow-[0_0_10px_rgba(0,255,255,0.3)]"
-                        : "text-foreground/80 hover:text-neon-cyan hover:bg-neon-cyan/5"
-                    }`}
-                  >
-                    {item.label[language]}
-                  </button>
-                )
-              )}
+              {navItems.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.href}
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 flex items-center gap-2 ${
+                    item.id === "radio"
+                      ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)] hover:shadow-[0_0_25px_rgba(255,0,128,0.5)]"
+                      : isActive(item)
+                      ? "text-neon-cyan bg-neon-cyan/10 shadow-[0_0_10px_rgba(0,255,255,0.3)]"
+                      : "text-foreground/80 hover:text-neon-cyan hover:bg-neon-cyan/5"
+                  }`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  {item.label[language]}
+                </Link>
+              ))}
             </div>
 
             {/* Right side controls */}
@@ -194,38 +158,24 @@ const Navbar = () => {
         <div className={`absolute top-0 right-0 h-full w-full max-w-sm bg-background/95 backdrop-blur-2xl border-l border-neon-purple/30 shadow-2xl transition-transform duration-300 ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
           <div className="flex flex-col h-full pt-20 pb-8 px-6">
             <nav className="flex-1 space-y-2">
-              {navItems.map((item, index) =>
-                item.href ? (
-                  <Link
-                    key={item.id}
-                    to={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`w-full block text-left px-4 py-4 text-lg font-medium rounded-xl transition-all duration-200 ${
-                      item.id === "lyssna"
-                        ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)]"
-                        : isActive(item)
-                        ? "text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,255,255,0.2)]"
-                        : "text-foreground/90 hover:text-neon-cyan hover:bg-neon-cyan/5 border border-transparent"
-                    }`}
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    {item.label[language]}
-                  </Link>
-                ) : (
-                  <button
-                    key={item.id}
-                    onClick={() => handleNavClick(item)}
-                    className={`w-full text-left px-4 py-4 text-lg font-medium rounded-xl transition-all duration-200 ${
-                      isActive(item)
-                        ? "text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,255,255,0.2)]"
-                        : "text-foreground/90 hover:text-neon-cyan hover:bg-neon-cyan/5 border border-transparent"
-                    }`}
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    {item.label[language]}
-                  </button>
-                )
-              )}
+              {navItems.map((item, index) => (
+                <Link
+                  key={item.id}
+                  to={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`w-full flex items-center gap-3 text-left px-4 py-4 text-lg font-medium rounded-xl transition-all duration-200 ${
+                    item.id === "radio"
+                      ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)]"
+                      : isActive(item)
+                      ? "text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,255,255,0.2)]"
+                      : "text-foreground/90 hover:text-neon-cyan hover:bg-neon-cyan/5 border border-transparent"
+                  }`}
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <item.icon className="w-5 h-5" />
+                  {item.label[language]}
+                </Link>
+              ))}
             </nav>
             <div className="mt-auto pt-6 border-t border-neon-purple/20">
               <p className="text-sm text-muted-foreground text-center">{branding?.site_name || "DJ Lobo Radio"}</p>

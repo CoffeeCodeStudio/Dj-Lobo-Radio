@@ -35,13 +35,9 @@ const HeroSection = () => {
   const heroOpt = optimizeHero(branding?.hero_image_url);
   const siteName = branding?.site_name || "DJ LOBO";
 
-  const scrollToSchedule = () => {
-    const el = document.getElementById("schedule") || document.getElementById("boka");
-    el?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const scrollToBooking = () => {
-    document.getElementById("boka")?.scrollIntoView({ behavior: "smooth" });
+    // Navigate to spelningar page
+    window.location.href = "/spelningar#boka";
   };
 
   return (

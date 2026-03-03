@@ -164,7 +164,7 @@ const NowPlayingBar = () => {
   };
 
   const handleMixesClick = () => {
-    navigate("/galleri");
+    navigate("/media");
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
