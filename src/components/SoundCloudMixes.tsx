@@ -8,20 +8,20 @@ const translations = {
     title: "SENASTE MIXAR",
     subtitle: "Lyssna på DJ Lobos senaste sets",
     loading: "Laddar mix…",
-    empty: "Inga mixar tillgängliga just nu.",
+    empty: "Inga mixar tillgängliga just nu."
   },
   en: {
     title: "LATEST MIXES",
     subtitle: "Listen to DJ Lobo's latest sets",
     loading: "Loading mix…",
-    empty: "No mixes available right now.",
+    empty: "No mixes available right now."
   },
   es: {
     title: "ÚLTIMAS MEZCLAS",
     subtitle: "Escucha los últimos sets de DJ Lobo",
     loading: "Cargando mezcla…",
-    empty: "No hay mezclas disponibles en este momento.",
-  },
+    empty: "No hay mezclas disponibles en este momento."
+  }
 };
 
 interface Track {
@@ -58,32 +58,32 @@ const LazyEmbed = ({ title, embedUrl, loadingText }: LazyEmbedProps) => {
     <div
       ref={ref}
       className="rounded-xl border border-neon-cyan/20 bg-background/50 backdrop-blur-sm overflow-hidden transition-shadow"
-      style={{ boxShadow: "0 0 20px -8px hsla(180, 100%, 50%, 0.12)" }}
-    >
+      style={{ boxShadow: "0 0 20px -8px hsla(180, 100%, 50%, 0.12)" }}>
+      
       <div className="px-4 py-3 border-b border-neon-cyan/10 flex items-center gap-2">
         <Music className="w-4 h-4 text-[#FFD700]" aria-hidden="true" />
         <span className="font-display text-sm font-bold text-[#FFD700] truncate">{title}</span>
       </div>
       <div className="aspect-video sm:aspect-[16/7] relative">
-        {visible ? (
-          <iframe
-            src={embedUrl}
-            width="100%"
-            height="100%"
-            className="absolute inset-0 w-full h-full"
-            allow="autoplay"
-            loading="lazy"
-            title={title}
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">
+        {visible ?
+        <iframe
+          src={embedUrl}
+          width="100%"
+          height="100%"
+          className="absolute inset-0 w-full h-full"
+          allow="autoplay"
+          loading="lazy"
+          title={title} /> :
+
+
+        <div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">
             <Headphones className="w-5 h-5 mr-2 text-neon-cyan animate-pulse" />
             {loadingText}
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 };
 
 interface SoundCloudMixesProps {
@@ -99,10 +99,10 @@ const SoundCloudMixes = ({ preview = false }: SoundCloudMixesProps) => {
 
   useEffect(() => {
     const fetchTracks = async () => {
-      const { data } = await supabase
-        .from("soundcloud_mixes")
-        .select("id, title, soundcloud_url")
-        .order("sort_order", { ascending: true });
+      const { data } = await supabase.
+      from("soundcloud_mixes").
+      select("id, title, soundcloud_url").
+      order("sort_order", { ascending: true });
       setTracks(data || []);
       setLoading(false);
     };
@@ -129,11 +129,11 @@ const SoundCloudMixes = ({ preview = false }: SoundCloudMixesProps) => {
   const displayTracks = preview ? tracks.slice(0, 1) : tracks;
 
   if (!loading && tracks.length === 0) {
-    return (
-      <section className="py-12 text-center">
-        <p className="text-muted-foreground">{t.empty}</p>
-      </section>
-    );
+    return;
+
+
+
+
   }
 
   return (
@@ -141,38 +141,38 @@ const SoundCloudMixes = ({ preview = false }: SoundCloudMixesProps) => {
       ref={sectionRef}
       id="mixes"
       className={preview ? "py-8 relative" : "py-12 sm:py-20 relative"}
-      aria-labelledby="mixes-title"
-    >
+      aria-labelledby="mixes-title">
+      
       <div className={preview ? "max-w-3xl mx-auto" : "max-w-5xl mx-auto"}>
         <div className="text-center mb-6 sm:mb-10 scroll-reveal">
           <h2
             id="mixes-title"
-            className="font-display text-2xl sm:text-4xl md:text-5xl font-bold text-neon-gradient mb-2 italic"
-          >
+            className="font-display text-2xl sm:text-4xl md:text-5xl font-bold text-neon-gradient mb-2 italic">
+            
             {t.title}
           </h2>
           {!preview && <p className="text-muted-foreground text-sm sm:text-base">{t.subtitle}</p>}
         </div>
 
-        {loading ? (
-          <div className="flex items-center justify-center py-12">
+        {loading ?
+        <div className="flex items-center justify-center py-12">
             <div className="loading-spinner" />
+          </div> :
+
+        <div className={`scroll-reveal ${preview ? "" : "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"}`}>
+            {displayTracks.map((track) =>
+          <LazyEmbed
+            key={track.id}
+            title={track.title}
+            embedUrl={track.soundcloud_url}
+            loadingText={t.loading} />
+
+          )}
           </div>
-        ) : (
-          <div className={`scroll-reveal ${preview ? "" : "grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"}`}>
-            {displayTracks.map((track) => (
-              <LazyEmbed
-                key={track.id}
-                title={track.title}
-                embedUrl={track.soundcloud_url}
-                loadingText={t.loading}
-              />
-            ))}
-          </div>
-        )}
+        }
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default SoundCloudMixes;
