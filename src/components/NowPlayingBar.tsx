@@ -100,6 +100,7 @@ const NowPlayingBar = () => {
 
   const isRadio = mode === "radio";
   const isMix = mode === "mix";
+  const isActive = mode !== null;
 
   // Sync HTML audio element with radio mode
   useEffect(() => {
@@ -154,12 +155,24 @@ const NowPlayingBar = () => {
     };
   }, [setStatus]);
 
+  // Add/remove body padding when player is active
+  useEffect(() => {
+    if (isActive) {
+      document.body.style.paddingBottom = "80px";
+    } else {
+      document.body.style.paddingBottom = "";
+    }
+    return () => {
+      document.body.style.paddingBottom = "";
+    };
+  }, [isActive]);
+
   const handleRadioToggle = () => {
     if (isRadio && isPlaying) {
       stop();
       setStatus("offline");
     } else {
-      playRadio(); // This stops any playing mix automatically
+      playRadio();
     }
   };
 
@@ -188,14 +201,12 @@ const NowPlayingBar = () => {
     return `https://w.soundcloud.com/player/?url=${encoded}&color=%2300e5ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
   };
 
-  // Determine active state for the display
-  const isActive = mode !== null;
   const showExpandedMix = isMix && currentTrack && !isMinimized;
 
   return (
     <div
       className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-300 ${
-        showExpandedMix ? "h-[260px] sm:h-[200px]" : ""
+        showExpandedMix ? "h-[280px] sm:h-[200px]" : ""
       }`}
       role="region"
       aria-label={t.player}
@@ -207,67 +218,47 @@ const NowPlayingBar = () => {
       <div className="absolute inset-0 bg-background/90 backdrop-blur-xl border-t border-primary/30 shadow-[0_-4px_30px_-4px_hsl(var(--primary)/0.25)]" />
 
       <div className="relative h-full flex flex-col">
-        {/* Main control bar */}
-        <div className="max-w-7xl mx-auto w-full px-3 sm:px-4 py-2 flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* === SWITCHER: Radio / Mixes === */}
-          <div className="flex items-center gap-1 shrink-0">
-            {/* Radio button */}
+        {/* Main control bar — mobile: taller, reorganized layout */}
+        <div className="max-w-7xl mx-auto w-full px-3 sm:px-4 py-3 md:py-2 flex items-center gap-2 sm:gap-3 shrink-0">
+
+          {/* === PLAY/PAUSE button (LEFT on mobile) === */}
+          {isRadio && (
             <button
               onClick={handleRadioToggle}
-              className={`tap-target flex items-center gap-1.5 px-3 sm:px-3.5 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
-                isRadio
-                  ? "bg-destructive/20 text-destructive border border-destructive/40 shadow-[0_0_12px_hsl(var(--destructive)/0.3)]"
-                  : "glass-card text-muted-foreground hover:text-foreground hover:border-destructive/30"
-              }`}
-              aria-label={isRadio && isPlaying ? t.pauseRadio : t.playRadio}
-              aria-pressed={isRadio}
+              disabled={isLoading}
+              className="tap-target w-11 h-11 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-destructive to-destructive/80 flex items-center justify-center hover:scale-110 transition-transform focus-neon disabled:opacity-70 shrink-0"
+              aria-label={isPlaying ? t.pauseRadio : t.playRadio}
             >
-              <Radio className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              {/* Pulsing LIVE dot */}
-              {isRadio && isPlaying && (
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive" />
-                </span>
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 text-white animate-spin" />
+              ) : isPlaying ? (
+                <Pause className="w-5 h-5 text-white" />
+              ) : (
+                <Play className="w-5 h-5 text-white ml-0.5" />
               )}
-              <span className="hidden xs:inline">{t.liveRadio}</span>
             </button>
+          )}
 
-            {/* Mixes button */}
-            <button
-              onClick={handleMixesClick}
-              className={`tap-target flex items-center gap-1.5 px-3 sm:px-3.5 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
-                isMix
-                  ? "bg-primary/20 text-primary border border-primary/40 shadow-[0_0_12px_hsl(var(--primary)/0.3)]"
-                  : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/30"
-              }`}
-              aria-label={t.minaMixar}
-            >
-              <ListMusic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="hidden xs:inline">{t.minaMixar}</span>
-            </button>
-          </div>
-
-          {/* === NOW PLAYING INFO === */}
+          {/* === NOW PLAYING INFO (center, flexible) === */}
           <div className="flex-1 min-w-0 flex items-center gap-2 sm:gap-3">
-            {/* Cover art / Radio icon */}
+            {/* Cover art / Radio icon — smaller on mobile */}
             {isMix && currentTrack?.coverArt ? (
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg overflow-hidden shrink-0 border border-primary/20">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden shrink-0 border border-primary/20">
                 <img src={currentTrack.coverArt} alt={currentTrack.title} className="w-full h-full object-cover" />
               </div>
             ) : isRadio ? (
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg shrink-0 bg-destructive/10 border border-destructive/20 flex items-center justify-center">
+              <div className="hidden sm:flex w-10 h-10 rounded-lg shrink-0 bg-destructive/10 border border-destructive/20 items-center justify-center">
                 <Radio className="w-5 h-5 text-destructive" />
               </div>
             ) : (
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg shrink-0 bg-muted flex items-center justify-center">
-                <Music className="w-5 h-5 text-muted-foreground" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg shrink-0 bg-muted flex items-center justify-center">
+                <Music className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground" />
               </div>
             )}
 
-            {/* Title + status */}
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">
+            {/* Title + status — allow 2-line wrap on mobile */}
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium text-foreground line-clamp-2 sm:truncate leading-tight">
                 {isRadio
                   ? isPlaying
                     ? t.radioLive
@@ -276,76 +267,91 @@ const NowPlayingBar = () => {
                   ? currentTrack.title
                   : "DJ Lobo Radio"}
               </p>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5">
                 {isRadio && isPlaying && !isLoading && (
-                  <>
-                    <span className="text-destructive font-bold">● LIVE</span>
-                    {/* Mini visualizer */}
-                    <div className="flex items-end gap-px h-3" aria-hidden="true">
+                  <div className="flex items-center gap-1.5">
+                    <span className="relative flex h-2.5 w-2.5 shrink-0">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-destructive" />
+                    </span>
+                    <span className="text-destructive font-bold">LIVE</span>
+                    {/* Mini visualizer — hide on very small screens */}
+                    <div className="hidden xs:flex items-end gap-px h-3" aria-hidden="true">
                       {[1, 2, 3, 4].map((bar) => (
                         <div key={bar} className="w-0.5 bg-destructive rounded-full visualizer-bar" />
                       ))}
                     </div>
-                  </>
+                  </div>
                 )}
                 {isRadio && isLoading && (
-                  <>
+                  <div className="flex items-center gap-1.5">
                     <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />
                     <span>{t.connecting}</span>
-                  </>
+                  </div>
                 )}
                 {isMix && currentTrack && (
-                  <>
-                    <Disc3 className="w-3 h-3 text-primary animate-spin" style={{ animationDuration: "3s" }} />
+                  <div className="flex items-center gap-1.5">
+                    <Disc3 className="w-3 h-3 text-primary animate-spin shrink-0" style={{ animationDuration: "3s" }} />
                     <span className="capitalize">{currentTrack.source}</span>
                     {isPlaying && <span className="text-primary">• {t.playing}</span>}
-                  </>
+                  </div>
                 )}
               </div>
             </div>
           </div>
 
-          {/* === PLAY/PAUSE for radio mode === */}
-          {isRadio && (
-            <button
-              onClick={handleRadioToggle}
-              disabled={isLoading}
-              className="tap-target w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-destructive to-destructive/80 flex items-center justify-center hover:scale-110 transition-transform focus-neon disabled:opacity-70 shrink-0"
-              aria-label={isPlaying ? t.pauseRadio : t.playRadio}
-            >
-              {isLoading ? (
-                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-spin" />
-              ) : isPlaying ? (
-                <Pause className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-              ) : (
-                <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white ml-0.5" />
-              )}
-            </button>
-          )}
-
           {/* === Mix player controls === */}
           {isMix && currentTrack && (
-            <div className="flex items-center gap-1 shrink-0">
+            <div className="flex items-center gap-0.5 shrink-0">
               <button
                 onClick={toggleMinimize}
-                className="p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                className="tap-target p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
                 aria-label={isMinimized ? t.expand : t.minimize}
               >
-                {isMinimized ? <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />}
+                {isMinimized ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
               </button>
               <button
                 onClick={stop}
-                className="p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
+                className="tap-target p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
                 aria-label={t.close}
               >
-                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+                <X className="w-5 h-5" />
               </button>
             </div>
           )}
 
+          {/* === SWITCHER: Radio / Mixes (RIGHT on mobile) === */}
+          <div className="flex items-center gap-1 shrink-0">
+            {/* Radio switcher — only show if NOT already in radio mode (avoid double radio btn) */}
+            {!isRadio && (
+              <button
+                onClick={handleRadioToggle}
+                className="tap-target flex items-center gap-1.5 px-3 py-2.5 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 glass-card text-muted-foreground hover:text-foreground hover:border-destructive/30"
+                aria-label={t.playRadio}
+              >
+                <Radio className="w-4 h-4" />
+                <span className="hidden sm:inline">{t.liveRadio}</span>
+              </button>
+            )}
+
+            {/* Mixes button */}
+            <button
+              onClick={handleMixesClick}
+              className={`tap-target flex items-center gap-1.5 px-3 py-2.5 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
+                isMix
+                  ? "bg-primary/20 text-primary border border-primary/40 shadow-[0_0_12px_hsl(var(--primary)/0.3)]"
+                  : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/30"
+              }`}
+              aria-label={t.minaMixar}
+            >
+              <ListMusic className="w-4 h-4" />
+              <span className="hidden sm:inline">{t.minaMixar}</span>
+            </button>
+          </div>
+
           {/* === Volume (radio mode, desktop only) === */}
           {isRadio && (
-            <div className="hidden sm:flex items-center gap-2 shrink-0">
+            <div className="hidden md:flex items-center gap-2 shrink-0">
               <button
                 onClick={() => setIsMuted(!isMuted)}
                 aria-label={isMuted ? t.unmute : t.mute}
