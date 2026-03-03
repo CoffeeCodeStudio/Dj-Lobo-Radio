@@ -48,7 +48,7 @@ const MixCardGrid = () => {
   const t = translations[language];
   const [mixes, setMixes] = useState<UnifiedMix[]>([]);
   const [loading, setLoading] = useState(true);
-  const { play, currentTrack } = usePlayerStore();
+  const { playMix, currentTrack } = usePlayerStore();
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -110,7 +110,7 @@ const MixCardGrid = () => {
       source: mix.source,
       originalUrl: mix.url,
     };
-    play(track);
+    playMix(track);
   };
 
   if (!loading && mixes.length === 0) {

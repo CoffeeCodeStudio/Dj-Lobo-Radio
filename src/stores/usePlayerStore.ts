@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 export type MixSource = "mixcloud" | "soundcloud";
+export type PlayerMode = "radio" | "mix" | null;
 
 export interface MixTrack {
   id: string;
@@ -12,10 +13,19 @@ export interface MixTrack {
 }
 
 interface PlayerState {
+  mode: PlayerMode;
   currentTrack: MixTrack | null;
   isPlaying: boolean;
   isMinimized: boolean;
-  play: (track: MixTrack) => void;
+
+  // Radio controls
+  playRadio: () => void;
+  stopRadio: () => void;
+
+  // Mix controls
+  playMix: (track: MixTrack) => void;
+
+  // Shared controls
   pause: () => void;
   resume: () => void;
   stop: () => void;
@@ -23,12 +33,32 @@ interface PlayerState {
 }
 
 export const usePlayerStore = create<PlayerState>((set) => ({
+  mode: null,
   currentTrack: null,
   isPlaying: false,
   isMinimized: false,
-  play: (track) => set({ currentTrack: track, isPlaying: true, isMinimized: false }),
+
+  playRadio: () =>
+    set({
+      mode: "radio",
+      currentTrack: null,
+      isPlaying: true,
+      isMinimized: false,
+    }),
+
+  stopRadio: () =>
+    set((s) => (s.mode === "radio" ? { mode: null, isPlaying: false } : s)),
+
+  playMix: (track) =>
+    set({
+      mode: "mix",
+      currentTrack: track,
+      isPlaying: true,
+      isMinimized: false,
+    }),
+
   pause: () => set({ isPlaying: false }),
   resume: () => set({ isPlaying: true }),
-  stop: () => set({ currentTrack: null, isPlaying: false }),
+  stop: () => set({ mode: null, currentTrack: null, isPlaying: false }),
   toggleMinimize: () => set((s) => ({ isMinimized: !s.isMinimized })),
 }));
