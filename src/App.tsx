@@ -8,10 +8,10 @@ import { lazy, Suspense } from "react";
 import Layout from "@/components/Layout";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
-// Lazy-loaded pages
 const Index = lazy(() => import("./pages/Index"));
 const ListenPage = lazy(() => import("./pages/ListenPage"));
 const MediaPage = lazy(() => import("./pages/MediaPage"));
+const ReferencesPage = lazy(() => import("./pages/ReferencesPage"));
 const SpelningarPage = lazy(() => import("./pages/SpelningarPage"));
 const Admin = lazy(() => import("./pages/Admin"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -40,12 +40,12 @@ const App = () => (
                   <Route path="/" element={<Index />} />
                   <Route path="/lyssna" element={<ListenPage />} />
                   <Route path="/media" element={<MediaPage />} />
+                  <Route path="/referenser" element={<ReferencesPage />} />
                   <Route path="/spelningar" element={<SpelningarPage />} />
                   {/* Legacy redirects */}
                   <Route path="/radio" element={<Navigate to="/lyssna" replace />} />
                   <Route path="/mixes" element={<Navigate to="/media" replace />} />
                   <Route path="/galleri" element={<Navigate to="/media" replace />} />
-                  <Route path="/referenser" element={<Navigate to="/media" replace />} />
                   <Route path="/utrustning" element={<Navigate to="/spelningar" replace />} />
                   <Route path="/admin" element={<Admin />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
