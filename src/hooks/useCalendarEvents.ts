@@ -10,99 +10,75 @@ export interface CalendarEvent {
   timeFormatted: string;
 }
 
-// Empty placeholder until real calendar is connected
-const PLACEHOLDER_EVENTS: CalendarEvent[] = [];
-
 export const useCalendarEvents = () => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [calendarId, setCalendarId] = useState<string | null>(null);
   const [isPlaceholder, setIsPlaceholder] = useState(false);
 
   useEffect(() => {
-    fetchCalendarId();
+    fetchEvents();
   }, []);
 
-  useEffect(() => {
-    if (calendarId) {
-      fetchCalendarEvents(calendarId);
-    } else if (!loading) {
-      setEvents(PLACEHOLDER_EVENTS);
-      setIsPlaceholder(true);
-    }
-  }, [calendarId, loading]);
-
-  const fetchCalendarId = async () => {
-    const { data, error } = await supabase
-      .from("site_branding")
-      .select("google_calendar_id")
-      .limit(1)
-      .maybeSingle();
-
-    if (!error && data?.google_calendar_id) {
-      setCalendarId(data.google_calendar_id);
-    }
-    setLoading(false);
-  };
-
-  const fetchCalendarEvents = async (calId: string) => {
+  const fetchEvents = async () => {
     setLoading(true);
     try {
-      // Use Google Calendar public JSON feed
-      const now = new Date().toISOString();
-      const maxDate = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString();
-      
-      // API key from environment variable for easier rotation and security
-      const apiKey = import.meta.env.VITE_GOOGLE_CALENDAR_API_KEY;
-      if (!apiKey) {
-        console.error("Google Calendar API key not configured");
-        setEvents(PLACEHOLDER_EVENTS);
+      // 1. Get calendar ID from branding
+      const { data: branding, error: brandingError } = await supabase
+        .from("site_branding")
+        .select("google_calendar_id")
+        .limit(1)
+        .maybeSingle();
+
+      if (brandingError || !branding?.google_calendar_id) {
+        console.log("[Calendar] No calendar ID configured");
+        setEvents([]);
         setIsPlaceholder(true);
         setLoading(false);
         return;
       }
-      
-      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calId)}/events?key=${apiKey}&timeMin=${now}&timeMax=${maxDate}&singleEvents=true&orderBy=startTime&maxResults=6`;
-      
-      const response = await fetch(url);
-      
-      if (!response.ok) {
-        console.error("Failed to fetch calendar events:", response.status);
-        setEvents(PLACEHOLDER_EVENTS);
+
+      // 2. Call edge function to fetch events securely
+      const { data, error } = await supabase.functions.invoke("google-calendar", {
+        body: { calendarId: branding.google_calendar_id },
+      });
+
+      if (error) {
+        console.error("[Calendar] Edge function error:", error);
+        setEvents([]);
         setIsPlaceholder(true);
+        setLoading(false);
         return;
       }
 
-      const data = await response.json();
-      
-      if (data.items && data.items.length > 0) {
-        const formattedEvents: CalendarEvent[] = data.items.map((item: any) => {
+      if (data?.items && data.items.length > 0) {
+        const formatted: CalendarEvent[] = data.items.map((item: any) => {
           const startDate = new Date(item.start.dateTime || item.start.date);
-          const dayNames = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
-          
+          const dayNames = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
+          const monthNames = ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
+
           return {
             id: item.id,
             title: item.summary || "Untitled Event",
-            location: item.location || "Plats meddelas",
+            location: item.location || "",
             date: startDate,
-            dateFormatted: dayNames[startDate.getDay()],
+            dateFormatted: `${dayNames[startDate.getDay()]} ${startDate.getDate()} ${monthNames[startDate.getMonth()]}`,
             timeFormatted: startDate.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" }),
           };
         });
-        
-        setEvents(formattedEvents);
+
+        setEvents(formatted);
         setIsPlaceholder(false);
       } else {
-        setEvents(PLACEHOLDER_EVENTS);
+        setEvents([]);
         setIsPlaceholder(true);
       }
-    } catch (error) {
-      console.error("Error fetching calendar events:", error);
-      setEvents(PLACEHOLDER_EVENTS);
+    } catch (err) {
+      console.error("[Calendar] Unexpected error:", err);
+      setEvents([]);
       setIsPlaceholder(true);
     }
     setLoading(false);
   };
 
-  return { events, loading, isPlaceholder, refetch: () => calendarId && fetchCalendarEvents(calendarId) };
+  return { events, loading, isPlaceholder, refetch: fetchEvents };
 };
