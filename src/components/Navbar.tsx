@@ -14,7 +14,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { id: "hem", label: { sv: "Hem", en: "Home", es: "Inicio" } },
   { id: "boka", label: { sv: "Boka spelning", en: "Book Event", es: "Reservar" } },
-  { id: "lyssna", href: "/lyssna", label: { sv: "Lyssna", en: "Listen", es: "Escuchar" } },
+  { id: "lyssna", href: "/lyssna", label: { sv: "DJ Lobo Radio", en: "DJ Lobo Radio", es: "DJ Lobo Radio" } },
   { id: "referenser", href: "/referenser", label: { sv: "Referenser", en: "References", es: "Referencias" } },
   { id: "utrustning", href: "/utrustning", label: { sv: "Utrustning", en: "Equipment", es: "Equipo" } },
 ];
@@ -120,7 +120,7 @@ const Navbar = () => {
                     to={item.href}
                     className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
                       item.id === "lyssna"
-                        ? "permanent-neon-link font-bold"
+                        ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)] hover:shadow-[0_0_25px_rgba(255,0,128,0.5)]"
                         : isActive(item)
                         ? "text-neon-cyan bg-neon-cyan/10 shadow-[0_0_10px_rgba(0,255,255,0.3)]"
                         : "text-foreground/80 hover:text-neon-cyan hover:bg-neon-cyan/5"
@@ -202,7 +202,7 @@ const Navbar = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className={`w-full block text-left px-4 py-4 text-lg font-medium rounded-xl transition-all duration-200 ${
                       item.id === "lyssna"
-                        ? "permanent-neon-link font-bold"
+                        ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)]"
                         : isActive(item)
                         ? "text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,255,255,0.2)]"
                         : "text-foreground/90 hover:text-neon-cyan hover:bg-neon-cyan/5 border border-transparent"
