@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Radio, Globe, ChevronDown, Home, Headphones, CalendarDays } from "lucide-react";
+import { Menu, X, Radio, Globe, ChevronDown, Home, Headphones, CalendarDays, Star, Film } from "lucide-react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { useBranding } from "@/hooks/useBranding";
 import { optimizeLogo } from "@/lib/imageOptimizer";
@@ -10,12 +10,14 @@ interface NavItem {
   href: string;
   label: { sv: string; en: string; es: string };
   icon: React.ElementType;
+  highlight?: boolean;
 }
 
 const navItems: NavItem[] = [
   { id: "hem", href: "/", label: { sv: "Hem", en: "Home", es: "Inicio" }, icon: Home },
-  { id: "radio", href: "/lyssna", label: { sv: "Radio", en: "Radio", es: "Radio" }, icon: Radio },
-  { id: "media", href: "/media", label: { sv: "Media", en: "Media", es: "Media" }, icon: Headphones },
+  { id: "media", href: "/media", label: { sv: "Media", en: "Media", es: "Media" }, icon: Film },
+  { id: "radio", href: "/lyssna", label: { sv: "Radio", en: "Radio", es: "Radio" }, icon: Radio, highlight: true },
+  { id: "referenser", href: "/referenser", label: { sv: "Referenser", en: "References", es: "Referencias" }, icon: Star },
   { id: "spelningar", href: "/spelningar", label: { sv: "Spelningar", en: "Shows", es: "Shows" }, icon: CalendarDays },
 ];
 
@@ -88,14 +90,14 @@ const Navbar = () => {
               )}
             </Link>
 
-            {/* Desktop Navigation — 4 clean items */}
+            {/* Desktop Navigation — 5 items, RADIO centered */}
             <div className="hidden lg:flex items-center gap-1">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.href}
                   className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 flex items-center gap-2 ${
-                    item.id === "radio"
+                    item.highlight
                       ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)] hover:shadow-[0_0_25px_rgba(255,0,128,0.5)]"
                       : isActive(item)
                       ? "text-neon-cyan bg-neon-cyan/10 shadow-[0_0_10px_rgba(0,255,255,0.3)]"
@@ -104,6 +106,13 @@ const Navbar = () => {
                 >
                   <item.icon className="w-4 h-4" />
                   {item.label[language]}
+                  {/* Pulsing LIVE dot for Radio */}
+                  {item.highlight && (
+                    <span className="relative flex h-2 w-2 ml-0.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-pink opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-pink" />
+                    </span>
+                  )}
                 </Link>
               ))}
             </div>
@@ -164,7 +173,7 @@ const Navbar = () => {
                   to={item.href}
                   onClick={() => setIsMenuOpen(false)}
                   className={`w-full flex items-center gap-3 text-left px-4 py-4 text-lg font-medium rounded-xl transition-all duration-200 ${
-                    item.id === "radio"
+                    item.highlight
                       ? "permanent-neon-link font-bold text-neon-pink bg-neon-pink/10 border border-neon-pink/40 shadow-[0_0_15px_rgba(255,0,128,0.3)]"
                       : isActive(item)
                       ? "text-neon-cyan bg-neon-cyan/10 border border-neon-cyan/30 shadow-[0_0_15px_rgba(0,255,255,0.2)]"
@@ -174,6 +183,12 @@ const Navbar = () => {
                 >
                   <item.icon className="w-5 h-5" />
                   {item.label[language]}
+                  {item.highlight && (
+                    <span className="relative flex h-2.5 w-2.5 ml-auto">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-pink opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-neon-pink" />
+                    </span>
+                  )}
                 </Link>
               ))}
             </nav>
