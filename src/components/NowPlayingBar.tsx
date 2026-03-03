@@ -1,278 +1,390 @@
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, Loader2 } from "lucide-react";
-import { Radio } from "lucide-react";
+import {
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Loader2,
+  Radio,
+  Disc3,
+  Music,
+  ListMusic,
+  ChevronUp,
+  ChevronDown,
+  X,
+} from "lucide-react";
+import { usePlayerStore } from "@/stores/usePlayerStore";
 import { useStreamStatus } from "@/hooks/useStreamStatus";
 import { useLanguage } from "@/contexts/LanguageContext";
-import BookNowButton from "./BookNowButton";
+import { useNavigate } from "react-router-dom";
 import { logger } from "@/lib/logger";
 
 const STREAM_URL = "https://stream.zeno.fm/gzzqvbuy0d7uv";
 
 const translations = {
   sv: {
+    radioLive: "RADIO LOBO — LIVE",
+    radioIdle: "RADIO LOBO",
     connecting: "ANSLUTER...",
-    nowPlaying: "SPELAR NU",
-    idle: "KLICKA PLAY",
+    liveRadio: "Live Radio",
+    minaMixar: "Mina Mixar",
     pauseRadio: "Pausa radio",
     playRadio: "Spela radio",
     unmute: "Slå på ljud",
-    mute: "Tysta ljud",
+    mute: "Tysta",
     volume: "Volym",
-    radioPlayer: "Radiospelare",
+    player: "Spelare",
+    playing: "Spelar",
+    expand: "Expandera",
+    minimize: "Minimera",
+    close: "Stäng",
   },
   en: {
+    radioLive: "RADIO LOBO — LIVE",
+    radioIdle: "RADIO LOBO",
     connecting: "CONNECTING...",
-    nowPlaying: "NOW PLAYING",
-    idle: "CLICK PLAY",
+    liveRadio: "Live Radio",
+    minaMixar: "My Mixes",
     pauseRadio: "Pause radio",
     playRadio: "Play radio",
     unmute: "Unmute",
     mute: "Mute",
     volume: "Volume",
-    radioPlayer: "Radio player",
+    player: "Player",
+    playing: "Playing",
+    expand: "Expand",
+    minimize: "Minimize",
+    close: "Close",
   },
   es: {
+    radioLive: "RADIO LOBO — EN VIVO",
+    radioIdle: "RADIO LOBO",
     connecting: "CONECTANDO...",
-    nowPlaying: "REPRODUCIENDO",
-    idle: "PULSA PLAY",
+    liveRadio: "Radio en Vivo",
+    minaMixar: "Mis Mezclas",
     pauseRadio: "Pausar radio",
     playRadio: "Reproducir radio",
     unmute: "Activar sonido",
     mute: "Silenciar",
     volume: "Volumen",
-    radioPlayer: "Reproductor de radio",
+    player: "Reproductor",
+    playing: "Reproduciendo",
+    expand: "Expandir",
+    minimize: "Minimizar",
+    close: "Cerrar",
   },
 };
 
 const NowPlayingBar = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const {
+    mode,
+    currentTrack,
+    isPlaying,
+    isMinimized,
+    playRadio,
+    playMix,
+    pause,
+    resume,
+    stop,
+    toggleMinimize,
+  } = usePlayerStore();
+
   const [isLoading, setIsLoading] = useState(false);
   const [volume, setVolume] = useState(70);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { setStatus } = useStreamStatus();
+  const { status, setStatus } = useStreamStatus();
   const { language } = useLanguage();
+  const navigate = useNavigate();
   const t = translations[language];
 
+  const isRadio = mode === "radio";
+  const isMix = mode === "mix";
+
+  // Sync HTML audio element with radio mode
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isRadio && isPlaying) {
+      setIsLoading(true);
+      setStatus("connecting");
+      audio.src = STREAM_URL;
+      audio.load();
+      audio.play().then(() => {
+        setIsLoading(false);
+        setStatus("live");
+      }).catch((err) => {
+        logger.error("Radio play error:", err);
+        setIsLoading(false);
+        setStatus("error", "Kunde inte ansluta");
+      });
+    } else if (!isRadio || !isPlaying) {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+      if (status === "live" || status === "connecting") {
+        setStatus("offline");
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isRadio, isPlaying]);
+
+  // Volume sync
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume / 100;
     }
   }, [volume, isMuted]);
 
+  // Audio element event listeners
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
-
-    const handleWaiting = () => {
-      setIsLoading(true);
-      setStatus('connecting');
-    };
-    
-    const handlePlaying = () => {
-      setIsLoading(false);
-      setStatus('live');
-    };
-    
-    const handleCanPlay = () => {
-      setIsLoading(false);
-    };
-
-    const handleError = () => {
-      setIsLoading(false);
-      setIsPlaying(false);
-      setStatus('error', 'Kunde inte ansluta till streamen');
-    };
-
-    const handlePause = () => {
-      if (!audio.ended) {
-        setStatus('offline');
-      }
-    };
-
-    const handleStalled = () => {
-      setStatus('connecting');
-    };
-
-    audio.addEventListener("waiting", handleWaiting);
-    audio.addEventListener("playing", handlePlaying);
-    audio.addEventListener("canplay", handleCanPlay);
-    audio.addEventListener("error", handleError);
-    audio.addEventListener("pause", handlePause);
-    audio.addEventListener("stalled", handleStalled);
-
+    const onPlaying = () => { setIsLoading(false); setStatus("live"); };
+    const onWaiting = () => { setIsLoading(true); setStatus("connecting"); };
+    const onError = () => { setIsLoading(false); setStatus("error"); };
+    audio.addEventListener("playing", onPlaying);
+    audio.addEventListener("waiting", onWaiting);
+    audio.addEventListener("error", onError);
     return () => {
-      audio.removeEventListener("waiting", handleWaiting);
-      audio.removeEventListener("playing", handlePlaying);
-      audio.removeEventListener("canplay", handleCanPlay);
-      audio.removeEventListener("error", handleError);
-      audio.removeEventListener("pause", handlePause);
-      audio.removeEventListener("stalled", handleStalled);
+      audio.removeEventListener("playing", onPlaying);
+      audio.removeEventListener("waiting", onWaiting);
+      audio.removeEventListener("error", onError);
     };
   }, [setStatus]);
 
-  const { status } = useStreamStatus();
-
-  const togglePlay = async () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-        setStatus('offline');
-      } else {
-        setIsLoading(true);
-        setStatus('connecting');
-        try {
-          await audioRef.current.play();
-          setIsPlaying(true);
-          setStatus('live');
-        } catch (error) {
-          logger.error("Error playing audio:", error);
-          setIsLoading(false);
-          setStatus('error', 'Kunde inte spela upp');
-        }
-      }
+  const handleRadioToggle = () => {
+    if (isRadio && isPlaying) {
+      stop();
+      setStatus("offline");
+    } else {
+      playRadio(); // This stops any playing mix automatically
     }
   };
 
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
+  const handleMixesClick = () => {
+    navigate("/galleri");
   };
 
   const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVolume(Number(e.target.value));
-    if (isMuted && Number(e.target.value) > 0) {
-      setIsMuted(false);
-    }
+    if (isMuted && Number(e.target.value) > 0) setIsMuted(false);
   };
 
+  // Build Mixcloud/SoundCloud embed URL
+  const getMixEmbedUrl = () => {
+    if (!currentTrack) return "";
+    if (currentTrack.source === "mixcloud") {
+      const path = currentTrack.originalUrl
+        .replace(/https?:\/\/(www\.)?mixcloud\.com/, "")
+        .replace(/\/$/, "");
+      return `https://www.mixcloud.com/widget/iframe/?dark=1&hide_cover=0&mini=0&autoplay=1&feed=${encodeURIComponent(path + "/")}`;
+    }
+    if (currentTrack.embedUrl?.includes("w.soundcloud.com")) {
+      return currentTrack.embedUrl.replace("auto_play=false", "auto_play=true");
+    }
+    const encoded = encodeURIComponent(currentTrack.originalUrl.trim());
+    return `https://w.soundcloud.com/player/?url=${encoded}&color=%2300e5ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+  };
+
+  // Determine active state for the display
+  const isActive = mode !== null;
+  const showExpandedMix = isMix && currentTrack && !isMinimized;
+
   return (
-    <div 
-      className={`fixed bottom-0 left-0 right-0 z-40 glass-card border-t transition-colors ${
-        isPlaying ? "player-active border-neon-cyan/50" : "border-neon-cyan/30"
+    <div
+      className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-300 ${
+        showExpandedMix ? "h-[260px] sm:h-[200px]" : ""
       }`}
       role="region"
-      aria-label={t.radioPlayer}
+      aria-label={t.player}
     >
-      <audio ref={audioRef} src={STREAM_URL} preload="none" />
-      
-      {/* Desktop Layout - Compact */}
-      <div className="hidden sm:block">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
-          {/* Play Button and Visualizer */}
-          <div className="flex items-center gap-3">
+      {/* Hidden audio element for radio */}
+      <audio ref={audioRef} preload="none" />
+
+      {/* Glass backdrop */}
+      <div className="absolute inset-0 bg-background/90 backdrop-blur-xl border-t border-primary/30 shadow-[0_-4px_30px_-4px_hsl(var(--primary)/0.25)]" />
+
+      <div className="relative h-full flex flex-col">
+        {/* Main control bar */}
+        <div className="max-w-7xl mx-auto w-full px-3 sm:px-4 py-2 flex items-center gap-2 sm:gap-3 shrink-0">
+          {/* === SWITCHER: Radio / Mixes === */}
+          <div className="flex items-center gap-1 shrink-0">
+            {/* Radio button */}
             <button
-              onClick={togglePlay}
+              onClick={handleRadioToggle}
+              className={`tap-target flex items-center gap-1.5 px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
+                isRadio
+                  ? "bg-destructive/20 text-destructive border border-destructive/40 shadow-[0_0_12px_hsl(var(--destructive)/0.3)]"
+                  : "glass-card text-muted-foreground hover:text-foreground hover:border-destructive/30"
+              }`}
+              aria-label={isRadio && isPlaying ? t.pauseRadio : t.playRadio}
+              aria-pressed={isRadio}
+            >
+              <Radio className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              {/* Pulsing LIVE dot */}
+              {isRadio && isPlaying && (
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-destructive" />
+                </span>
+              )}
+              <span className="hidden xs:inline">{t.liveRadio}</span>
+            </button>
+
+            {/* Mixes button */}
+            <button
+              onClick={handleMixesClick}
+              className={`tap-target flex items-center gap-1.5 px-2.5 sm:px-3.5 py-2 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
+                isMix
+                  ? "bg-primary/20 text-primary border border-primary/40 shadow-[0_0_12px_hsl(var(--primary)/0.3)]"
+                  : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/30"
+              }`}
+              aria-label={t.minaMixar}
+            >
+              <ListMusic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="hidden xs:inline">{t.minaMixar}</span>
+            </button>
+          </div>
+
+          {/* === NOW PLAYING INFO === */}
+          <div className="flex-1 min-w-0 flex items-center gap-2 sm:gap-3">
+            {/* Cover art / Radio icon */}
+            {isMix && currentTrack?.coverArt ? (
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg overflow-hidden shrink-0 border border-primary/20">
+                <img src={currentTrack.coverArt} alt={currentTrack.title} className="w-full h-full object-cover" />
+              </div>
+            ) : isRadio ? (
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg shrink-0 bg-destructive/10 border border-destructive/20 flex items-center justify-center">
+                <Radio className="w-5 h-5 text-destructive" />
+              </div>
+            ) : (
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg shrink-0 bg-muted flex items-center justify-center">
+                <Music className="w-5 h-5 text-muted-foreground" />
+              </div>
+            )}
+
+            {/* Title + status */}
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground truncate">
+                {isRadio
+                  ? isPlaying
+                    ? t.radioLive
+                    : t.radioIdle
+                  : isMix && currentTrack
+                  ? currentTrack.title
+                  : "DJ Lobo Radio"}
+              </p>
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                {isRadio && isPlaying && !isLoading && (
+                  <>
+                    <span className="text-destructive font-bold">● LIVE</span>
+                    {/* Mini visualizer */}
+                    <div className="flex items-end gap-px h-3" aria-hidden="true">
+                      {[1, 2, 3, 4].map((bar) => (
+                        <div key={bar} className="w-0.5 bg-destructive rounded-full visualizer-bar" />
+                      ))}
+                    </div>
+                  </>
+                )}
+                {isRadio && isLoading && (
+                  <>
+                    <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />
+                    <span>{t.connecting}</span>
+                  </>
+                )}
+                {isMix && currentTrack && (
+                  <>
+                    <Disc3 className="w-3 h-3 text-primary animate-spin" style={{ animationDuration: "3s" }} />
+                    <span className="capitalize">{currentTrack.source}</span>
+                    {isPlaying && <span className="text-primary">• {t.playing}</span>}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* === PLAY/PAUSE for radio mode === */}
+          {isRadio && (
+            <button
+              onClick={handleRadioToggle}
               disabled={isLoading}
+              className="tap-target w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-r from-destructive to-destructive/80 flex items-center justify-center hover:scale-110 transition-transform focus-neon disabled:opacity-70 shrink-0"
               aria-label={isPlaying ? t.pauseRadio : t.playRadio}
-              aria-pressed={isPlaying}
-              className="tap-target w-11 h-11 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-110 transition-transform focus-neon disabled:opacity-70"
             >
               {isLoading ? (
-                <Loader2 className="w-5 h-5 text-white animate-spin" aria-hidden="true" />
+                <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 text-white animate-spin" />
               ) : isPlaying ? (
-                <Pause className="w-5 h-5 text-white" aria-hidden="true" />
+                <Pause className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               ) : (
-                <Play className="w-5 h-5 text-white ml-0.5" aria-hidden="true" />
+                <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white ml-0.5" />
               )}
             </button>
+          )}
 
-            {/* Audio Visualizer */}
-            <div className="flex items-end gap-0.5 h-6" aria-hidden="true">
-              {[1, 2, 3, 4, 5].map((bar) => (
+          {/* === Mix player controls === */}
+          {isMix && currentTrack && (
+            <div className="flex items-center gap-1 shrink-0">
+              <button
+                onClick={toggleMinimize}
+                className="p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                aria-label={isMinimized ? t.expand : t.minimize}
+              >
+                {isMinimized ? <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />}
+              </button>
+              <button
+                onClick={stop}
+                className="p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
+                aria-label={t.close}
+              >
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
+          )}
+
+          {/* === Volume (radio mode, desktop only) === */}
+          {isRadio && (
+            <div className="hidden sm:flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => setIsMuted(!isMuted)}
+                aria-label={isMuted ? t.unmute : t.mute}
+                className="tap-target text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
+              >
+                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </button>
+              <div className="relative w-20 h-1.5 bg-muted rounded-full overflow-hidden">
                 <div
-                  key={bar}
-                  className={`w-1 bg-gradient-to-t from-neon-pink to-neon-cyan rounded-full ${
-                    isPlaying && !isLoading ? "visualizer-bar" : "h-1.5"
-                  }`}
-                  style={{
-                    height: isPlaying && !isLoading ? undefined : "6px",
-                  }}
-                ></div>
-              ))}
+                  className="absolute left-0 top-0 h-full bg-gradient-to-r from-destructive to-primary rounded-full transition-all"
+                  style={{ width: `${isMuted ? 0 : volume}%` }}
+                />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  aria-label={`${t.volume}: ${volume}%`}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </div>
             </div>
-          </div>
-
-          {/* Now Playing Info */}
-          <div className="flex-1 text-center min-w-0">
-            <div className="flex items-center justify-center gap-2 text-neon-cyan text-[10px] mb-0.5">
-              <Radio className="w-2.5 h-2.5 flex-shrink-0" aria-hidden="true" />
-              <span className="font-medium tracking-wider">
-                {isLoading ? t.connecting : isPlaying ? t.nowPlaying : t.idle}
-              </span>
-            </div>
-            <p className="text-foreground font-medium text-sm truncate">
-              DJ Lobo Radio - 80s & 90s Hits
-            </p>
-          </div>
-
-          {/* Book Now Button - Compact */}
-          <BookNowButton />
-
-          {/* Volume Control */}
-          <div className="flex items-center gap-2">
-            <button 
-              onClick={toggleMute}
-              aria-label={isMuted ? t.unmute : t.mute}
-              aria-pressed={isMuted}
-              className="tap-target text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
-            >
-              {isMuted ? (
-                <VolumeX className="w-4 h-4" aria-hidden="true" />
-              ) : (
-                <Volume2 className="w-4 h-4" aria-hidden="true" />
-              )}
-            </button>
-            <div className="relative w-20 h-1.5 bg-muted rounded-full overflow-hidden">
-              <div
-                className="absolute left-0 top-0 h-full bg-gradient-to-r from-neon-cyan to-neon-pink rounded-full transition-all"
-                style={{ width: `${isMuted ? 0 : volume}%` }}
-                aria-hidden="true"
-              ></div>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={volume}
-                onChange={handleVolumeChange}
-                aria-label={`${t.volume}: ${volume}%`}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-            </div>
-          </div>
+          )}
         </div>
-      </div>
 
-      {/* Mobile Slim Layout - 56px */}
-      <div className="sm:hidden">
-        <div className="h-14 px-3 flex items-center justify-between gap-2">
-          {/* Play Button */}
-          <button
-            onClick={togglePlay}
-            disabled={isLoading}
-            aria-label={isPlaying ? t.pauseRadio : t.playRadio}
-            aria-pressed={isPlaying}
-            className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center hover:scale-105 active:scale-95 transition-transform focus-neon disabled:opacity-70"
-          >
-            {isLoading ? (
-              <Loader2 className="w-4 h-4 text-white animate-spin" aria-hidden="true" />
-            ) : isPlaying ? (
-              <Pause className="w-4 h-4 text-white" aria-hidden="true" />
-            ) : (
-              <Play className="w-4 h-4 text-white ml-0.5" aria-hidden="true" />
-            )}
-          </button>
-
-          {/* Now Playing Info - Truncated */}
-          <div className="flex-1 min-w-0 text-center">
-            <p className="text-foreground font-medium text-xs truncate">
-              DJ Lobo Radio - 80s & 90s Hits
-            </p>
+        {/* === Expanded mix iframe === */}
+        {showExpandedMix && (
+          <div className="flex-1 px-4 pb-3">
+            <iframe
+              src={getMixEmbedUrl()}
+              width="100%"
+              height="100%"
+              className="rounded-lg border border-primary/10"
+              allow="autoplay"
+              title={currentTrack.title}
+            />
           </div>
-
-          {/* Book Now Button - Mobile */}
-          <BookNowButton />
-        </div>
+        )}
       </div>
     </div>
   );
