@@ -1,6 +1,5 @@
 import BookingSection from "@/components/BookingSection";
 import CalendarSection from "@/components/CalendarSection";
-import ScheduleSection from "@/components/ScheduleSection";
 import EquipmentSection from "@/components/EquipmentSection";
 import Footer from "@/components/Footer";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -42,9 +41,6 @@ const SpelningarPage = () => {
         <CalendarSection />
       </ErrorBoundary>
 
-      <ErrorBoundary>
-        <ScheduleSection />
-      </ErrorBoundary>
 
       {/* Booking Form */}
       <div id="boka">
