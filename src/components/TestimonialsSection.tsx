@@ -100,8 +100,13 @@ const TestimonialsSection = () => {
   const { language } = useLanguage();
   const t = translations[language];
 
-  const scrollToBooking = () => {
-    document.getElementById("boka")?.scrollIntoView({ behavior: "smooth" });
+  const goToBooking = () => {
+    const bokaEl = document.getElementById("boka");
+    if (bokaEl) {
+      bokaEl.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = "/spelningar#boka";
+    }
   };
 
   return (
@@ -188,7 +193,7 @@ const TestimonialsSection = () => {
       {/* CTA Button */}
       <div className="mt-12 text-center">
         <button
-          onClick={scrollToBooking}
+          onClick={goToBooking}
           className="book-now-button px-8 py-4 text-lg font-semibold rounded-full bg-gradient-to-r from-neon-pink to-neon-purple hover:from-neon-purple hover:to-neon-pink transition-all duration-300 shadow-lg shadow-neon-pink/30 hover:shadow-neon-purple/50 hover:scale-105"
         >
           {t.bookNow}
