@@ -1,37 +1,51 @@
 import { useEffect, useRef } from "react";
-import { MapPin, Clock, ExternalLink } from "lucide-react";
+import { MapPin, Clock, AlertCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const translations = {
   sv: {
     title: "KOMMANDE SPELNINGAR",
     subtitle: "Missa inte dessa spelningar",
     noEvents: "Inga kommande spelningar just nu",
-    bookNow: "Boka",
     locationTBA: "Plats meddelas",
+    errorMessage: "Kunde inte ladda spelningar just nu",
+    retry: "Försök igen",
   },
   en: {
     title: "UPCOMING EVENTS",
     subtitle: "Don't miss these shows",
     noEvents: "No upcoming shows right now",
-    bookNow: "Book",
     locationTBA: "Location TBA",
+    errorMessage: "Could not load shows right now",
+    retry: "Try again",
   },
   es: {
     title: "PRÓXIMOS EVENTOS",
     subtitle: "No te pierdas estos shows",
     noEvents: "No hay shows próximos",
-    bookNow: "Reservar",
     locationTBA: "Lugar por confirmar",
+    errorMessage: "No se pudieron cargar los shows",
+    retry: "Reintentar",
   },
 };
+
+const SkeletonEvent = () => (
+  <li className="flex items-center gap-4 px-4 sm:px-6 py-4">
+    <Skeleton className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex-shrink-0" />
+    <div className="flex-1 space-y-2">
+      <Skeleton className="h-4 w-3/5" />
+      <Skeleton className="h-3 w-2/5" />
+    </div>
+  </li>
+);
 
 const CalendarSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { language } = useLanguage();
   const t = translations[language];
-  const { events, loading } = useCalendarEvents();
+  const { events, loading, error, refetch } = useCalendarEvents();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -71,19 +85,38 @@ const CalendarSection = () => {
 
         {/* Event list container */}
         <div className="scroll-reveal rounded-2xl border border-neon-cyan/20 bg-background/40 backdrop-blur-md overflow-hidden" style={{ boxShadow: '0 0 30px -10px hsla(180, 100%, 50%, 0.15)' }}>
-          {loading && (
-            <div className="flex items-center justify-center py-16">
-              <div className="loading-spinner" />
+          {/* Skeleton loading */}
+          {loading && events.length === 0 && (
+            <ul role="list" className="divide-y divide-neon-cyan/10">
+              <SkeletonEvent />
+              <SkeletonEvent />
+              <SkeletonEvent />
+            </ul>
+          )}
+
+          {/* Error state */}
+          {!loading && error && events.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-12 gap-3">
+              <AlertCircle className="w-8 h-8 text-muted-foreground/50" />
+              <p className="text-muted-foreground text-sm">{t.errorMessage}</p>
+              <button
+                onClick={refetch}
+                className="text-xs text-neon-cyan hover:underline transition-colors"
+              >
+                {t.retry}
+              </button>
             </div>
           )}
 
-          {!loading && events.length === 0 && (
+          {/* Empty state */}
+          {!loading && !error && events.length === 0 && (
             <p className="text-center text-muted-foreground py-12 text-sm">
               {t.noEvents}
             </p>
           )}
 
-          {!loading && events.length > 0 && (
+          {/* Events */}
+          {events.length > 0 && (
             <ul role="list" className="divide-y divide-neon-cyan/10">
               {events.map((event, i) => {
                 const day = event.date.getDate();
@@ -123,7 +156,6 @@ const CalendarSection = () => {
                         )}
                       </div>
                     </div>
-
                   </li>
                 );
               })}
