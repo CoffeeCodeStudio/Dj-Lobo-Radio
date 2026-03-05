@@ -24,7 +24,8 @@ const translations = {
     aboutText: "Professionell DJ i Göteborg med 20+ års erfarenhet. Expert på 80-tal, 90-tal och latinmusik.",
     location: "Göteborg, Sverige",
     followInstagram: "Följ på Instagram",
-    followFacebook: "Följ på Facebook",
+    followFacebook: "Följ DJ Lobo Radio på Facebook",
+    followFacebookProd: "Följ DJ Lobo Producciones på Facebook",
     subscribeYoutube: "Prenumerera på YouTube",
     listenZeno: "Lyssna på Zeno.fm",
     visitStudio: "Besök Coffee Code Studio",
@@ -39,7 +40,8 @@ const translations = {
     aboutText: "Professional DJ in Gothenburg with 20+ years of experience. Expert in 80s, 90s and Latin music.",
     location: "Gothenburg, Sweden",
     followInstagram: "Follow on Instagram",
-    followFacebook: "Follow on Facebook",
+    followFacebook: "Follow DJ Lobo Radio on Facebook",
+    followFacebookProd: "Follow DJ Lobo Producciones on Facebook",
     subscribeYoutube: "Subscribe on YouTube",
     listenZeno: "Listen on Zeno.fm",
     visitStudio: "Visit Coffee Code Studio",
@@ -54,7 +56,8 @@ const translations = {
     aboutText: "DJ profesional en Gotemburgo con más de 20 años de experiencia. Experto en música de los 80, 90 y latina.",
     location: "Gotemburgo, Suecia",
     followInstagram: "Seguir en Instagram",
-    followFacebook: "Seguir en Facebook",
+    followFacebook: "Seguir DJ Lobo Radio en Facebook",
+    followFacebookProd: "Seguir DJ Lobo Producciones en Facebook",
     subscribeYoutube: "Suscribirse en YouTube",
     listenZeno: "Escuchar en Zeno.fm",
     visitStudio: "Visitar Coffee Code Studio",
@@ -138,7 +141,17 @@ const Footer = () => {
                           <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-cyan transition-colors" />
                         </a>
                       </TooltipTrigger>
-                      <TooltipContent><p>Facebook</p></TooltipContent>
+                      <TooltipContent><p>FB Radio</p></TooltipContent>
+                    </Tooltip>
+                  </li>
+                  <li>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <a href="https://www.facebook.com/DjloboProduccionesSweden/" target="_blank" rel="noopener noreferrer" aria-label={t.followFacebookProd} className="tap-target w-11 h-11 glass-card rounded-full flex items-center justify-center transition-all group focus-neon hover:scale-110">
+                          <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
+                        </a>
+                      </TooltipTrigger>
+                      <TooltipContent><p>FB Producciones</p></TooltipContent>
                     </Tooltip>
                   </li>
                   <li>
