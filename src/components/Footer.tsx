@@ -1,5 +1,4 @@
 import { Instagram, Facebook, Youtube, Radio as RadioIcon, Mail, Phone, MapPin } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Link } from "react-router-dom";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -7,7 +6,8 @@ import { optimizeLogo } from "@/lib/imageOptimizer";
 
 const DEFAULT_SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
-  facebook: "https://www.facebook.com/djloboradiodjs/",
+  facebookRadio: "https://www.facebook.com/djloboradiodjs/",
+  facebookProd: "https://www.facebook.com/DjloboProduccionesSweden/",
   youtube: "https://www.youtube.com/@djloboproducciones3211",
   zenoPlayer: "https://zeno.fm/radio/dj-lobo-radio-o85p/"
 };
@@ -15,51 +15,39 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/rami-e-453b77330/";
 
 const translations = {
   sv: {
-    description: "Bringing the best of 80s and 90s music to your ears. Tune in and let the nostalgia flow.",
     copyright: "© 2026 DJ Lobo Radio. All rights reserved.",
     privacyPolicy: "Integritetspolicy",
     terms: "Användarvillkor",
     contact: "Kontakt",
     about: "Om DJ Lobo",
-    aboutText: "Professionell DJ i Göteborg med 20+ års erfarenhet. Expert på 80-tal, 90-tal och latinmusik.",
+    aboutText: "Professionell DJ i Göteborg med 20+ års erfarenhet. Expert på House, World Hits, 80-tal, 90-tal och Latin beats.",
     location: "Göteborg, Sverige",
-    followInstagram: "Följ på Instagram",
-    followFacebook: "Följ DJ Lobo Radio på Facebook",
-    followFacebookProd: "Följ DJ Lobo Producciones på Facebook",
-    subscribeYoutube: "Prenumerera på YouTube",
-    listenZeno: "Lyssna på Zeno.fm",
+    bookSection: "Boka DJ Lobo",
+    radioSection: "Följ Radion",
     visitStudio: "Besök Coffee Code Studio",
   },
   en: {
-    description: "Bringing the best of 80s and 90s music to your ears. Tune in and let the nostalgia flow.",
     copyright: "© 2026 DJ Lobo Radio. All rights reserved.",
     privacyPolicy: "Privacy Policy",
     terms: "Terms of Service",
     contact: "Contact",
     about: "About DJ Lobo",
-    aboutText: "Professional DJ in Gothenburg with 20+ years of experience. Expert in 80s, 90s and Latin music.",
+    aboutText: "Professional DJ in Gothenburg with 20+ years of experience. Expert in House, World Hits, 80s, 90s and Latin beats.",
     location: "Gothenburg, Sweden",
-    followInstagram: "Follow on Instagram",
-    followFacebook: "Follow DJ Lobo Radio on Facebook",
-    followFacebookProd: "Follow DJ Lobo Producciones on Facebook",
-    subscribeYoutube: "Subscribe on YouTube",
-    listenZeno: "Listen on Zeno.fm",
+    bookSection: "Book DJ Lobo",
+    radioSection: "Follow the Radio",
     visitStudio: "Visit Coffee Code Studio",
   },
   es: {
-    description: "Trayendo lo mejor de la música de los 80s y 90s a tus oídos. Sintoniza y deja que fluya la nostalgia.",
     copyright: "© 2026 DJ Lobo Radio. Todos los derechos reservados.",
     privacyPolicy: "Política de Privacidad",
     terms: "Términos de Servicio",
     contact: "Contacto",
     about: "Sobre DJ Lobo",
-    aboutText: "DJ profesional en Gotemburgo con más de 20 años de experiencia. Experto en música de los 80, 90 y latina.",
+    aboutText: "DJ profesional en Gotemburgo con más de 20 años de experiencia. Experto en House, World Hits, 80s, 90s y Latin beats.",
     location: "Gotemburgo, Suecia",
-    followInstagram: "Seguir en Instagram",
-    followFacebook: "Seguir DJ Lobo Radio en Facebook",
-    followFacebookProd: "Seguir DJ Lobo Producciones en Facebook",
-    subscribeYoutube: "Suscribirse en YouTube",
-    listenZeno: "Escuchar en Zeno.fm",
+    bookSection: "Reservar DJ Lobo",
+    radioSection: "Sigue la Radio",
     visitStudio: "Visitar Coffee Code Studio",
   }
 };
@@ -76,7 +64,8 @@ const Footer = () => {
     youtube: branding?.youtube_channel_id
       ? `https://www.youtube.com/${branding.youtube_channel_id.startsWith("@") ? branding.youtube_channel_id : `channel/${branding.youtube_channel_id}`}`
       : DEFAULT_SOCIAL_LINKS.youtube,
-    facebook: DEFAULT_SOCIAL_LINKS.facebook,
+    facebookRadio: DEFAULT_SOCIAL_LINKS.facebookRadio,
+    facebookProd: DEFAULT_SOCIAL_LINKS.facebookProd,
     zenoPlayer: DEFAULT_SOCIAL_LINKS.zenoPlayer,
   };
 
@@ -84,7 +73,7 @@ const Footer = () => {
     <footer className="py-12 sm:py-16 px-4 sm:px-6 pb-32 sm:pb-36 relative border-t border-neon-purple/20">
       <div className="max-w-7xl mx-auto">
         {/* Grid: About + Contact + Social */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:gap-8 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10 md:gap-8 mb-10">
           {/* About */}
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-4">
@@ -119,64 +108,62 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div className="flex flex-col sm:col-span-2 md:col-span-1">
-            <h3 className="font-display text-lg font-bold text-neon-gradient mb-4">Social</h3>
-            <TooltipProvider>
-              <nav aria-label="Sociala medier">
-                <ul className="flex gap-3 flex-wrap">
-                  <li>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label={t.followInstagram} className="tap-target w-11 h-11 glass-card rounded-full flex items-center justify-center transition-all group focus-neon hover:scale-110">
-                          <Instagram className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
-                        </a>
-                      </TooltipTrigger>
-                      <TooltipContent><p>Instagram</p></TooltipContent>
-                    </Tooltip>
-                  </li>
-                  <li>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label={t.followFacebook} className="tap-target w-11 h-11 glass-card rounded-full flex items-center justify-center transition-all group focus-neon hover:scale-110">
-                          <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-cyan transition-colors" />
-                        </a>
-                      </TooltipTrigger>
-                      <TooltipContent><p>FB Radio</p></TooltipContent>
-                    </Tooltip>
-                  </li>
-                  <li>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <a href="https://www.facebook.com/DjloboProduccionesSweden/" target="_blank" rel="noopener noreferrer" aria-label={t.followFacebookProd} className="tap-target w-11 h-11 glass-card rounded-full flex items-center justify-center transition-all group focus-neon hover:scale-110">
-                          <Facebook className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
-                        </a>
-                      </TooltipTrigger>
-                      <TooltipContent><p>FB Producciones</p></TooltipContent>
-                    </Tooltip>
-                  </li>
-                  <li>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" aria-label={t.subscribeYoutube} className="tap-target w-11 h-11 glass-card rounded-full flex items-center justify-center transition-all group focus-neon hover:scale-110">
-                          <Youtube className="w-5 h-5 text-muted-foreground group-hover:text-neon-pink transition-colors" />
-                        </a>
-                      </TooltipTrigger>
-                      <TooltipContent><p>YouTube</p></TooltipContent>
-                    </Tooltip>
-                  </li>
-                  <li>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <a href={socialLinks.zenoPlayer} target="_blank" rel="noopener noreferrer" aria-label={t.listenZeno} className="tap-target w-11 h-11 glass-card rounded-full flex items-center justify-center transition-all group focus-neon hover:scale-110">
-                          <RadioIcon className="w-5 h-5 text-muted-foreground group-hover:text-neon-cyan transition-colors" />
-                        </a>
-                      </TooltipTrigger>
-                      <TooltipContent><p>Zeno.fm</p></TooltipContent>
-                    </Tooltip>
-                  </li>
-                </ul>
-              </nav>
-            </TooltipProvider>
+          {/* Section 1: Boka DJ Lobo */}
+          <div className="flex flex-col">
+            <h3 className="font-display text-lg font-bold text-neon-pink mb-4">{t.bookSection}</h3>
+            <nav aria-label={t.bookSection}>
+              <ul className="space-y-3">
+                <li>
+                  <a href={socialLinks.facebookProd} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-neon-pink transition-colors group">
+                    <span className="w-9 h-9 glass-card rounded-full flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                      <Facebook className="w-4 h-4 text-muted-foreground group-hover:text-neon-pink transition-colors" />
+                    </span>
+                    <span>FB Producciones</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-neon-pink transition-colors group">
+                    <span className="w-9 h-9 glass-card rounded-full flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                      <Instagram className="w-4 h-4 text-muted-foreground group-hover:text-neon-pink transition-colors" />
+                    </span>
+                    <span>Instagram</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-neon-pink transition-colors group">
+                    <span className="w-9 h-9 glass-card rounded-full flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                      <Youtube className="w-4 h-4 text-muted-foreground group-hover:text-neon-pink transition-colors" />
+                    </span>
+                    <span>YouTube</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          {/* Section 2: Följ Radion */}
+          <div className="flex flex-col">
+            <h3 className="font-display text-lg font-bold text-neon-cyan mb-4">{t.radioSection}</h3>
+            <nav aria-label={t.radioSection}>
+              <ul className="space-y-3">
+                <li>
+                  <a href={socialLinks.facebookRadio} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-neon-cyan transition-colors group">
+                    <span className="w-9 h-9 glass-card rounded-full flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                      <Facebook className="w-4 h-4 text-muted-foreground group-hover:text-neon-cyan transition-colors" />
+                    </span>
+                    <span>FB Radio</span>
+                  </a>
+                </li>
+                <li>
+                  <a href={socialLinks.zenoPlayer} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-neon-cyan transition-colors group">
+                    <span className="w-9 h-9 glass-card rounded-full flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                      <RadioIcon className="w-4 h-4 text-muted-foreground group-hover:text-neon-cyan transition-colors" />
+                    </span>
+                    <span>ZenoFM</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
 
