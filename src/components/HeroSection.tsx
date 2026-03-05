@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const translations = {
   sv: {
     title: "DJ LOBO",
-    subtitle: "80-TAL · 90-TAL · LATIN BEATS",
+    subtitle: "LATIN BEATS • HOUSE MUSIC • WORLD HITS • 80s & 90s",
     cta1: "SE SCHEMA",
     cta2: "BOKA SPELNING",
     tagline: "Göteborg's mest anlitade DJ för fester, bröllop och företagsevent",
