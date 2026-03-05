@@ -18,11 +18,12 @@ const SOCIAL_LINKS = {
 const translations = {
   sv: {
     connectTitle: "FÖLJ DJ LOBO",
-    connectSubtitle: "Följ resan, fånga live-set och gå med i communityn",
+    connectSubtitle: "Skapar magi på dansgolvet i Göteborg. Expert på House, World Hits, 80-tal, 90-tal & Latin beats.",
     gallery: "Galleri",
     noImages: "Inga bilder i galleriet ännu",
     followInstagram: "Följ på Instagram",
     joinFacebook: "Gilla på Facebook",
+    joinFacebookRadio: "Följ oss på Facebook",
     subscribeYoutube: "Prenumerera på YouTube",
     liveSets: "Live Sets & Videos",
     clickToWatch: "Klicka för att titta",
@@ -38,11 +39,12 @@ const translations = {
   },
   en: {
     connectTitle: "CONNECT WITH DJ LOBO",
-    connectSubtitle: "Follow the journey, catch live sets, and join the community",
+    connectSubtitle: "Creating magic on the dance floor in Gothenburg. Expert in House, World Hits, 80s, 90s & Latin beats.",
     gallery: "Gallery",
     noImages: "No images in gallery yet",
     followInstagram: "Follow on Instagram",
     joinFacebook: "Join on Facebook",
+    joinFacebookRadio: "Join us on Facebook",
     subscribeYoutube: "Subscribe on YouTube",
     liveSets: "Live Sets & Videos",
     clickToWatch: "Click to watch",
@@ -58,11 +60,12 @@ const translations = {
   },
   es: {
     connectTitle: "CONECTA CON DJ LOBO",
-    connectSubtitle: "Sigue el viaje, mira sets en vivo y únete a la comunidad",
+    connectSubtitle: "Creando magia en la pista de baile en Gotemburgo. Experto en House, World Hits, 80s, 90s & Latin beats.",
     gallery: "Galería",
     noImages: "No hay imágenes en la galería aún",
     followInstagram: "Seguir en Instagram",
     joinFacebook: "Únete en Facebook",
+    joinFacebookRadio: "Únete en Facebook",
     subscribeYoutube: "Suscribirse en YouTube",
     liveSets: "Sets en Vivo & Videos",
     clickToWatch: "Clic para ver",
@@ -395,6 +398,19 @@ const SocialGallerySection = () => {
                 <Instagram className="w-5 h-5" />
                 {t.followInstagram}
                 <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+            
+            {/* Join us on Facebook button */}
+            <div className="mt-4 text-center">
+              <a
+                href={SOCIAL_LINKS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass-card font-display font-bold tracking-wider text-sm hover:scale-105 transition-all text-neon-cyan hover:text-neon-pink"
+              >
+                <Facebook className="w-5 h-5" />
+                {t.joinFacebookRadio}
               </a>
             </div>
           </div>
