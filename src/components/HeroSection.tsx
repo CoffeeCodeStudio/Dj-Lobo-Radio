@@ -14,7 +14,7 @@ const translations = {
   },
   en: {
     title: "DJ LOBO",
-    subtitle: "80S · 90S · LATIN BEATS",
+    subtitle: "LATIN BEATS • HOUSE MUSIC • WORLD HITS • 80s & 90s",
     cta1: "VIEW SCHEDULE",
     cta2: "BOOK EVENT",
     tagline: "Gothenburg's most sought-after DJ for parties, weddings, and corporate events",
