@@ -1,5 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Mail, Phone, MapPin, Instagram, Youtube, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram, Youtube, Facebook, Send } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
