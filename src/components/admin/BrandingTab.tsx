@@ -90,8 +90,8 @@ const BrandingTab = () => {
       return;
     }
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast({ title: "❌ Filen är för stor", description: `Filen är ${(file.size / 1024 / 1024).toFixed(1)} MB. Max 5 MB.`, variant: "destructive" });
+    if (file.size > 2 * 1024 * 1024) {
+      toast({ title: "❌ Bilden är för stor", description: `Bilden är ${(file.size / 1024 / 1024).toFixed(1)} MB. Välj en bild under 2 MB så att sidan laddar snabbt.`, variant: "destructive" });
       return;
     }
 
