@@ -84,8 +84,8 @@ const Navbar = () => {
               {branding?.logo_url ? (
                 <img alt="DJ Lobo Radio Logo" className="h-16 sm:h-24 w-auto object-contain rounded-xl" src={optimizeLogo(branding.logo_url).src} fetchPriority="high" loading="eager" width={96} height={96} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = optimizeLogo(branding.logo_url).fallback; }} />
               ) : (
-              <div className="h-16 sm:h-20 w-16 sm:w-20 flex items-center justify-center">
-                  <Radio className="h-12 sm:h-16 w-12 sm:w-16 text-neon-cyan" />
+              <div className="h-16 sm:h-24 w-16 sm:w-24 flex items-center justify-center">
+                  <Radio className="h-12 sm:h-20 w-12 sm:w-20 text-neon-cyan" />
                 </div>
               )}
             </Link>
