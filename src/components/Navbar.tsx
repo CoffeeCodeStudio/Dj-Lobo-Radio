@@ -81,7 +81,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="focus-neon rounded-lg hover:scale-105 transition-transform flex items-center justify-center flex-shrink-0"
+              className="bg-transparent focus-neon rounded-lg hover:scale-105 transition-transform flex items-center justify-center flex-shrink-0"
               style={{ width: "120px", height: "120px" }}
               aria-label="DJ Lobo Radio - Hem"
             >
@@ -89,7 +89,7 @@ const Navbar = () => {
                 <img
                   alt="DJ Lobo Radio Logo"
                   src={branding.logo_url}
-                  style={{ width: "120px", height: "120px", objectFit: "contain" }}
+                  style={{ width: "60px", height: "60px", objectFit: "contain" }}
                   fetchPriority="high"
                   loading="eager"
                 />
