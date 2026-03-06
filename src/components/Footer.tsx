@@ -27,7 +27,7 @@ const translations = {
     visitStudio: "Besök Coffee Code Studio",
   },
   en: {
-    copyright: "© 2026 DJ Lobo Radio. All rights reserved.",
+    copyright: "© 2026 DJ Lobo Producciones. All rights reserved.",
     privacyPolicy: "Privacy Policy",
     terms: "Terms of Service",
     contact: "Contact",
