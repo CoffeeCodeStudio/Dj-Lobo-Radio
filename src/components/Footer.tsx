@@ -87,7 +87,7 @@ const Footer = () => {
                   src={branding.logo_url}
                   loading="lazy"
                   width={200}
-                  height={120}
+                  height={300}
                 />
               ) : (
                 <div className="h-16 sm:h-24 w-16 sm:w-24 flex items-center justify-center glass-card rounded-full">
