@@ -289,7 +289,11 @@ const Admin = () => {
 
       <main className="container mx-auto px-4 py-8 relative z-10">
         <Tabs defaultValue="moderation" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 mb-8 glass-card">
+          <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 mb-8 glass-card">
+            <TabsTrigger value="bio" className="data-[state=active]:bg-primary/20">
+              <UserCircle className="w-4 h-4 mr-2" />
+              Om mig
+            </TabsTrigger>
             <TabsTrigger value="moderation" className="data-[state=active]:bg-primary/20">
               <MessageSquare className="w-4 h-4 mr-2" />
               Chat
@@ -304,11 +308,11 @@ const Admin = () => {
             </TabsTrigger>
             <TabsTrigger value="gallery" className="data-[state=active]:bg-primary/20">
               <ImageIcon className="w-4 h-4 mr-2" />
-              Gallery
+              Galleri
             </TabsTrigger>
             <TabsTrigger value="branding" className="data-[state=active]:bg-primary/20">
               <Palette className="w-4 h-4 mr-2" />
-              Branding
+              Utseende
             </TabsTrigger>
             <TabsTrigger value="equipment" className="data-[state=active]:bg-primary/20">
               <Wrench className="w-4 h-4 mr-2" />

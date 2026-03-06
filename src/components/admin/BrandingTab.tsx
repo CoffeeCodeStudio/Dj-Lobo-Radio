@@ -238,15 +238,15 @@ const BrandingTab = () => {
           <div className="sticky top-0 z-10 bg-background/95 backdrop-blur py-3 -mx-4 px-4 border-b border-border/50">
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted-foreground">
-                You have unsaved changes
+                Du har osparade ändringar
               </p>
-              <Button onClick={handleSave} disabled={saving} className="neon-glow-cyan">
+              <Button onClick={handleSave} disabled={saving} className="neon-glow-cyan" size="lg">
                 {saving ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                 ) : (
-                  <Save className="w-4 h-4 mr-2" />
+                  <Save className="w-5 h-5 mr-2" />
                 )}
-                Save Changes
+                Spara
               </Button>
             </div>
           </div>

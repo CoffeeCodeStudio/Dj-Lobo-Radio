@@ -120,6 +120,9 @@ const GalleryTab = () => {
                 <span className="text-muted-foreground">
                   {addImage.isPending ? "Laddar upp..." : "Klicka för att lägga till en ny bild"}
                 </span>
+                <span className="text-xs text-muted-foreground mt-1">
+                  💡 Liggande bild (1200×800 px) ger bäst resultat. Max 2 MB.
+                </span>
               </label>
             </div>
           ) : (
