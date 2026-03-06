@@ -78,14 +78,22 @@ const Navbar = () => {
             {/* Logo */}
             <Link
               to="/"
-              className="focus-neon rounded-lg hover:scale-105 transition-transform"
+              className="focus-neon rounded-lg hover:scale-105 transition-transform flex-shrink-0"
               aria-label="DJ Lobo Radio - Hem"
             >
               {branding?.logo_url ? (
-                <img alt="DJ Lobo Radio Logo" className="h-16 sm:h-24 w-auto min-w-[4rem] sm:min-w-[6rem] object-contain rounded-xl drop-shadow-lg" src={optimizeLogo(branding.logo_url).src} fetchPriority="high" loading="eager" width={120} height={120} onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = optimizeLogo(branding.logo_url).fallback; }} />
+                <img
+                  alt="DJ Lobo Radio Logo"
+                  className="!h-14 xs:!h-16 sm:!h-20 md:!h-24 w-auto object-contain rounded-xl drop-shadow-[0_0_15px_rgba(0,255,255,0.3)]"
+                  src={branding.logo_url}
+                  fetchPriority="high"
+                  loading="eager"
+                  width={120}
+                  height={120}
+                />
               ) : (
-              <div className="h-16 sm:h-24 w-16 sm:w-24 flex items-center justify-center">
-                  <Radio className="h-12 sm:h-20 w-12 sm:w-20 text-neon-cyan" />
+                <div className="h-14 xs:h-16 sm:h-20 md:h-24 w-14 xs:w-16 sm:w-20 md:w-24 flex items-center justify-center">
+                  <Radio className="h-10 xs:h-12 sm:h-16 md:h-20 w-10 xs:w-12 sm:w-16 md:w-20 text-neon-cyan" />
                 </div>
               )}
             </Link>
