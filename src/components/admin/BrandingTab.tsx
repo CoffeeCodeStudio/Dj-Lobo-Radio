@@ -378,7 +378,7 @@ const BrandingTab = () => {
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Recommended: PNG with transparent background, max 5MB
+                  💡 För bäst resultat: PNG med genomskinlig bakgrund, fyrkantig (400×400 px), max 2 MB
                 </p>
               </div>
               {renderRecentUploads("logo")}
