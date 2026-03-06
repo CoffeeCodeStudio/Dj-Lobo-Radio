@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Upload, User, Save, Loader2, AlertTriangle } from "lucide-react";
+import { Upload, User, Save, Loader2, AlertTriangle, ImageIcon } from "lucide-react";
 import { useBranding, SiteBranding } from "@/hooks/useBranding";
 import { toast } from "sonner";
 
@@ -13,16 +13,24 @@ const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
 const BioTab = () => {
   const { branding, loading, updateBranding, uploadImage, refetch } = useBranding();
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [uploadingType, setUploadingType] = useState<string | null>(null);
   const [pendingChanges, setPendingChanges] = useState<Partial<SiteBranding>>({});
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [previewProfile, setPreviewProfile] = useState<string | null>(null);
+  const [previewHero, setPreviewHero] = useState<string | null>(null);
+  const profileInputRef = useRef<HTMLInputElement>(null);
+  const heroInputRef = useRef<HTMLInputElement>(null);
 
-  const currentBio = pendingChanges.bio_text ?? (branding as any)?.bio_text ?? "";
-  const currentProfileUrl = previewUrl || branding?.profile_image_url || null;
+  const currentBio = pendingChanges.bio_text ?? branding?.bio_text ?? "";
+  const currentProfileUrl = previewProfile || branding?.profile_image_url || null;
+  const currentHeroUrl = previewHero || branding?.hero_image_url || null;
   const hasPending = Object.keys(pendingChanges).length > 0;
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    imageType: "profile" | "hero",
+    fieldName: keyof SiteBranding,
+    setPreview: (url: string | null) => void
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -38,22 +46,21 @@ const BioTab = () => {
       return;
     }
 
-    // Preview
     const reader = new FileReader();
-    reader.onload = (ev) => setPreviewUrl(ev.target?.result as string);
+    reader.onload = (ev) => setPreview(ev.target?.result as string);
     reader.readAsDataURL(file);
 
-    setUploading(true);
-    const { url, error } = await uploadImage(file, "profile");
-    setUploading(false);
+    setUploadingType(imageType);
+    const { url, error } = await uploadImage(file, imageType);
+    setUploadingType(null);
 
     if (error) {
       toast.error(error);
-      setPreviewUrl(null);
+      setPreview(null);
       return;
     }
 
-    setPendingChanges((prev) => ({ ...prev, profile_image_url: url }));
+    setPendingChanges((prev) => ({ ...prev, [fieldName]: url }));
     toast.success("Bilden laddades upp! Tryck 'Spara' för att aktivera.");
   };
 
@@ -68,7 +75,8 @@ const BioTab = () => {
     } else {
       toast.success("Ändringarna har sparats!");
       setPendingChanges({});
-      setPreviewUrl(null);
+      setPreviewProfile(null);
+      setPreviewHero(null);
       refetch();
     }
   };
@@ -104,11 +112,10 @@ const BioTab = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Den här bilden visas som din profilbild på "Om mig"-sidan. Den visas i en <strong>rund</strong> ram.
+            Den här bilden visas som din profilbild på startsidan. Den visas i en <strong>rund</strong> ram.
           </p>
 
           <div className="flex items-center gap-6">
-            {/* Round preview */}
             <div className="relative w-32 h-32 rounded-full overflow-hidden border-2 border-primary/50 bg-muted/30 flex-shrink-0">
               {currentProfileUrl ? (
                 <img src={currentProfileUrl} alt="Profilbild" className="w-full h-full object-cover" />
@@ -117,7 +124,7 @@ const BioTab = () => {
                   <User className="w-12 h-12 text-muted-foreground" />
                 </div>
               )}
-              {uploading && (
+              {uploadingType === "profile" && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                   <Loader2 className="w-6 h-6 animate-spin text-white" />
                 </div>
@@ -126,21 +133,21 @@ const BioTab = () => {
 
             <div className="flex-1 space-y-3">
               <input
-                ref={fileInputRef}
+                ref={profileInputRef}
                 type="file"
                 accept="image/*"
                 className="hidden"
-                onChange={handleFileSelect}
+                onChange={(e) => handleFileSelect(e, "profile", "profile_image_url", setPreviewProfile)}
               />
               <Button
                 size="lg"
                 variant="outline"
                 className="w-full text-base py-6"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
+                onClick={() => profileInputRef.current?.click()}
+                disabled={uploadingType === "profile"}
               >
                 <Upload className="w-5 h-5 mr-2" />
-                {uploading ? "Laddar upp..." : "Ladda upp ny bild"}
+                {uploadingType === "profile" ? "Laddar upp..." : "Ladda upp ny profilbild"}
               </Button>
 
               <div className="bg-muted/30 rounded-lg p-3 space-y-1">
@@ -155,6 +162,69 @@ const BioTab = () => {
                   <li>JPG, PNG eller WebP</li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Hero / About section image */}
+      <Card className="glass-card border-white/10">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <ImageIcon className="w-5 h-5 text-primary" />
+            Bild på "Om mig"-sidan
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Den här bilden visas som huvudbild i "Om DJ Lobo"-sektionen. Den visas i en <strong>liggande rektangel</strong>.
+          </p>
+
+          <div className="space-y-4">
+            {/* Rectangle preview */}
+            <div className="relative w-full aspect-video max-w-md rounded-lg overflow-hidden border-2 border-primary/50 bg-muted/30">
+              {currentHeroUrl ? (
+                <img src={currentHeroUrl} alt="Om mig-bild" className="w-full h-full object-cover" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <ImageIcon className="w-12 h-12 text-muted-foreground" />
+                </div>
+              )}
+              {uploadingType === "hero" && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <Loader2 className="w-6 h-6 animate-spin text-white" />
+                </div>
+              )}
+            </div>
+
+            <input
+              ref={heroInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => handleFileSelect(e, "hero", "hero_image_url", setPreviewHero)}
+            />
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full text-base py-6 max-w-md"
+              onClick={() => heroInputRef.current?.click()}
+              disabled={uploadingType === "hero"}
+            >
+              <Upload className="w-5 h-5 mr-2" />
+              {uploadingType === "hero" ? "Laddar upp..." : "Ladda upp ny bild"}
+            </Button>
+
+            <div className="bg-muted/30 rounded-lg p-3 space-y-1 max-w-md">
+              <p className="text-sm font-medium flex items-center gap-1.5">
+                <AlertTriangle className="w-4 h-4 text-amber-400" />
+                Tips för bästa resultat
+              </p>
+              <ul className="text-xs text-muted-foreground list-disc list-inside space-y-0.5">
+                <li>Liggande bild (t.ex. 1200×800 eller 1600×900 pixlar)</li>
+                <li>Max {MAX_FILE_SIZE_MB} MB filstorlek</li>
+                <li>JPG, PNG eller WebP</li>
+              </ul>
             </div>
           </div>
         </CardContent>
