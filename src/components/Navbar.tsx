@@ -79,20 +79,26 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link
-              to="/"
-              className="focus-neon rounded-lg hover:scale-105 transition-transform flex-shrink-0"
-              aria-label="DJ Lobo Radio - Hem"
-            >
-              {branding?.logo_url ? (
-                <img
-                  alt="DJ Lobo Radio Logo"
-                  className="object-contain"
-                  src={branding.logo_url}
-                  style={{ height: "80px", width: "auto", minHeight: "80px" }}
-                  fetchPriority="high"
-                  loading="eager"
-                />
+
+<Link
+  to="/"
+  className="focus-neon rounded-lg hover:scale-105 transition-transform flex items-center justify-center flex-shrink-0"
+  style={{ width: '120px' }} // Tvinga en bredd här
+  aria-label="DJ Lobo Radio - Hem"
+>
+  {branding?.logo_url ? (
+    <img
+      alt="DJ Lobo Radio Logo"
+      className="object-contain w-full h-full" // Fyller ut wrappern
+      src={branding.logo_url}
+      style={{ maxHeight: "80px" }} // Maxhöjd begränsar så den inte spräcker navbaren
+      fetchPriority="high"
+      loading="eager"
+    />
+  ) : (
+    // ... din radio-ikon fallback
+  )}
+</Link>
               ) : (
                 <div className="h-14 xs:h-16 sm:h-20 md:h-24 w-14 xs:w-16 sm:w-20 md:w-24 flex items-center justify-center">
                   <Radio className="h-10 xs:h-12 sm:h-16 md:h-20 w-10 xs:w-12 sm:w-16 md:w-20 text-neon-cyan" />
