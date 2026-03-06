@@ -562,6 +562,11 @@ const Admin = () => {
             </div>
           </TabsContent>
 
+          {/* Bio Tab */}
+          <TabsContent value="bio">
+            <BioTab />
+          </TabsContent>
+
           {/* Mixes Tab */}
           <TabsContent value="mixes">
             <MixesTab />
