@@ -20,7 +20,7 @@ const translations = {
     success: "Tack! Vi återkommer snart.",
     error: "Något gick fel. Försök igen.",
     followUs: "Följ oss",
-    location: "Göteborg, Sverige",
+    location: "Göteborg, Sverige"
   },
   en: {
     title: "Contact",
@@ -33,7 +33,7 @@ const translations = {
     success: "Thank you! We'll get back to you soon.",
     error: "Something went wrong. Please try again.",
     followUs: "Follow us",
-    location: "Gothenburg, Sweden",
+    location: "Gothenburg, Sweden"
   },
   es: {
     title: "Contacto",
@@ -46,8 +46,8 @@ const translations = {
     success: "¡Gracias! Te responderemos pronto.",
     error: "Algo salió mal. Por favor, inténtalo de nuevo.",
     followUs: "Síguenos",
-    location: "Gotemburgo, Suecia",
-  },
+    location: "Gotemburgo, Suecia"
+  }
 };
 
 const ContactSection = () => {
@@ -55,25 +55,25 @@ const ContactSection = () => {
   const { branding } = useBranding();
   const { toast } = useToast();
   const t = translations[language];
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: "",
+    message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       const { data, error } = await supabase.functions.invoke('send-contact-email', {
         body: {
           name: formData.name,
           email: formData.email,
-          message: formData.message,
-        },
+          message: formData.message
+        }
       });
 
       if (error) {
@@ -82,40 +82,40 @@ const ContactSection = () => {
 
       toast({
         title: t.success,
-        variant: "default",
+        variant: "default"
       });
-      
+
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       console.error('Error sending contact form:', error);
       toast({
         title: t.error,
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const instagramUrl = branding?.instagram_username
-    ? `https://www.instagram.com/${branding.instagram_username}`
-    : "https://www.instagram.com/djloboradio";
-    
-  const youtubeUrl = branding?.youtube_channel_id
-    ? `https://www.youtube.com/channel/${branding.youtube_channel_id}`
-    : "https://www.youtube.com/@djloboradio";
+  const instagramUrl = branding?.instagram_username ?
+  `https://www.instagram.com/${branding.instagram_username}` :
+  "https://www.instagram.com/djloboradio";
+
+  const youtubeUrl = branding?.youtube_channel_id ?
+  `https://www.youtube.com/channel/${branding.youtube_channel_id}` :
+  "https://www.youtube.com/@djloboradio";
 
   return (
     <section
       id="kontakt"
       className="py-16 sm:py-24"
-      aria-labelledby="contact-title"
-    >
+      aria-labelledby="contact-title">
+      
       <div className="text-center mb-12">
         <h2
           id="contact-title"
-          className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-neon-gradient mb-4"
-        >
+          className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-neon-gradient mb-4">
+          
           {t.title}
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -137,8 +137,8 @@ const ContactSection = () => {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="bg-background/50 border-muted focus:border-neon-cyan"
-              />
+                className="bg-background/50 border-muted focus:border-neon-cyan" />
+              
             </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
@@ -150,8 +150,8 @@ const ContactSection = () => {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                className="bg-background/50 border-muted focus:border-neon-cyan"
-              />
+                className="bg-background/50 border-muted focus:border-neon-cyan" />
+              
             </div>
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
@@ -163,22 +163,22 @@ const ContactSection = () => {
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 required
                 rows={5}
-                className="bg-background/50 border-muted focus:border-neon-cyan resize-none"
-              />
+                className="bg-background/50 border-muted focus:border-neon-cyan resize-none" />
+              
             </div>
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-purple hover:to-neon-cyan transition-all duration-300"
-            >
-              {isSubmitting ? (
-                t.sending
-              ) : (
-                <>
+              className="w-full bg-gradient-to-r from-neon-cyan to-neon-purple hover:from-neon-purple hover:to-neon-cyan transition-all duration-300">
+              
+              {isSubmitting ?
+              t.sending :
+
+              <>
                   <Send className="w-4 h-4 mr-2" />
                   {t.send}
                 </>
-              )}
+              }
             </Button>
           </form>
         </div>
@@ -221,33 +221,33 @@ const ContactSection = () => {
           </div>
 
           {/* Social Links */}
-          <div className="glass-card p-6 rounded-xl hover:border-neon-cyan/50 transition-colors">
-            <p className="text-sm text-muted-foreground mb-3">{t.followUs}</p>
-            <div className="flex flex-col gap-3">
-              <a href="https://www.facebook.com/DjloboProduccionesSweden/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-neon-pink transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-neon-pink/10 flex items-center justify-center group-hover:bg-neon-pink/20 transition-colors">
-                  <Facebook className="w-5 h-5 text-neon-pink" />
-                </div>
-                <span className="text-sm font-medium">DJ Lobo Producciones</span>
-              </a>
-              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-neon-cyan transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-neon-cyan/10 flex items-center justify-center group-hover:bg-neon-cyan/20 transition-colors">
-                  <Instagram className="w-5 h-5 text-neon-cyan" />
-                </div>
-                <span className="text-sm font-medium">Instagram</span>
-              </a>
-              <a href={youtubeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-foreground hover:text-neon-purple transition-colors group">
-                <div className="w-10 h-10 rounded-full bg-neon-purple/10 flex items-center justify-center group-hover:bg-neon-purple/20 transition-colors">
-                  <Youtube className="w-5 h-5 text-neon-purple" />
-                </div>
-                <span className="text-sm font-medium">YouTube</span>
-              </a>
-            </div>
-          </div>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default ContactSection;
