@@ -312,7 +312,7 @@ const BrandingTab = () => {
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Recommended: Square image, at least 400x400px, max 5MB
+                  💡 För bäst resultat: Fyrkantig bild (400×400 px), max 2 MB, JPG/PNG/WebP
                 </p>
               </div>
             </div>
