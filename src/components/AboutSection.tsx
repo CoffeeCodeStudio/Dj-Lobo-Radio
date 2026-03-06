@@ -125,6 +125,9 @@ const AboutSection = () => {
     },
   ];
 
+  // Dynamic bio text from database
+  const dynamicBio = branding?.bio_text;
+
   return (
     <section 
       ref={sectionRef} 
@@ -142,13 +145,22 @@ const AboutSection = () => {
             >
               {t.title}
             </h2>
-            <p className="text-muted-foreground text-base sm:text-lg mb-4 leading-relaxed">
-              {t.bio1} <span className="text-neon-pink font-semibold">{t.years}</span>{t.bio1b}
-            </p>
-            <p className="text-muted-foreground text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
-              {t.bio2} <span className="text-neon-cyan font-semibold">{t.classics}</span> {t.combined}{" "}
-              <span className="text-neon-pink font-semibold">{t.latin}</span> {t.bio2b}
-            </p>
+
+            {dynamicBio ? (
+              <div className="text-muted-foreground text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed whitespace-pre-line">
+                {dynamicBio}
+              </div>
+            ) : (
+              <>
+                <p className="text-muted-foreground text-base sm:text-lg mb-4 leading-relaxed">
+                  {t.bio1} <span className="text-neon-pink font-semibold">{t.years}</span>{t.bio1b}
+                </p>
+                <p className="text-muted-foreground text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed">
+                  {t.bio2} <span className="text-neon-cyan font-semibold">{t.classics}</span> {t.combined}{" "}
+                  <span className="text-neon-pink font-semibold">{t.latin}</span> {t.bio2b}
+                </p>
+              </>
+            )}
 
             {/* Stats */}
             <dl className="flex justify-center gap-12 sm:gap-16 mt-6 sm:mt-8">
