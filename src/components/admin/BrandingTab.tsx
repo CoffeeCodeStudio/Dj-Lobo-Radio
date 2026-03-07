@@ -346,7 +346,7 @@ const BrandingTab = () => {
                 Ladda upp dela-bild
               </Button>
 
-              <div className="bg-muted/30 rounded-lg p-3 max-w-md">
+              <div className="bg-muted/30 rounded-lg p-3">
                 <p className="text-sm font-medium mb-1">📐 Rekommenderad storlek</p>
                 <p className="text-xs text-muted-foreground">
                   1200×630 pixlar, JPG eller PNG, max 2 MB
