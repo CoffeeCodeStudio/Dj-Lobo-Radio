@@ -96,12 +96,19 @@ const MixCardGrid = () => {
         source: "mixcloud" as const,
         pinned: m.pinned ?? false,
         sortOrder: m.sort_order,
+        createdTime: (m as any).mixcloud_created_time || undefined,
       }));
 
-      // Combine: pinned first, then by sort order
+      // Combine: pinned first, then by created_time (newest first), fallback to sort_order
       const all = [...scMixes, ...mcMixes].sort((a, b) => {
         if (a.pinned && !b.pinned) return -1;
         if (!a.pinned && b.pinned) return 1;
+        // Sort by createdTime descending (newest first)
+        if (a.createdTime && b.createdTime) {
+          return new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime();
+        }
+        if (a.createdTime && !b.createdTime) return -1;
+        if (!a.createdTime && b.createdTime) return 1;
         return a.sortOrder - b.sortOrder;
       });
 
