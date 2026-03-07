@@ -52,7 +52,7 @@ const translations = {
   }
 };
 
-const Footer = () => {
+const Footer = forwardRef<HTMLElement>((_, ref) => {
   const { language } = useLanguage();
   const { branding } = useBranding();
   const t = translations[language];
