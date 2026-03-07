@@ -183,11 +183,12 @@ const AboutSection = () => {
           {/* Right Column - Image and Features */}
           <div className="space-y-4 sm:space-y-6">
             {/* DJ Image */}
-            <div className="scroll-reveal glass-card overflow-hidden">
+            <div className="scroll-reveal glass-card overflow-hidden aspect-video">
               <img
                 src={heroImage}
                 alt="DJ Lobo spelar latinmusik live"
-                className="w-full h-64 sm:h-80 object-contain bg-black/20"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center 20%' }}
                 loading="lazy"
                 onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = heroFallback; }}
               />
