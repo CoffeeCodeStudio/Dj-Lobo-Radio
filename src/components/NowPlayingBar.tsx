@@ -375,8 +375,8 @@ const NowPlayingBar = () => {
             </button>
           </div>
 
-          {/* === Volume (radio mode, all screens) === */}
-          {isRadio && (
+          {/* === Volume (all modes) === */}
+          {(isRadio || (isMix && currentTrack)) && (
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               <button
                 onClick={() => setIsMuted(!isMuted)}
