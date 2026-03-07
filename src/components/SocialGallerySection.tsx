@@ -51,7 +51,7 @@ const SocialGallerySection = () => {
   const t = translations[language];
   
   const [mixcloudModalOpen, setMixcloudModalOpen] = useState(false);
-  const [selectedMixcloudTitle, setSelectedMixcloudTitle] = useState("");
+  const [selectedMixcloudTitle] = useState("");
 
 
   return (
