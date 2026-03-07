@@ -298,7 +298,7 @@ const BrandingTab = () => {
         </Card>
 
         {/* ===== OG / DELA-BILD ===== */}
-        <Card className="glass-card border-white/10">
+        <Card className="bg-card border border-border/50 shadow-sm">
           <CardHeader>
             <CardTitle className="font-display flex items-center gap-2 text-lg">
               <Share2 className="w-5 h-5 text-neon-cyan" />
