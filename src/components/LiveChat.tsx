@@ -599,7 +599,7 @@ const LiveChat = () => {
           </ScrollArea>
 
           {/* Quick Emotes */}
-          <div className="px-4 py-2 border-t border-muted/50 flex items-center justify-center gap-2">
+          <div className="px-3 sm:px-4 py-2 border-t border-border/30 flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
             <span className="text-xs text-muted-foreground mr-2">Quick:</span>
             {QUICK_EMOTES.map((emote) => (
               <button
