@@ -240,19 +240,30 @@ const BrandingTab = () => {
             </p>
 
             <div className="flex flex-col gap-4">
-              <div className="relative w-full h-24 rounded-lg overflow-hidden border border-border/50"
-                style={{ background: "repeating-conic-gradient(hsl(var(--muted)) 0% 25%, hsl(var(--background)) 0% 50%) 50% / 16px 16px" }}
-              >
-                <img 
-                  src={logoPreview} 
-                  alt="Förhandsgranskning av logotyp" 
-                  className="w-full h-full object-contain p-2"
-                />
-                {uploading === "logo" && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <Loader2 className="w-6 h-6 animate-spin text-white" />
+              {/* Realistic navbar preview */}
+              <div>
+                <p className="text-xs text-muted-foreground mb-2">Så här visas loggan i menyn:</p>
+                <div className="rounded-lg border border-border/50 bg-background px-4 py-3 flex items-center gap-3">
+                  <div className="relative h-10 w-28 flex-shrink-0">
+                    <img 
+                      src={logoPreview} 
+                      alt="Förhandsgranskning av logotyp" 
+                      className="h-full w-full object-contain rounded-xl"
+                      style={{ filter: "drop-shadow(0 0 6px hsl(var(--neon-cyan) / 0.5))" }}
+                    />
+                    {uploading === "logo" && (
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl">
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                      </div>
+                    )}
                   </div>
-                )}
+                  <div className="flex gap-4 text-xs text-muted-foreground">
+                    <span>Hem</span>
+                    <span>Media</span>
+                    <span>Lyssna</span>
+                    <span>Kontakt</span>
+                  </div>
+                </div>
               </div>
               
               <input
