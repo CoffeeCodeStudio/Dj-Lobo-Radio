@@ -86,7 +86,6 @@ const Navbar = () => {
                   alt="DJ Lobo Radio Logo"
                   className="!h-14 xs:!h-16 sm:!h-20 md:!h-24 w-auto object-contain rounded-xl drop-shadow-[0_0_15px_rgba(0,255,255,0.3)] bg-transparent"
                   src={branding.logo_url}
-                  fetchPriority="high"
                   loading="eager"
                   width={120}
                   height={120}
