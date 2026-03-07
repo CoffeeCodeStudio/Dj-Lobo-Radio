@@ -26,7 +26,7 @@ const FramsidaTab = () => {
   const [cropperSrc, setCropperSrc] = useState<string>("");
 
   const currentBio = pendingChanges.bio_text ?? branding?.bio_text ?? "";
-  const currentHeroUrl = previewHero || branding?.hero_image_url || null;
+  const currentHeroUrl = previewHero || branding?.profile_image_url || null;
   const hasPending = Object.keys(pendingChanges).length > 0;
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
