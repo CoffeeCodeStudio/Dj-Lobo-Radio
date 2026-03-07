@@ -33,7 +33,7 @@ const FramsidaTab = () => {
   const currentRadioUrl = previewRadio || (branding as any)?.radio_image_url || null;
   const hasPending = Object.keys(pendingChanges).length > 0;
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>, target: "profile" | "radio") => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) {
@@ -44,36 +44,40 @@ const FramsidaTab = () => {
       toast.error(`Bilden är för stor (${(file.size / 1024 / 1024).toFixed(1)} MB). Välj en bild under ${MAX_FILE_SIZE_MB} MB.`);
       return;
     }
-    // Read file and open cropper
     const reader = new FileReader();
     reader.onload = (ev) => {
       const src = ev.target?.result as string;
       setCropperSrc(src);
+      setCropperTarget(target);
       setCropperOpen(true);
     };
     reader.readAsDataURL(file);
-    // Reset input so same file can be re-selected
     e.target.value = "";
   };
 
   const handleCropComplete = async (croppedBlob: Blob) => {
     setCropperOpen(false);
-    // Show preview immediately
     const previewUrl = URL.createObjectURL(croppedBlob);
-    setPreviewHero(previewUrl);
+    const isRadio = cropperTarget === "radio";
 
-    // Upload cropped image
-    const file = new File([croppedBlob], "profile-cropped.jpg", { type: "image/jpeg" });
-    setUploadingType("hero");
-    const { url, error } = await uploadImage(file, "profile");
+    if (isRadio) {
+      setPreviewRadio(previewUrl);
+    } else {
+      setPreviewHero(previewUrl);
+    }
+
+    const file = new File([croppedBlob], `${cropperTarget}-cropped.jpg`, { type: "image/jpeg" });
+    setUploadingType(isRadio ? "radio" : "hero");
+    const { url, error } = await uploadImage(file, isRadio ? "radio" : "profile");
     setUploadingType(null);
 
     if (error) {
       toast.error(error);
-      setPreviewHero(null);
+      if (isRadio) setPreviewRadio(null); else setPreviewHero(null);
       return;
     }
-    setPendingChanges((prev) => ({ ...prev, profile_image_url: url }));
+    const field = isRadio ? "radio_image_url" : "profile_image_url";
+    setPendingChanges((prev) => ({ ...prev, [field]: url }));
     toast.success("Bilden beskars och laddades upp! Tryck 'Spara ändringar'.");
   };
 
