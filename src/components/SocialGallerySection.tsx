@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Instagram, Facebook, Youtube, ImageIcon, Headphones } from "lucide-react";
+import { Instagram, Facebook, Youtube, ImageIcon } from "lucide-react";
 import { useGallery } from "@/hooks/useGallery";
 import { useLanguage } from "@/contexts/LanguageContext";
 import MixcloudModal from "@/components/MixcloudModal";
