@@ -440,7 +440,6 @@ const BrandingTab = () => {
             {saved ? "Sparat! ✅" : "Spara ändringar"}
           </Button>
         )}
-      </div>
     </div>
   );
 };
