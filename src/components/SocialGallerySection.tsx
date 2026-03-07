@@ -53,10 +53,6 @@ const SocialGallerySection = () => {
   const [mixcloudModalOpen, setMixcloudModalOpen] = useState(false);
   const [selectedMixcloudTitle, setSelectedMixcloudTitle] = useState("");
 
-  const handleMixcloudClick = (title: string) => {
-    setSelectedMixcloudTitle(title);
-    setMixcloudModalOpen(true);
-  };
 
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="social-gallery-heading">
