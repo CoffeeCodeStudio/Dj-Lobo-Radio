@@ -408,6 +408,7 @@ const NowPlayingBar = () => {
         {showExpandedMix && (
           <div className="flex-1 px-4 pb-3">
             <iframe
+              ref={mixIframeRef}
               src={getMixEmbedUrl()}
               width="100%"
               height="100%"
