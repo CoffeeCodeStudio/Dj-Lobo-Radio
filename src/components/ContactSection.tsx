@@ -123,7 +123,7 @@ const ContactSection = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      <div className="max-w-2xl mx-auto">
         {/* Contact Form */}
         <div className="glass-card p-6 sm:p-8 rounded-xl">
           <form onSubmit={handleSubmit} className="space-y-6">
