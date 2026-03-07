@@ -132,12 +132,37 @@ const NowPlayingBar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRadio, isPlaying]);
 
-  // Volume sync
+  // Volume sync for radio
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume / 100;
     }
   }, [volume, isMuted]);
+
+  // Volume sync for mix iframes (Mixcloud & SoundCloud Widget APIs)
+  useEffect(() => {
+    const iframe = mixIframeRef.current;
+    if (!iframe || !isMix || !currentTrack) return;
+    const effectiveVolume = isMuted ? 0 : volume / 100;
+
+    try {
+      if (currentTrack.source === "mixcloud") {
+        // Mixcloud Widget API uses postMessage
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({ method: "volume", args: [effectiveVolume] }),
+          "https://www.mixcloud.com"
+        );
+      } else {
+        // SoundCloud Widget API
+        iframe.contentWindow?.postMessage(
+          JSON.stringify({ method: "setVolume", value: effectiveVolume * 100 }),
+          "https://w.soundcloud.com"
+        );
+      }
+    } catch {
+      // Cross-origin errors are expected sometimes
+    }
+  }, [volume, isMuted, isMix, currentTrack]);
 
   // Audio element event listeners
   useEffect(() => {
