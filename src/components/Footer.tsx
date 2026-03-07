@@ -1,8 +1,8 @@
+import { forwardRef } from "react";
 import { Instagram, Facebook, Youtube, Radio as RadioIcon, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { optimizeLogo } from "@/lib/imageOptimizer";
 
 const DEFAULT_SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
