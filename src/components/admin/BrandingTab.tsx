@@ -11,7 +11,6 @@ import {
   Sparkles,
   Trash2,
   History,
-  Share2,
   CheckCircle2
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
