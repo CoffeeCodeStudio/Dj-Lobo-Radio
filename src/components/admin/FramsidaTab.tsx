@@ -26,7 +26,7 @@ const FramsidaTab = () => {
   const [cropperSrc, setCropperSrc] = useState<string>("");
 
   const currentBio = pendingChanges.bio_text ?? branding?.bio_text ?? "";
-  const currentHeroUrl = previewHero || branding?.hero_image_url || null;
+  const currentHeroUrl = previewHero || branding?.profile_image_url || null;
   const hasPending = Object.keys(pendingChanges).length > 0;
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,9 +59,9 @@ const FramsidaTab = () => {
     setPreviewHero(previewUrl);
 
     // Upload cropped image
-    const file = new File([croppedBlob], "hero-cropped.jpg", { type: "image/jpeg" });
+    const file = new File([croppedBlob], "profile-cropped.jpg", { type: "image/jpeg" });
     setUploadingType("hero");
-    const { url, error } = await uploadImage(file, "hero");
+    const { url, error } = await uploadImage(file, "profile");
     setUploadingType(null);
 
     if (error) {
@@ -69,7 +69,7 @@ const FramsidaTab = () => {
       setPreviewHero(null);
       return;
     }
-    setPendingChanges((prev) => ({ ...prev, hero_image_url: url }));
+    setPendingChanges((prev) => ({ ...prev, profile_image_url: url }));
     toast.success("Bilden beskars och laddades upp! Tryck 'Spara ändringar'.");
   };
 
@@ -150,7 +150,7 @@ const FramsidaTab = () => {
               <Upload className="w-5 h-5 mr-2" />{uploadingType === "hero" ? "Laddar upp..." : "Ladda upp ny bild"}
             </Button>
             {currentHeroUrl && (
-              <Button variant="destructive" size="icon" className="h-14 w-14" onClick={() => { setPendingChanges((prev) => ({ ...prev, hero_image_url: null })); setPreviewHero(null); }} title="Ta bort">
+              <Button variant="destructive" size="icon" className="h-14 w-14" onClick={() => { setPendingChanges((prev) => ({ ...prev, profile_image_url: null })); setPreviewHero(null); }} title="Ta bort">
                 <Trash2 className="w-5 h-5" />
               </Button>
             )}
