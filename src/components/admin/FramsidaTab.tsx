@@ -21,7 +21,6 @@ const FramsidaTab = () => {
   const heroInputRef = useRef<HTMLInputElement>(null);
 
   const currentBio = pendingChanges.bio_text ?? branding?.bio_text ?? "";
-  const currentProfileUrl = previewProfile || branding?.profile_image_url || null;
   const currentHeroUrl = previewHero || branding?.hero_image_url || null;
   const hasPending = Object.keys(pendingChanges).length > 0;
 
