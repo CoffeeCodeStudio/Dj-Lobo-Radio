@@ -22,7 +22,7 @@ const translations = {
     about: "Om DJ Lobo",
     aboutText: "Professionell DJ i Göteborg med 20+ års erfarenhet. Expert på House, World Hits, 80-tal, 90-tal och Latin beats.",
     location: "Göteborg, Sverige",
-    bookSection: "Boka DJ Lobo",
+    bookSection: "DJ Lobo Producciones",
     radioSection: "Följ Radion",
     visitStudio: "Besök Coffee Code Studio",
   },
