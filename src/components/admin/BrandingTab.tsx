@@ -240,30 +240,19 @@ const BrandingTab = () => {
             </p>
 
             <div className="flex flex-col gap-4">
-              {/* Realistic navbar preview */}
-              <div>
-                <p className="text-xs text-muted-foreground mb-2">Så här visas loggan i menyn:</p>
-                <div className="rounded-lg border border-border/50 bg-background px-4 py-3 flex items-center gap-3">
-                  <div className="relative h-10 w-28 flex-shrink-0">
-                    <img 
-                      src={logoPreview} 
-                      alt="Förhandsgranskning av logotyp" 
-                      className="h-full w-full object-contain rounded-xl"
-                      style={{ filter: "drop-shadow(0 0 6px hsl(var(--neon-cyan) / 0.5))" }}
-                    />
-                    {uploading === "logo" && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl">
-                        <Loader2 className="w-4 h-4 animate-spin text-white" />
-                      </div>
-                    )}
+              {/* Logo preview */}
+              <div className="relative w-40 h-10 rounded-xl overflow-hidden border border-border/50 bg-background">
+                <img 
+                  src={logoPreview} 
+                  alt="Förhandsgranskning av logotyp" 
+                  className="h-full w-full object-contain"
+                  style={{ filter: "drop-shadow(0 0 6px hsl(var(--neon-cyan) / 0.5))" }}
+                />
+                {uploading === "logo" && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl">
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
                   </div>
-                  <div className="flex gap-4 text-xs text-muted-foreground">
-                    <span>Hem</span>
-                    <span>Media</span>
-                    <span>Lyssna</span>
-                    <span>Kontakt</span>
-                  </div>
-                </div>
+                )}
               </div>
               
               <input
