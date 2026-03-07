@@ -311,7 +311,7 @@ const BrandingTab = () => {
             </p>
 
             <div className="space-y-4">
-              <div className="relative w-full max-w-md rounded-lg overflow-hidden border border-border/50 bg-muted/30"
+              <div className="relative w-full rounded-lg overflow-hidden border border-border/50 bg-muted/30"
                 style={{ aspectRatio: "1200/630" }}
               >
                 {ogPreview ? (
