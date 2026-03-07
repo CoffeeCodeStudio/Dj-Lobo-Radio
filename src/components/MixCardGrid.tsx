@@ -34,7 +34,18 @@ interface UnifiedMix {
   source: "mixcloud" | "soundcloud";
   pinned: boolean;
   sortOrder: number;
+  createdTime?: string;
 }
+
+const formatMixDate = (dateStr: string | undefined, lang: string): string => {
+  if (!dateStr) return "";
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return "";
+  return date.toLocaleDateString(
+    lang === "sv" ? "sv-SE" : lang === "es" ? "es-ES" : "en-GB",
+    { day: "numeric", month: "long", year: "numeric" }
+  );
+};
 
 const DEFAULT_COVERS = [
   "https://images.unsplash.com/photo-1571266028243-e4733b0f0bb0?w=400&h=400&fit=crop",
