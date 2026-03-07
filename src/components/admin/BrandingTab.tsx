@@ -48,7 +48,7 @@ const BrandingTab = () => {
   const [uploadHistory, setUploadHistory] = useState<Record<string, UploadHistoryItem[]>>({});
   
   const logoInputRef = useRef<HTMLInputElement>(null);
-  const ogInputRef = useRef<HTMLInputElement>(null);
+  
 
   const fetchHistory = useCallback(async () => {
     const { data } = await supabase
