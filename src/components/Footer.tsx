@@ -46,7 +46,7 @@ const translations = {
     about: "Sobre DJ Lobo",
     aboutText: "DJ profesional en Gotemburgo con más de 20 años de experiencia. Experto en House, World Hits, 80s, 90s y Latin beats.",
     location: "Gotemburgo, Suecia",
-    bookSection: "Reservar DJ Lobo",
+    bookSection: "DJ Lobo Producciones",
     radioSection: "Sigue la Radio",
     visitStudio: "Visitar Coffee Code Studio",
   }
