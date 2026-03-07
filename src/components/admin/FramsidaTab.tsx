@@ -59,9 +59,9 @@ const FramsidaTab = () => {
     setPreviewHero(previewUrl);
 
     // Upload cropped image
-    const file = new File([croppedBlob], "hero-cropped.jpg", { type: "image/jpeg" });
+    const file = new File([croppedBlob], "profile-cropped.jpg", { type: "image/jpeg" });
     setUploadingType("hero");
-    const { url, error } = await uploadImage(file, "hero");
+    const { url, error } = await uploadImage(file, "profile");
     setUploadingType(null);
 
     if (error) {
