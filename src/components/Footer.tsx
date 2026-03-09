@@ -24,7 +24,7 @@ const translations = {
     location: "Göteborg, Sverige",
     bookSection: "DJ Lobo Producciones",
     radioSection: "Följ Radion",
-    visitStudio: "Besök Coffee Code Studio",
+    visitStudio: "Besök Coffee Code Studio"
   },
   en: {
     copyright: "© 2026 DJ Lobo Producciones. All rights reserved.",
@@ -36,7 +36,7 @@ const translations = {
     location: "Gothenburg, Sweden",
     bookSection: "DJ Lobo Producciones",
     radioSection: "Follow the Radio",
-    visitStudio: "Visit Coffee Code Studio",
+    visitStudio: "Visit Coffee Code Studio"
   },
   es: {
     copyright: "© 2026 DJ Lobo Producciones. Todos los derechos reservados.",
@@ -48,7 +48,7 @@ const translations = {
     location: "Gotemburgo, Suecia",
     bookSection: "DJ Lobo Producciones",
     radioSection: "Sigue la Radio",
-    visitStudio: "Visitar Coffee Code Studio",
+    visitStudio: "Visitar Coffee Code Studio"
   }
 };
 
@@ -58,15 +58,15 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
   const t = translations[language];
 
   const socialLinks = {
-    instagram: branding?.instagram_username
-      ? `https://www.instagram.com/${branding.instagram_username}`
-      : DEFAULT_SOCIAL_LINKS.instagram,
-    youtube: branding?.youtube_channel_id
-      ? `https://www.youtube.com/${branding.youtube_channel_id.startsWith("@") ? branding.youtube_channel_id : `channel/${branding.youtube_channel_id}`}`
-      : DEFAULT_SOCIAL_LINKS.youtube,
+    instagram: branding?.instagram_username ?
+    `https://www.instagram.com/${branding.instagram_username}` :
+    DEFAULT_SOCIAL_LINKS.instagram,
+    youtube: branding?.youtube_channel_id ?
+    `https://www.youtube.com/${branding.youtube_channel_id.startsWith("@") ? branding.youtube_channel_id : `channel/${branding.youtube_channel_id}`}` :
+    DEFAULT_SOCIAL_LINKS.youtube,
     facebookRadio: DEFAULT_SOCIAL_LINKS.facebookRadio,
     facebookProd: DEFAULT_SOCIAL_LINKS.facebookProd,
-    zenoPlayer: DEFAULT_SOCIAL_LINKS.zenoPlayer,
+    zenoPlayer: DEFAULT_SOCIAL_LINKS.zenoPlayer
   };
 
   return (
@@ -77,22 +77,22 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
           {/* About */}
           <div className="flex flex-col">
             <div className="flex items-center gap-3 mb-4">
-              {branding?.logo_url ? (
-                <img
-                  alt="DJ Lobo Radio Logo"
-                  className="!h-16 sm:!h-24 w-auto object-contain rounded-xl drop-shadow-[0_0_15px_rgba(0,255,255,0.3)] bg-transparent"
-                  src={branding.logo_url}
-                  loading="lazy"
-                  width={120}
-                  height={120}
-                />
-              ) : (
-                <div className="h-16 sm:h-24 w-16 sm:w-24 flex items-center justify-center glass-card rounded-full">
+              {branding?.logo_url ?
+              <img
+                alt="DJ Lobo Radio Logo"
+                className="!h-16 sm:!h-24 w-auto object-contain rounded-xl drop-shadow-[0_0_15px_rgba(0,255,255,0.3)] bg-transparent"
+                src={branding.logo_url}
+                loading="lazy"
+                width={120}
+                height={120} /> :
+
+
+              <div className="h-16 sm:h-24 w-16 sm:w-24 flex items-center justify-center glass-card rounded-full">
                   <RadioIcon className="h-10 sm:h-16 w-10 sm:w-16 text-neon-cyan" />
                 </div>
-              )}
+              }
             </div>
-            <h3 className="font-display text-lg font-bold text-neon-gradient mb-2">{t.about}</h3>
+            
             <p className="text-muted-foreground/80 text-sm leading-relaxed">{t.aboutText}</p>
           </div>
 
@@ -189,20 +189,20 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
         <div className="mt-8 pt-4 border-t border-muted/10 text-center">
           <p className="text-xs sm:text-sm text-muted-foreground/50">
             Design & Development by{" "}
-            <a 
-              href={LINKEDIN_URL} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:text-muted-foreground/70 transition-colors underline decoration-dotted underline-offset-2"
-            >
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-muted-foreground/70 transition-colors underline decoration-dotted underline-offset-2">
+              
               Coffee Code Studio
             </a>
             {" "}☕
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>);
+
 });
 
 Footer.displayName = "Footer";
