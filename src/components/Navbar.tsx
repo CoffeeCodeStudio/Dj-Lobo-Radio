@@ -97,8 +97,7 @@ const Navbar = () => {
                     onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = logoOpt.fallback; }}
                   />
                 );
-              })()
-              ) : (
+              })() : (
                 <div className="h-10 w-[120px] flex items-center justify-center opacity-0">
                   <Radio className="h-8 w-8 text-neon-cyan" />
                 </div>
