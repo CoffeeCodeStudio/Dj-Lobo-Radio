@@ -186,9 +186,9 @@ const FramsidaTab = () => {
       <ImageCropper
         open={cropperOpen}
         imageSrc={cropperSrc}
-        aspect={cropperTarget === "radio" ? 1 : 4 / 5}
-        cropShape={cropperTarget === "radio" ? "round" : "rect"}
-        title={cropperTarget === "radio" ? "Beskär radiobild (rund)" : "Beskär huvudbild (4:5)"}
+        aspect={4 / 5}
+        cropShape="rect"
+        title="Beskär huvudbild (4:5)"
         onComplete={handleCropComplete}
         onCancel={() => setCropperOpen(false)}
       />

@@ -434,6 +434,17 @@ const RadioTab = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Image Cropper Dialog */}
+      <ImageCropper
+        open={cropperOpen}
+        imageSrc={cropperSrc}
+        aspect={1}
+        cropShape="round"
+        title="Beskär radiobild (rund)"
+        onComplete={handleCropComplete}
+        onCancel={() => setCropperOpen(false)}
+      />
     </div>
   );
 };
