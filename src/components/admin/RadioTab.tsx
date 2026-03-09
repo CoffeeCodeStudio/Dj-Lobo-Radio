@@ -88,12 +88,29 @@ const RadioTab = () => {
     if (!error) { toast({ title: "Meddelande skickat!" }); setAdminMessage(""); if (loaded) fetchMessages(); }
   };
 
+  const handleSaveRadioTitle = async () => {
+    setSaving(true);
+    const { error } = await updateBranding({ radio_section_title: radioSectionTitle });
+    setSaving(false);
+    if (error) {
+      sonnerToast.error("Kunde inte spara: " + error);
+    } else {
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+      sonnerToast.success("✅ Radiotitel sparad!");
+      refetch();
+    }
+  };
+
   const formatTime = (d: string) => new Date(d).toLocaleString();
 
   return (
     <div className="space-y-6">
-      <Tabs defaultValue="mixes">
-        <TabsList className="grid w-full grid-cols-2 mb-6 glass-card">
+      <Tabs defaultValue="settings">
+        <TabsList className="grid w-full grid-cols-3 mb-6 glass-card">
+          <TabsTrigger value="settings" className="data-[state=active]:bg-primary/20">
+            <Music className="w-4 h-4 mr-2" />Inställningar
+          </TabsTrigger>
           <TabsTrigger value="mixes" className="data-[state=active]:bg-primary/20">
             <Music className="w-4 h-4 mr-2" />Mixar
           </TabsTrigger>
@@ -101,6 +118,58 @@ const RadioTab = () => {
             <MessageSquare className="w-4 h-4 mr-2" />Chat
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="settings">
+          <Card className="glass-card border-white/10 max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                📻 Radiosidesrubrik
+              </CardTitle>
+              <CardDescription>
+                Titel som visas högst upp på radiosidan (t.ex. "Live Radio", "On Air", "Lyssna Live")
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <Label htmlFor="radioSectionTitle">Sektionsrubrik</Label>
+                <Input
+                  id="radioSectionTitle"
+                  value={radioSectionTitle}
+                  onChange={(e) => setRadioSectionTitle(e.target.value)}
+                  placeholder="Live Radio"
+                  className="mt-1.5"
+                  maxLength={50}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  {radioSectionTitle.length} / 50 tecken
+                </p>
+              </div>
+              <Button
+                onClick={handleSaveRadioTitle}
+                disabled={saving || radioSectionTitle === (branding?.radio_section_title || "Live Radio")}
+                size="lg"
+                className="w-full text-base py-6"
+              >
+                {saving ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Sparar...
+                  </>
+                ) : saved ? (
+                  <>
+                    <CheckCircle2 className="w-5 h-5 mr-2 text-green-400" />
+                    Sparat! ✅
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-5 h-5 mr-2" />
+                    Spara ändringar
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
         <TabsContent value="mixes">
           <MixesTab />
