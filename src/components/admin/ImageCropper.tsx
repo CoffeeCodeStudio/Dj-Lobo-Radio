@@ -15,6 +15,7 @@ interface ImageCropperProps {
   open: boolean;
   imageSrc: string;
   aspect?: number;
+  cropShape?: "rect" | "round";
   title?: string;
   onComplete: (croppedBlob: Blob) => void;
   onCancel: () => void;
