@@ -53,6 +53,10 @@ const HeroSection = () => {
             alt=""
             aria-hidden="true"
             className="w-full h-full object-cover opacity-40"
+            loading="eager"
+            fetchPriority="high"
+            width={1920}
+            height={1080}
             onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = heroOpt.fallback; }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />

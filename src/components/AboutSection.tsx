@@ -189,6 +189,8 @@ const AboutSection = () => {
                 alt="DJ Lobo spelar latinmusik live"
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
+                width={400}
+                height={500}
                 onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = aboutFallback; }}
               />
             </div>
