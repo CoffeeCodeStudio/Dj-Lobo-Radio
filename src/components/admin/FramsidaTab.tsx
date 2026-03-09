@@ -139,48 +139,6 @@ const FramsidaTab = () => {
         </CardContent>
       </Card>
 
-      {/* Hero-bakgrundsbild (16:9) */}
-      <Card className="glass-card border-white/10">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg"><ImageIcon className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />Hero-bakgrundsbild (16:9)</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 sm:space-y-4">
-          <p className="text-xs sm:text-sm text-muted-foreground">Stor bakgrundsbild som visas överst på startsidan. <strong>16:9 format</strong> för bästa resultat på alla skärmar.</p>
-          {currentHeroUrl ? (
-            <div className="space-y-2 sm:space-y-3">
-              <div className="relative w-full aspect-video rounded-lg overflow-hidden border-2 border-secondary/50">
-                <img src={currentHeroUrl} alt="Hero-bakgrundsbild" className="w-full h-full object-cover object-center" />
-                {uploadingType === "hero" && <div className="absolute inset-0 bg-background/50 flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-secondary" /></div>}
-              </div>
-              <p className="text-xs text-muted-foreground">👆 Förhandsvisning i 16:9 – optimerad för webb</p>
-            </div>
-          ) : (
-            <div className="relative w-full aspect-video rounded-lg overflow-hidden border-2 border-dashed border-border bg-muted/20 flex flex-col items-center justify-center gap-2">
-              <ImageIcon className="w-10 h-10 text-muted-foreground" />
-              <p className="text-xs sm:text-sm text-muted-foreground font-medium text-center px-2">16:9 liggande format</p>
-              <p className="text-xs text-muted-foreground">Ladda upp bakgrundsbild här</p>
-              {uploadingType === "hero" && <div className="absolute inset-0 bg-background/50 flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-secondary" /></div>}
-            </div>
-          )}
-          <input ref={heroInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileSelect("hero")} />
-          <div className="flex gap-2">
-            <Button size="lg" variant="outline" className="flex-1 text-sm sm:text-base py-5 sm:py-6 h-auto" onClick={() => heroInputRef.current?.click()} disabled={uploadingType === "hero"}>
-              <Upload className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />{uploadingType === "hero" ? "Laddar..." : "Ladda upp"}
-            </Button>
-            {currentHeroUrl && (
-              <Button variant="destructive" size="icon" className="h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0" onClick={() => { setPendingChanges((prev) => ({ ...prev, hero_image_url: null })); setPreviewHero(null); }} title="Ta bort">
-                <Trash2 className="w-5 h-5" />
-              </Button>
-            )}
-          </div>
-          <div className="bg-muted/30 rounded-lg p-3 space-y-1.5">
-            <p className="text-xs sm:text-sm font-medium">✂️ Automatisk beskärning & optimering</p>
-            <p className="text-xs text-muted-foreground">• Välj motivet du vill ha i 16:9 format</p>
-            <p className="text-xs text-muted-foreground">• Bilden optimeras automatiskt för snabb laddning</p>
-            <p className="text-xs text-muted-foreground">• Max filstorlek: {MAX_FILE_SIZE_MB} MB</p>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Huvudbild (Om mig) - 4:5 */}
       <Card className="glass-card border-white/10">
