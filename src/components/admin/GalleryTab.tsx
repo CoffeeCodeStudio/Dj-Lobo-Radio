@@ -104,7 +104,7 @@ const GalleryTab = () => {
           </div>
 
           {newMediaType === "photo" ? (
-            <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center hover:border-neon-cyan/50 transition-colors">
+            <div className="border-2 border-dashed border-white/20 rounded-lg p-4 sm:p-6 text-center hover:border-neon-cyan/50 transition-colors">
               <input
                 type="file"
                 ref={fileInputRef}
@@ -113,13 +113,13 @@ const GalleryTab = () => {
                 className="hidden"
                 id="add-gallery-image"
               />
-              <label htmlFor="add-gallery-image" className="cursor-pointer flex flex-col items-center gap-3">
+              <label htmlFor="add-gallery-image" className="cursor-pointer flex flex-col items-center gap-2 sm:gap-3">
                 {addImage.isPending ? (
-                  <Loader2 className="w-10 h-10 text-neon-cyan animate-spin" />
+                  <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 text-neon-cyan animate-spin" />
                 ) : (
-                  <Upload className="w-10 h-10 text-muted-foreground" />
+                  <Upload className="w-8 h-8 sm:w-10 sm:h-10 text-muted-foreground" />
                 )}
-                <span className="text-muted-foreground">
+                <span className="text-sm sm:text-base text-muted-foreground">
                   {addImage.isPending ? "Laddar upp..." : "Klicka för att lägga till en ny bild"}
                 </span>
                 <span className="text-xs text-muted-foreground mt-1">
