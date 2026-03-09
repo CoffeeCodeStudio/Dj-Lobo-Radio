@@ -229,12 +229,12 @@ const BrandingTab = () => {
         {/* ===== LOGOTYP ===== */}
         <Card className="bg-card border border-border/50 shadow-sm">
           <CardHeader>
-            <CardTitle className="font-display flex items-center gap-2 text-lg">
-              <Sparkles className="w-5 h-5 text-neon-purple" />
+            <CardTitle className="font-display flex items-center gap-2 text-base sm:text-lg">
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-neon-purple" />
               Logotyp
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4">
             <p className="text-sm text-muted-foreground">
               Logotypen visas i navigeringen (menyn) och i sidfoten. Den bör ha <strong>genomskinlig bakgrund</strong> (PNG) så att den smälter in i designen.
             </p>
