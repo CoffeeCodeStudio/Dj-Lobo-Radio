@@ -3,8 +3,8 @@ import { Instagram, Youtube, Facebook, ExternalLink, Play, ImageIcon, Music } fr
 import { useGallery, extractYouTubeId } from "@/hooks/useGallery";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MixCardGrid from "@/components/MixCardGrid";
-import TestimonialsSection from "@/components/TestimonialsSection";
+import { useBranding } from "@/hooks/useBranding";
+import { useLanguage } from "@/contexts/LanguageContext";
 import Footer from "@/components/Footer";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import MediaFilterBar, { type MediaFilter } from "@/components/MediaFilterBar";
