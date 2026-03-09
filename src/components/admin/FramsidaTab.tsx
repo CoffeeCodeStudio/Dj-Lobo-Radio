@@ -54,26 +54,19 @@ const FramsidaTab = () => {
   const handleCropComplete = async (croppedBlob: Blob) => {
     setCropperOpen(false);
     const previewUrl = URL.createObjectURL(croppedBlob);
-    const isRadio = cropperTarget === "radio";
+    setPreviewHero(previewUrl);
 
-    if (isRadio) {
-      setPreviewRadio(previewUrl);
-    } else {
-      setPreviewHero(previewUrl);
-    }
-
-    const file = new File([croppedBlob], `${cropperTarget}-cropped.jpg`, { type: "image/jpeg" });
-    setUploadingType(isRadio ? "radio" : "hero");
-    const { url, error } = await uploadImage(file, isRadio ? "radio" : "profile");
+    const file = new File([croppedBlob], "profile-cropped.jpg", { type: "image/jpeg" });
+    setUploadingType("hero");
+    const { url, error } = await uploadImage(file, "profile");
     setUploadingType(null);
 
     if (error) {
       toast.error(error);
-      if (isRadio) setPreviewRadio(null); else setPreviewHero(null);
+      setPreviewHero(null);
       return;
     }
-    const field = isRadio ? "radio_image_url" : "profile_image_url";
-    setPendingChanges((prev) => ({ ...prev, [field]: url }));
+    setPendingChanges((prev) => ({ ...prev, profile_image_url: url }));
     toast.success("Bilden beskars och laddades upp! Tryck 'Spara ändringar'.");
   };
 
