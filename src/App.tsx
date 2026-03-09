@@ -11,6 +11,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 const Index = lazy(() => import("./pages/Index"));
 const ListenPage = lazy(() => import("./pages/ListenPage"));
 const MediaPage = lazy(() => import("./pages/MediaPage"));
+const MixesPage = lazy(() => import("./pages/MixesPage"));
 const ReferencesPage = lazy(() => import("./pages/ReferencesPage"));
 const SpelningarPage = lazy(() => import("./pages/SpelningarPage"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -39,6 +40,7 @@ const App = () => (
                 <Route element={<Layout />}>
                   <Route path="/" element={<Index />} />
                   <Route path="/lyssna" element={<ListenPage />} />
+                  <Route path="/mixar" element={<MixesPage />} />
                   <Route path="/media" element={<MediaPage />} />
                   <Route path="/referenser" element={<ReferencesPage />} />
                   <Route path="/spelningar" element={<SpelningarPage />} />

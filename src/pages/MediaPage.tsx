@@ -3,8 +3,6 @@ import { Instagram, Youtube, Facebook, ExternalLink, Play, ImageIcon, Music } fr
 import { useGallery, extractYouTubeId } from "@/hooks/useGallery";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
-import MixCardGrid from "@/components/MixCardGrid";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import Footer from "@/components/Footer";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import MediaFilterBar, { type MediaFilter } from "@/components/MediaFilterBar";
@@ -109,11 +107,6 @@ const MediaPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Mix Card Grid */}
-      <ErrorBoundary>
-        <MixCardGrid />
-      </ErrorBoundary>
-
       {/* Social Links */}
       <section className="py-10 sm:py-14 px-4" aria-labelledby="social-heading">
         <h2 id="social-heading" className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-neon-gradient mb-8 text-center italic">
@@ -217,9 +210,6 @@ const MediaPage = () => {
         isYouTube={lightbox.isYouTube}
       />
 
-      <ErrorBoundary>
-        <TestimonialsSection />
-      </ErrorBoundary>
 
       <Footer />
     </div>
