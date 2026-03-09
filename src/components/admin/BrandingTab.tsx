@@ -323,7 +323,7 @@ const BrandingTab = () => {
               </div>
 
               <div className="bg-muted/30 rounded-lg p-3">
-                <p className="text-sm font-medium mb-1">📐 Rekommenderad storlek</p>
+                <p className="text-xs sm:text-sm font-medium mb-1">📐 Rekommenderad storlek</p>
                 <p className="text-xs text-muted-foreground">
                   400×100 pixlar, PNG med genomskinlig bakgrund, max 300 KB
                 </p>
