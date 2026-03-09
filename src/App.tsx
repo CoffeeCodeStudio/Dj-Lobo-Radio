@@ -40,6 +40,7 @@ const App = () => (
                 <Route element={<Layout />}>
                   <Route path="/" element={<Index />} />
                   <Route path="/lyssna" element={<ListenPage />} />
+                  <Route path="/mixar" element={<MixesPage />} />
                   <Route path="/media" element={<MediaPage />} />
                   <Route path="/referenser" element={<ReferencesPage />} />
                   <Route path="/spelningar" element={<SpelningarPage />} />

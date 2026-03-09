@@ -20,6 +20,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { id: "hem", href: "/", label: { sv: "Hem", en: "Home", es: "Inicio" }, icon: Home },
+  { id: "mixar", href: "/mixar", label: { sv: "Mixar & Sets", en: "Mixes & Sets", es: "Mezclas & Sets" }, icon: Disc3 },
   { id: "media", href: "/media", label: { sv: "Media", en: "Media", es: "Media" }, icon: Film },
   { id: "radio", href: "/lyssna", label: { sv: "Radio", en: "Radio", es: "Radio" }, icon: Radio, highlight: true },
   { id: "referenser", href: "/referenser", label: { sv: "Omdömen", en: "Reviews", es: "Reseñas" }, icon: Star },
