@@ -33,7 +33,7 @@ const FramsidaTab = () => {
   const currentHeroUrl = previewHero || branding?.hero_image_url || null;
   const hasPending = Object.keys(pendingChanges).length > 0;
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = (type: "profile" | "hero") => (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) {
@@ -48,6 +48,7 @@ const FramsidaTab = () => {
     reader.onload = (ev) => {
       const src = ev.target?.result as string;
       setCropperSrc(src);
+      setCropperTarget(type);
       setCropperOpen(true);
     };
     reader.readAsDataURL(file);
@@ -57,20 +58,36 @@ const FramsidaTab = () => {
   const handleCropComplete = async (croppedBlob: Blob) => {
     setCropperOpen(false);
     const previewUrl = URL.createObjectURL(croppedBlob);
-    setPreviewHero(previewUrl);
+    
+    if (cropperTarget === "profile") {
+      setPreviewProfile(previewUrl);
+      const file = new File([croppedBlob], "profile-cropped.jpg", { type: "image/jpeg" });
+      setUploadingType("profile");
+      const { url, error } = await uploadImage(file, "profile");
+      setUploadingType(null);
 
-    const file = new File([croppedBlob], "profile-cropped.jpg", { type: "image/jpeg" });
-    setUploadingType("hero");
-    const { url, error } = await uploadImage(file, "profile");
-    setUploadingType(null);
+      if (error) {
+        toast.error(error);
+        setPreviewProfile(null);
+        return;
+      }
+      setPendingChanges((prev) => ({ ...prev, profile_image_url: url }));
+      toast.success("Profilbilden beskars och laddades upp! Tryck 'Spara ändringar'.");
+    } else {
+      setPreviewHero(previewUrl);
+      const file = new File([croppedBlob], "hero-cropped.jpg", { type: "image/jpeg" });
+      setUploadingType("hero");
+      const { url, error } = await uploadImage(file, "hero");
+      setUploadingType(null);
 
-    if (error) {
-      toast.error(error);
-      setPreviewHero(null);
-      return;
+      if (error) {
+        toast.error(error);
+        setPreviewHero(null);
+        return;
+      }
+      setPendingChanges((prev) => ({ ...prev, hero_image_url: url }));
+      toast.success("Hero-bakgrundsbilden beskars och laddades upp! Tryck 'Spara ändringar'.");
     }
-    setPendingChanges((prev) => ({ ...prev, profile_image_url: url }));
-    toast.success("Bilden beskars och laddades upp! Tryck 'Spara ändringar'.");
   };
 
   const handleSave = async () => {
