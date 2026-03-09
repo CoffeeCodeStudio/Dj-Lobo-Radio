@@ -60,6 +60,7 @@ const ImageCropper = ({
   open,
   imageSrc,
   aspect = 4 / 5,
+  cropShape = "rect",
   title = "Beskär bild",
   onComplete,
   onCancel,
