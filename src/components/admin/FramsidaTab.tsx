@@ -124,17 +124,17 @@ const FramsidaTab = () => {
       {/* Sajtnamn & Slogan */}
       <Card className="glass-card border-white/10">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">✏️ Välkomsttext</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">✏️ Välkomsttext</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">Sajtens namn och slogan som visas på startsidan.</p>
+        <CardContent className="space-y-3 sm:space-y-4">
+          <p className="text-xs sm:text-sm text-muted-foreground">Sajtens namn och slogan som visas på startsidan.</p>
           <div>
-            <Label htmlFor="siteName">Sajtnamn</Label>
-            <Input id="siteName" value={pendingChanges.site_name ?? branding?.site_name ?? ""} onChange={(e) => setPendingChanges((prev) => ({ ...prev, site_name: e.target.value }))} placeholder="DJ Lobo Radio" className="mt-1.5" />
+            <Label htmlFor="siteName" className="text-sm">Sajtnamn</Label>
+            <Input id="siteName" value={pendingChanges.site_name ?? branding?.site_name ?? ""} onChange={(e) => setPendingChanges((prev) => ({ ...prev, site_name: e.target.value }))} placeholder="DJ Lobo Radio" className="mt-1.5 h-11 sm:h-10 text-base" />
           </div>
           <div>
-            <Label htmlFor="tagline">Slogan</Label>
-            <Input id="tagline" value={pendingChanges.tagline ?? branding?.tagline ?? ""} onChange={(e) => setPendingChanges((prev) => ({ ...prev, tagline: e.target.value }))} placeholder="Bringing the best of 80s and 90s music" className="mt-1.5" />
+            <Label htmlFor="tagline" className="text-sm">Slogan</Label>
+            <Input id="tagline" value={pendingChanges.tagline ?? branding?.tagline ?? ""} onChange={(e) => setPendingChanges((prev) => ({ ...prev, tagline: e.target.value }))} placeholder="Bringing the best of 80s and 90s music" className="mt-1.5 h-11 sm:h-10 text-base" />
           </div>
         </CardContent>
       </Card>
