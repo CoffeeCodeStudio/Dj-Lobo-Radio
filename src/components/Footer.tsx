@@ -185,14 +185,20 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
           </nav>
         </div>
 
-        {/* Coffee Code Studio */}
-        <div className="mt-6 text-center">
-          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-2 px-4 py-2 rounded-lg glass-card hover:scale-105 transition-all focus-neon" aria-label={t.visitStudio}>
-            <span className="text-neon-cyan font-bold text-lg" style={{ textShadow: "0 0 15px rgba(0,255,255,0.8)" }}>&lt;</span>
-            <span className="text-xl" style={{ filter: "drop-shadow(0 0 10px rgba(0,255,255,0.6))" }}>☕️</span>
-            <span className="text-neon-cyan font-bold text-lg" style={{ textShadow: "0 0 15px rgba(0,255,255,0.8)" }}>&gt;</span>
-            <span className="ml-1 font-semibold tracking-wide text-foreground text-sm">Coffee Code Studio</span>
-          </a>
+        {/* Coffee Code Studio Credit */}
+        <div className="mt-8 pt-4 border-t border-muted/10 text-center">
+          <p className="text-xs sm:text-sm text-muted-foreground/50">
+            Design & Development by{" "}
+            <a 
+              href={LINKEDIN_URL} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-muted-foreground/70 transition-colors underline decoration-dotted underline-offset-2"
+            >
+              Coffee Code Studio
+            </a>
+            {" "}☕
+          </p>
         </div>
       </div>
     </footer>
