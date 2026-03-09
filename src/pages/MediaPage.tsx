@@ -210,9 +210,6 @@ const MediaPage = () => {
         isYouTube={lightbox.isYouTube}
       />
 
-      <ErrorBoundary>
-        <TestimonialsSection />
-      </ErrorBoundary>
 
       <Footer />
     </div>
