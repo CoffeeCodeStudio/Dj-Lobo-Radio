@@ -121,9 +121,9 @@ const ListenPage = () => {
         
 
         {/* Bio */}
-        <p className="text-sm sm:text-base md:text-lg text-muted-foreground mb-4 max-w-xl px-4">
-          {t.bio}
-        </p>
+        
+
+        
 
         {/* Listen hint */}
         <p className="text-xs sm:text-sm text-muted-foreground/60 flex items-center gap-2">
