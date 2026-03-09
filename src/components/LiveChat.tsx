@@ -481,10 +481,23 @@ const LiveChat = () => {
                   maxLength={20}
                   aria-describedby="nickname-help"
                 />
-                <p id="nickname-help" className="text-xs text-muted-foreground mt-2">
+                <p id="nickname-help" className="text-xs text-foreground/70 mt-2">
                   {t.nicknameHelp}
                 </p>
               </div>
+              
+              {/* Legal disclaimer */}
+              <p className="text-xs text-foreground/70 text-center px-2">
+                {t.legalDisclaimer}{" "}
+                <Link to="/terms" className="text-neon-cyan hover:underline">
+                  {t.termsOfService}
+                </Link>
+                {" "}{t.and}{" "}
+                <Link to="/privacy" className="text-neon-cyan hover:underline">
+                  {t.privacyPolicy}
+                </Link>
+              </p>
+              
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-neon-pink to-neon-cyan hover:opacity-90 text-white font-display font-bold tracking-wider"
