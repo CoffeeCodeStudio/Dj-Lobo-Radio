@@ -2,13 +2,16 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Send, Users, MessageSquare, Ban, Trash2, Music } from "lucide-react";
+import { Send, Users, MessageSquare, Ban, Trash2, Music, Save, CheckCircle2, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { toast as sonnerToast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { usePresenceObserver } from "@/hooks/usePresence";
+import { useBranding } from "@/hooks/useBranding";
 import MixesTab from "./MixesTab";
 
 interface ChatMessage {
