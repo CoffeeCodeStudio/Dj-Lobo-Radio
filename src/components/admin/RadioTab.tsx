@@ -36,7 +36,7 @@ interface BannedUser {
 }
 
 const RadioTab = () => {
-  const { branding, updateBranding, refetch } = useBranding();
+  const { branding, updateBranding, uploadImage, refetch } = useBranding();
   const { listenerCount, listeners } = usePresenceObserver();
   const { toast } = useToast();
   
@@ -48,6 +48,13 @@ const RadioTab = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [radioSectionTitle, setRadioSectionTitle] = useState("");
+  
+  // Radio image upload state
+  const [uploadingRadio, setUploadingRadio] = useState(false);
+  const [previewRadio, setPreviewRadio] = useState<string | null>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [cropperSrc, setCropperSrc] = useState<string>("");
+  const radioInputRef = useRef<HTMLInputElement>(null);
 
   // Sync radioSectionTitle when branding loads
   useEffect(() => {
