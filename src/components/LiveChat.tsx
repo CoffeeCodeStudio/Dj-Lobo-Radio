@@ -10,6 +10,7 @@ import { usePresence } from "@/hooks/usePresence";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { logger } from "@/lib/logger";
 import { validateAndCleanMessage, sanitizeMessage } from "@/lib/profanityFilter";
+import { Link } from "react-router-dom";
 
 const chatTranslations = {
   sv: {

@@ -75,10 +75,9 @@ body {
   ::-webkit-scrollbar-thumb:hover {
     background: hsla(45, 100%, 50%, 0.7);
   }
-  /* Firefox */
+  /* Firefox fallback */
   * {
     scrollbar-width: thin;
-    scrollbar-color: hsla(45, 100%, 50%, 0.4) hsl(260, 30%, 6%);
   }
 
   * {
