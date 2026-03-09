@@ -24,21 +24,18 @@ const Layout = () => {
         Hoppa till huvudinnehåll
       </a>
 
-
       <div className="mesh-gradient-bg" aria-hidden="true" />
-      <div className="relative z-10">
-        <Navbar />
-        <main
-          key={fadeKey}
-          id="main-content"
-          tabIndex={-1}
-          className="page-fade-in px-4 sm:px-6 pb-20"
-        >
-          <Outlet />
-        </main>
-        <NowPlayingBar />
-        {location.pathname === "/lyssna" && <FloatingChatButton />}
-      </div>
+      <Navbar />
+      <main
+        key={fadeKey}
+        id="main-content"
+        tabIndex={-1}
+        className="page-fade-in px-4 sm:px-6 pb-20 relative z-10"
+      >
+        <Outlet />
+      </main>
+      <NowPlayingBar />
+      {location.pathname === "/lyssna" && <FloatingChatButton />}
       <CookieConsent />
     </div>
   );
