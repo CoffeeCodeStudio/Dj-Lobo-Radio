@@ -155,8 +155,8 @@ const GalleryTab = () => {
             </div>
           )}
 
-          {/* Gallery grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {/* Gallery grid - Mobile optimized */}
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
             {images.map((image) => {
               const isVideo = image.media_type === "video";
               const ytId = isVideo && image.video_url ? extractYouTubeId(image.video_url) : null;

@@ -228,18 +228,18 @@ const FramsidaTab = () => {
 
       <Card className="glass-card border-white/10">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">✍️ Om mig – Text</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">✍️ Om mig – Text</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">Skriv en kort presentation. Visas i "Om DJ Lobo"-sektionen på startsidan.</p>
+        <CardContent className="space-y-3 sm:space-y-4">
+          <p className="text-xs sm:text-sm text-muted-foreground">Skriv en kort presentation. Visas i "Om DJ Lobo"-sektionen på startsidan.</p>
           <div>
-            <Label htmlFor="bio-text">Din presentation</Label>
-            <Textarea id="bio-text" value={currentBio} onChange={(e) => setPendingChanges((prev) => ({ ...prev, bio_text: e.target.value }))} placeholder="Skriv om dig själv, din musik och din erfarenhet..." className="mt-1.5 min-h-[160px] text-base" maxLength={2000} />
+            <Label htmlFor="bio-text" className="text-sm">Din presentation</Label>
+            <Textarea id="bio-text" value={currentBio} onChange={(e) => setPendingChanges((prev) => ({ ...prev, bio_text: e.target.value }))} placeholder="Skriv om dig själv, din musik och din erfarenhet..." className="mt-1.5 min-h-[140px] sm:min-h-[160px] text-base" maxLength={2000} />
             <p className="text-xs text-muted-foreground mt-1 text-right">{currentBio.length} / 2 000 tecken</p>
           </div>
           {hasPending && (
-            <Button onClick={handleSave} disabled={saving} size="lg" className="w-full text-base py-6">
-              {saving ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : saved ? <CheckCircle2 className="w-5 h-5 mr-2 text-green-400" /> : <Save className="w-5 h-5 mr-2" />}
+            <Button onClick={handleSave} disabled={saving} size="lg" className="w-full text-sm sm:text-base py-5 sm:py-6 h-auto">
+              {saving ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" /> : saved ? <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400" /> : <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />}
               {saved ? "Sparat! ✅" : "Spara ändringar"}
             </Button>
           )}
