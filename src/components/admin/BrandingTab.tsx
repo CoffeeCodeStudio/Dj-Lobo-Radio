@@ -204,23 +204,23 @@ const BrandingTab = () => {
   
 
   return (
-    <div className="w-full max-w-[600px] mx-auto flex flex-col gap-8">
+    <div className="w-full max-w-[600px] mx-auto flex flex-col gap-6 sm:gap-8">
         {/* Save Button - Sticky */}
         {hasPendingChanges && (
-          <div className="sticky top-0 z-10 bg-background/95 backdrop-blur py-3 -mx-4 px-4 border-b border-border/50">
-            <div className="flex items-center justify-between">
-              <p className="text-sm text-muted-foreground">
-                ⚠️ Du har osparade ändringar
+          <div className="sticky top-[60px] sm:top-[72px] z-10 bg-background/95 backdrop-blur py-3 -mx-3 sm:-mx-4 px-3 sm:px-4 border-b border-border/50">
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                ⚠️ Osparade ändringar
               </p>
-              <Button onClick={handleSave} disabled={saving} size="lg" className="text-base px-8">
+              <Button onClick={handleSave} disabled={saving} size="lg" className="text-sm sm:text-base px-4 sm:px-8 h-10 sm:h-11">
                 {saving ? (
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 animate-spin" />
                 ) : saved ? (
-                  <CheckCircle2 className="w-5 h-5 mr-2 text-green-400" />
+                  <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-green-400" />
                 ) : (
-                  <Save className="w-5 h-5 mr-2" />
+                  <Save className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 )}
-                {saved ? "Sparat! ✅" : "Spara ändringar"}
+                {saved ? "Sparat! ✅" : "Spara"}
               </Button>
             </div>
           </div>
