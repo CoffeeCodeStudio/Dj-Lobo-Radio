@@ -37,8 +37,12 @@ const RadioTab = () => {
   const [adminMessage, setAdminMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const { listenerCount, listeners } = usePresenceObserver();
   const { toast } = useToast();
+  const { branding, updateBranding, refetch } = useBranding();
+  const [radioSectionTitle, setRadioSectionTitle] = useState(branding?.radio_section_title || "Live Radio");
 
   const fetchMessages = async () => {
     setLoading(true);
