@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,13 +6,17 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Send, Users, MessageSquare, Ban, Trash2, Music, Save, CheckCircle2, Loader2 } from "lucide-react";
+import { Send, Users, MessageSquare, Ban, Trash2, Music, Save, CheckCircle2, Loader2, Upload, ImageIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { toast as sonnerToast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { usePresenceObserver } from "@/hooks/usePresence";
 import { useBranding } from "@/hooks/useBranding";
 import MixesTab from "./MixesTab";
+import ImageCropper from "./ImageCropper";
+
+const MAX_FILE_SIZE_MB = 2;
+const MAX_FILE_SIZE = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 interface ChatMessage {
   id: string;
@@ -32,7 +36,7 @@ interface BannedUser {
 }
 
 const RadioTab = () => {
-  const { branding, updateBranding, refetch } = useBranding();
+  const { branding, updateBranding, uploadImage, refetch } = useBranding();
   const { listenerCount, listeners } = usePresenceObserver();
   const { toast } = useToast();
   
@@ -44,6 +48,13 @@ const RadioTab = () => {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [radioSectionTitle, setRadioSectionTitle] = useState("");
+  
+  // Radio image upload state
+  const [uploadingRadio, setUploadingRadio] = useState(false);
+  const [previewRadio, setPreviewRadio] = useState<string | null>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [cropperSrc, setCropperSrc] = useState<string>("");
+  const radioInputRef = useRef<HTMLInputElement>(null);
 
   // Sync radioSectionTitle when branding loads
   useEffect(() => {
@@ -110,6 +121,53 @@ const RadioTab = () => {
     }
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      sonnerToast.error("Fel filtyp – välj en bild (JPG, PNG eller WebP).");
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      sonnerToast.error(`Bilden är för stor (${(file.size / 1024 / 1024).toFixed(1)} MB). Välj en bild under ${MAX_FILE_SIZE_MB} MB.`);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const src = ev.target?.result as string;
+      setCropperSrc(src);
+      setCropperOpen(true);
+    };
+    reader.readAsDataURL(file);
+    e.target.value = "";
+  };
+
+  const handleCropComplete = async (croppedBlob: Blob) => {
+    setCropperOpen(false);
+    const previewUrl = URL.createObjectURL(croppedBlob);
+    setPreviewRadio(previewUrl);
+
+    const file = new File([croppedBlob], "radio-cropped.jpg", { type: "image/jpeg" });
+    setUploadingRadio(true);
+    const { url, error } = await uploadImage(file, "radio");
+    setUploadingRadio(false);
+
+    if (error) {
+      sonnerToast.error(error);
+      setPreviewRadio(null);
+      return;
+    }
+
+    const { error: updateError } = await updateBranding({ radio_image_url: url });
+    if (updateError) {
+      sonnerToast.error("Kunde inte spara: " + updateError);
+    } else {
+      sonnerToast.success("✅ Radiobild sparad!");
+      setPreviewRadio(null);
+      refetch();
+    }
+  };
+
   const formatTime = (d: string) => new Date(d).toLocaleString();
 
   return (
@@ -127,7 +185,8 @@ const RadioTab = () => {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="settings">
+        <TabsContent value="settings" className="space-y-6">
+          {/* Radio Section Title */}
           <Card className="glass-card border-white/10 max-w-2xl mx-auto">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -175,6 +234,75 @@ const RadioTab = () => {
                   </>
                 )}
               </Button>
+            </CardContent>
+          </Card>
+
+          {/* Radio Image */}
+          <Card className="glass-card border-white/10 max-w-2xl mx-auto">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <ImageIcon className="w-5 h-5 text-secondary" />
+                Radiobild
+              </CardTitle>
+              <CardDescription>
+                Rund profilbild som visas på radiosidan (Lyssna). Beskärs automatiskt till cirkel.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {(previewRadio || (branding as any)?.radio_image_url) ? (
+                <div className="space-y-3 max-w-[280px] mx-auto">
+                  <div className="relative w-full aspect-square rounded-full overflow-hidden border-4 border-secondary/50">
+                    <img
+                      src={previewRadio || (branding as any)?.radio_image_url}
+                      alt="Radiobild"
+                      className="w-full h-full object-cover object-center"
+                    />
+                    {uploadingRadio && (
+                      <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
+                        <Loader2 className="w-6 h-6 animate-spin text-secondary" />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground text-center">
+                    👆 Förhandsvisning – exakt som på sajten
+                  </p>
+                </div>
+              ) : (
+                <div className="relative w-full aspect-square max-w-[280px] mx-auto rounded-full overflow-hidden border-2 border-dashed border-border bg-muted/20 flex flex-col items-center justify-center gap-2">
+                  <ImageIcon className="w-10 h-10 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground font-medium">Rund profilbild</p>
+                  <p className="text-xs text-muted-foreground">1:1 format</p>
+                  {uploadingRadio && (
+                    <div className="absolute inset-0 bg-background/50 flex items-center justify-center">
+                      <Loader2 className="w-6 h-6 animate-spin text-secondary" />
+                    </div>
+                  )}
+                </div>
+              )}
+              <input
+                ref={radioInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileSelect}
+              />
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full max-w-[280px] mx-auto text-base py-6 flex"
+                onClick={() => radioInputRef.current?.click()}
+                disabled={uploadingRadio}
+              >
+                <Upload className="w-5 h-5 mr-2" />
+                {uploadingRadio ? "Laddar upp..." : "Ladda upp radiobild"}
+              </Button>
+              <div className="bg-muted/30 rounded-lg p-3 max-w-[280px] mx-auto space-y-1.5">
+                <p className="text-sm font-medium">✂️ Så funkar det</p>
+                <p className="text-xs text-muted-foreground">1. Klicka "Ladda upp radiobild"</p>
+                <p className="text-xs text-muted-foreground">2. En rund beskärare öppnas – dra och zooma för att välja motivet</p>
+                <p className="text-xs text-muted-foreground">3. Klicka "Använd beskärning" – bilden sparas direkt</p>
+                <p className="text-xs text-muted-foreground">• Max filstorlek: {MAX_FILE_SIZE_MB} MB</p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -306,6 +434,17 @@ const RadioTab = () => {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Image Cropper Dialog */}
+      <ImageCropper
+        open={cropperOpen}
+        imageSrc={cropperSrc}
+        aspect={1}
+        cropShape="round"
+        title="Beskär radiobild (rund)"
+        onComplete={handleCropComplete}
+        onCancel={() => setCropperOpen(false)}
+      />
     </div>
   );
 };
