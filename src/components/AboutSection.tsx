@@ -72,9 +72,10 @@ const AboutSection = () => {
   const t = translations[language];
 
   // Use profile image for About section (separate from hero background)
-  const profileOpt = optimizeHero(branding?.profile_image_url);
+  const profileOpt = optimizeProfile(branding?.profile_image_url);
   const aboutImage = profileOpt.src || djLoboAboutImage;
   const aboutFallback = profileOpt.fallback || djLoboAboutImage;
+  const aboutSrcSet = profileOpt.srcSet;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
