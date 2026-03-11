@@ -51,7 +51,11 @@ const TermsOfService = () => {
               <h1 className="text-2xl sm:text-3xl font-bold text-white">{t.title}</h1>
             </div>
             <p className="text-foreground/70 text-sm mb-6">{t.lastUpdated}</p>
-            <p className="text-foreground text-base leading-relaxed">{t.content}</p>
+            {t.content.split('\n').map((paragraph, i) => (
+              <p key={i} className="text-foreground text-base leading-relaxed mb-3 last:mb-0">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
       </div>
