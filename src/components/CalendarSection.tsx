@@ -118,11 +118,7 @@ const CalendarSection = () => {
         <div className="scroll-reveal rounded-2xl border border-neon-cyan/20 bg-background/40 backdrop-blur-md overflow-hidden" style={{ boxShadow: '0 0 30px -10px hsla(180, 100%, 50%, 0.15)' }}>
           {/* Skeleton loading */}
           {loading && events.length === 0 && (
-            <ul role="list" className="divide-y divide-neon-cyan/10">
-              <SkeletonEvent />
-              <SkeletonEvent />
-              <SkeletonEvent />
-            </ul>
+            <DJLoadingAnimation />
           )}
 
           {/* Error state */}
