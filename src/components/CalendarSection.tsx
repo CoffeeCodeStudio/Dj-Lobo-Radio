@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { MapPin, Clock, AlertCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
-import { Skeleton } from "@/components/ui/skeleton";
+
 
 const translations = {
   sv: {
@@ -31,14 +31,45 @@ const translations = {
   },
 };
 
-const SkeletonEvent = () => (
-  <li className="flex items-center gap-4 px-4 sm:px-6 py-4">
-    <Skeleton className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex-shrink-0" />
-    <div className="flex-1 space-y-2">
-      <Skeleton className="h-4 w-3/5" />
-      <Skeleton className="h-3 w-2/5" />
+const DJLoadingAnimation = () => (
+  <div className="flex flex-col items-center justify-center py-12 gap-4">
+    {/* DJ Silhouette SVG */}
+    <div className="relative w-24 h-24 animate-pulse">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+        {/* Turntable base */}
+        <ellipse cx="60" cy="95" rx="50" ry="8" className="fill-neon-purple/20" />
+        {/* Left turntable */}
+        <circle cx="35" cy="85" r="18" className="stroke-neon-pink/60" strokeWidth="2" fill="none">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 85;360 35 85" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="35" cy="85" r="3" className="fill-neon-pink/80" />
+        {/* Right turntable */}
+        <circle cx="85" cy="85" r="18" className="stroke-neon-purple/60" strokeWidth="2" fill="none">
+          <animateTransform attributeName="transform" type="rotate" values="360 85 85;0 85 85" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="85" cy="85" r="3" className="fill-neon-purple/80" />
+        {/* Mixer */}
+        <rect x="45" y="75" width="30" height="15" rx="2" className="fill-neon-purple/30 stroke-neon-pink/40" strokeWidth="1" />
+        {/* DJ Body */}
+        <path d="M60 72 C60 72 48 55 48 45 C48 35 52 28 60 28 C68 28 72 35 72 45 C72 55 60 72 60 72Z" className="fill-neon-purple/40" />
+        {/* Head */}
+        <circle cx="60" cy="25" r="10" className="fill-neon-purple/50" />
+        {/* Headphones */}
+        <path d="M49 22 C49 14 71 14 71 22" className="stroke-neon-pink/70" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+        <rect x="46" y="20" width="5" height="8" rx="2" className="fill-neon-pink/60" />
+        <rect x="69" y="20" width="5" height="8" rx="2" className="fill-neon-pink/60" />
+        {/* Arms reaching to turntables */}
+        <path d="M52 50 L38 75" className="stroke-neon-purple/50" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M68 50 L82 75" className="stroke-neon-purple/50" strokeWidth="2.5" strokeLinecap="round" />
+      </svg>
+      {/* Neon glow rings */}
+      <div className="absolute inset-0 rounded-full bg-neon-pink/10 animate-ping" style={{ animationDuration: '2s' }} />
+      <div className="absolute inset-2 rounded-full bg-neon-purple/10 animate-ping" style={{ animationDuration: '2.5s' }} />
     </div>
-  </li>
+    <p className="text-sm font-display tracking-wider text-neon-pink/80 animate-pulse">
+      Laddar spelningar...
+    </p>
+  </div>
 );
 
 const CalendarSection = () => {
@@ -87,11 +118,7 @@ const CalendarSection = () => {
         <div className="scroll-reveal rounded-2xl border border-neon-cyan/20 bg-background/40 backdrop-blur-md overflow-hidden" style={{ boxShadow: '0 0 30px -10px hsla(180, 100%, 50%, 0.15)' }}>
           {/* Skeleton loading */}
           {loading && events.length === 0 && (
-            <ul role="list" className="divide-y divide-neon-cyan/10">
-              <SkeletonEvent />
-              <SkeletonEvent />
-              <SkeletonEvent />
-            </ul>
+            <DJLoadingAnimation />
           )}
 
           {/* Error state */}
