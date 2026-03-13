@@ -97,13 +97,16 @@ export const useCalendarEvents = () => {
           const dayNames = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
           const monthNames = ["Jan", "Feb", "Mar", "Apr", "Maj", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"];
 
+          // Format in Stockholm timezone to avoid UTC shift
+          const stockholmDate = new Date(startDate.toLocaleString("en-US", { timeZone: "Europe/Stockholm" }));
+
           return {
             id: item.id,
             title: item.summary || "Untitled Event",
             location: item.location || "",
-            date: startDate,
-            dateFormatted: `${dayNames[startDate.getDay()]} ${startDate.getDate()} ${monthNames[startDate.getMonth()]}`,
-            timeFormatted: startDate.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" }),
+            date: stockholmDate,
+            dateFormatted: `${dayNames[stockholmDate.getDay()]} ${stockholmDate.getDate()} ${monthNames[stockholmDate.getMonth()]}`,
+            timeFormatted: startDate.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm" }),
           };
         });
 
