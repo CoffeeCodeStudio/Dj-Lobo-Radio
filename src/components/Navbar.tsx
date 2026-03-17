@@ -87,11 +87,12 @@ const Navbar = () => {
               alt="DJ Lobo Radio Logo"
               className="h-10 w-[120px] object-contain rounded-full bg-background/0 animate-[fade-in_0.8s_ease-out] ring-0 border-0 outline-none shadow-none [filter:brightness(0.95)_contrast(1.05)]"
               style={{ mixBlendMode: 'normal' }}
-              src={branding?.logo_url || "/favicon.png"}
+              src={logoOpt.src || "/favicon.png"}
               loading="eager"
               fetchPriority="high"
               width={120}
               height={40}
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = logoOpt.fallback || "/favicon.png"; }}
             />
             </Link>
 
