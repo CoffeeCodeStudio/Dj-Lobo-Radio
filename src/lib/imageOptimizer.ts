@@ -33,15 +33,15 @@ export function optimizeWithFallback(
 }
 
 export function optimizeLogo(url: string | null | undefined) {
-  return optimizeWithFallback(url, 400);
+  return optimizeWithFallback(url, 160);
 }
 
 export function optimizeHero(url: string | null | undefined) {
-  return optimizeWithFallback(url, 640);
+  return optimizeWithFallback(url, 1280);
 }
 
 export function optimizeProfile(url: string | null | undefined) {
-  return optimizeWithFallback(url, 400);
+  return optimizeWithFallback(url, 320);
 }
 
 export function optimizeGallery(url: string | null | undefined) {

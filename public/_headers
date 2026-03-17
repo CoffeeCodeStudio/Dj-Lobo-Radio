@@ -1,24 +1,33 @@
-# Cache static assets aggressively
+# Vite hashed assets — immutable forever
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Static images — 30 days
 /*.png
-  Cache-Control: public, max-age=604800
-
+  Cache-Control: public, max-age=2592000
 /*.jpg
-  Cache-Control: public, max-age=604800
-
+  Cache-Control: public, max-age=2592000
 /*.webp
-  Cache-Control: public, max-age=604800
-
+  Cache-Control: public, max-age=2592000
+/*.svg
+  Cache-Control: public, max-age=2592000
 /*.ico
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=2592000
 
+# Fonts — immutable
 /*.woff2
   Cache-Control: public, max-age=31536000, immutable
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
 
+# JS/CSS bundles — immutable (Vite hashes them)
 /*.js
   Cache-Control: public, max-age=31536000, immutable
-
 /*.css
   Cache-Control: public, max-age=31536000, immutable
+
+# HTML — always revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate

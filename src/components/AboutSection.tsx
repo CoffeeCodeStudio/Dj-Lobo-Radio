@@ -3,7 +3,7 @@ import djLoboAboutImage from "@/assets/dj-lobo-about.jpg";
 import { Music, Headphones, Zap, Disc } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { optimizeHero } from "@/lib/imageOptimizer";
+import { optimizeProfile } from "@/lib/imageOptimizer";
 
 const translations = {
   sv: {
@@ -72,7 +72,7 @@ const AboutSection = () => {
   const t = translations[language];
 
   // Use profile image for About section (separate from hero background)
-  const profileOpt = optimizeHero(branding?.profile_image_url);
+  const profileOpt = optimizeProfile(branding?.profile_image_url);
   const aboutImage = profileOpt.src || djLoboAboutImage;
   const aboutFallback = profileOpt.fallback || djLoboAboutImage;
 
