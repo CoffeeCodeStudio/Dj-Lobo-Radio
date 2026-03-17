@@ -38,6 +38,7 @@ const languages: LanguageOption[] = [
 const Navbar = () => {
   const { language, setLanguage } = useLanguage();
   const { branding, loading } = useBranding();
+  const logoOpt = optimizeLogo(branding?.logo_url);
   const location = useLocation();
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
