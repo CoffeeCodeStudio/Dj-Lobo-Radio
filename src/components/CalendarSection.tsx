@@ -141,7 +141,7 @@ const CalendarSection = () => {
         <div className="scroll-reveal rounded-2xl border border-neon-cyan/20 bg-background/40 backdrop-blur-md overflow-hidden" style={{ boxShadow: '0 0 30px -10px hsla(180, 100%, 50%, 0.15)' }}>
           {/* Loading animation */}
           {isLoading && events.length === 0 && (
-            <DJLoadingAnimation />
+            <DJLoadingAnimation loadingText={language === "en" ? "Loading shows..." : language === "es" ? "Cargando shows..." : "Laddar spelningar..."} />
           )}
 
           {/* Error state */}

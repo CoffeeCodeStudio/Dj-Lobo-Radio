@@ -183,7 +183,7 @@ const TestimonialsSection = () => {
             >
               <client.icon className="w-8 h-8 text-muted-foreground group-hover:text-neon-cyan transition-colors" />
               <span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">
-                {client.name}
+                {client.name[language]}
               </span>
             </div>
           ))}
