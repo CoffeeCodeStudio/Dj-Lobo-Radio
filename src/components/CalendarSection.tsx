@@ -68,7 +68,7 @@ const DJLoadingAnimation = () => (
       <div className="absolute inset-2 rounded-full bg-neon-purple/10 animate-ping" style={{ animationDuration: '2.5s' }} />
     </div>
     <p className="text-sm font-display tracking-wider text-neon-pink/80 animate-pulse">
-      Laddar spelningar...
+      {loadingText}
     </p>
   </div>
 );
