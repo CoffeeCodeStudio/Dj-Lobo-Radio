@@ -13,7 +13,7 @@ const translations = {
     title: "Privacy Policy",
     lastUpdated: "Last updated: March 2026",
     backToHome: "Back to homepage",
-    content: "We value your privacy. This policy explains how we handle data at DJ Lobo Radio.\n\nWe do NOT collect IP addresses. To prevent abuse in the chat, we use anonymous session IDs stored locally in your browser. These cannot be linked to your identity.\n\nWhen booking DJ services, we store the name, email, phone number, and event details that you provide. This data is used solely to manage your booking.\n\nWhen you send a message through the contact form, it is forwarded to us via email through a third-party service (Resend). The data is not stored in any database and only exists in our email flow.\n\nWe use automatic spam protection to protect the chat.\n\nYou have the right to request access to or deletion of your data by contacting us at info@djloboproducciones.com.",
+    content: "We value your privacy. This policy explains how DJ Lobo Producciones handles data.\n\nWe do NOT collect IP addresses. To prevent abuse in the chat, we use anonymous session IDs stored locally in your browser. These cannot be linked to your identity.\n\nWhen booking DJ services, we store the name, email, phone number, and event details that you provide. This data is used solely to manage your booking.\n\nWhen you send a message through the contact form, it is forwarded to us via email through a third-party service (Resend). The data is not stored in any database and only exists in our email flow.\n\nWe use automatic spam protection to protect the chat.\n\nYou have the right to request access to or deletion of your data by contacting us at info@djloboproducciones.com.",
   },
   es: {
     title: "Política de Privacidad",
