@@ -51,7 +51,9 @@ const translations = {
     success: "¡Gracias! Te responderemos pronto.",
     error: "Algo salió mal. Por favor, inténtalo de nuevo.",
     followUs: "Síguenos",
-    location: "Gotemburgo, Suecia"
+    location: "Gotemburgo, Suecia",
+    privacyConsent: "Al enviar, aceptas que tus datos se manejen según nuestra",
+    privacyLink: "política de privacidad",
   }
 };
 
