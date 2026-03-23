@@ -32,7 +32,7 @@ const translations = {
   },
 };
 
-const DJLoadingAnimation = () => (
+const DJLoadingAnimation = ({ loadingText }: { loadingText: string }) => (
   <div className="flex flex-col items-center justify-center py-12 gap-4">
     {/* DJ Silhouette SVG */}
     <div className="relative w-24 h-24 animate-pulse">
