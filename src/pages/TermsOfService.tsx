@@ -13,7 +13,7 @@ const translations = {
     title: "Terms of Service",
     lastUpdated: "Last updated: March 2026",
     backToHome: "Back to homepage",
-    content: "By using DJ Lobo Radio, you agree to these terms.\n\nOur chat is for spreading joy — abusive, offensive, or illegal content is not tolerated. We reserve the right to suspend sessions that violate these rules. Automatic rate limiting (max 5 messages per 30 seconds) applies to all users.\n\nThe booking form must be used in good faith. Fake bookings are not permitted.\n\nWe are not responsible for technical interruptions or content from third-party services (YouTube, Mixcloud, ZenoFM).\n\nQuestions? Contact info@djloboproducciones.com.",
+    content: "By using DJ Lobo Radio, you agree to these terms.\n\nOur chat is for spreading joy — abusive, offensive, or illegal content is not tolerated. We reserve the right to suspend sessions that violate these rules. Automatic spam protection applies to all users.\n\nThe booking form must be used in good faith. Fake bookings are not permitted. A submitted request is not a confirmed booking — price and availability are always confirmed via email.\n\nWe are not responsible for technical interruptions or content from third-party services (YouTube, Mixcloud, ZenoFM).\n\nQuestions? Contact info@djloboproducciones.com.",
   },
   es: {
     title: "Términos de Servicio",
