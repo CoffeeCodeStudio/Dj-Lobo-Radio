@@ -88,6 +88,9 @@ const translations = {
     reason2: "Equipo profesional",
     reason3: "Flexible y adapta la música",
     reason4: "Precios competitivos",
+    disclaimer: "Una solicitud enviada no es una reserva confirmada. El precio y la disponibilidad se confirman por correo electrónico.",
+    privacyConsent: "Al enviar, aceptas que tus datos se manejen según nuestra",
+    privacyLink: "política de privacidad",
   },
 };
 
