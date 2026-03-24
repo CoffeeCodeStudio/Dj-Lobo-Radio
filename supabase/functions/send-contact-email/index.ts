@@ -77,7 +77,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="white-space: pre-wrap; line-height: 1.6;">${sanitizedMessage}</p>
           </div>
           <p style="color: #666; font-size: 12px; margin-top: 20px;">
-            Detta meddelande skickades via kontaktformuläret på DJ Lobo Radio.
+            Detta meddelande skickades via kontaktformuläret på DJ Lobo Producciones.
           </p>
         </div>
       `,
