@@ -45,6 +45,7 @@ const App = () => (
                   <Route path="/media" element={<MediaPage />} />
                   <Route path="/referenser" element={<ReferencesPage />} />
                   <Route path="/spelningar" element={<SpelningarPage />} />
+                  <Route path="/prislista" element={<PrislistaPage />} />
                   {/* Legacy redirects */}
                   <Route path="/radio" element={<Navigate to="/lyssna" replace />} />
                   <Route path="/mixes" element={<Navigate to="/media" replace />} />

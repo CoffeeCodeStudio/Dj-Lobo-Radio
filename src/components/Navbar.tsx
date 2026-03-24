@@ -26,6 +26,7 @@ const navItems: NavItem[] = [
   { id: "radio", href: "/lyssna", label: { sv: "Radio", en: "Radio", es: "Radio" }, icon: Radio, highlight: true },
   { id: "referenser", href: "/referenser", label: { sv: "Omdömen", en: "Reviews", es: "Reseñas" }, icon: Star },
   { id: "spelningar", href: "/spelningar", label: { sv: "Spelningar", en: "Shows", es: "Shows" }, icon: CalendarDays },
+  { id: "prislista", href: "/prislista", label: { sv: "Prislista", en: "Pricing", es: "Precios" }, icon: BadgeDollarSign },
 ];
 
 interface LanguageOption { code: Language; flag: string; label: string; }
