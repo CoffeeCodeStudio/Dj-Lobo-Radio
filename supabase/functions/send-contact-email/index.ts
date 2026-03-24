@@ -59,7 +59,7 @@ const handler = async (req: Request): Promise<Response> => {
     const sanitizedMessage = sanitize(message);
 
     const emailResponse = await resend.emails.send({
-      from: "DJ Lobo Radio <info@djloboradio.com>",
+      from: "DJ Lobo Producciones <info@djloboradio.com>",
       to: ["djloboproducciones75@gmail.com"],
       reply_to: email,
       subject: `Nytt kontaktmeddelande från ${sanitizedName}`,
@@ -77,7 +77,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p style="white-space: pre-wrap; line-height: 1.6;">${sanitizedMessage}</p>
           </div>
           <p style="color: #666; font-size: 12px; margin-top: 20px;">
-            Detta meddelande skickades via kontaktformuläret på DJ Lobo Radio.
+            Detta meddelande skickades via kontaktformuläret på DJ Lobo Producciones.
           </p>
         </div>
       `,

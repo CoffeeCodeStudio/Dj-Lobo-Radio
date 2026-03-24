@@ -58,7 +58,7 @@ const handler = async (req: Request): Promise<Response> => {
     };
 
     const emailResponse = await resend.emails.send({
-      from: "DJ Lobo Radio <info@djloboradio.com>",
+      from: "DJ Lobo Producciones <info@djloboradio.com>",
       to: ["djloboproducciones75@gmail.com"],
       reply_to: email,
       subject: `🎧 Ny bokningsförfrågan från ${s.name} — ${s.eventType}`,
@@ -90,7 +90,7 @@ const handler = async (req: Request): Promise<Response> => {
             </table>
             ${s.message ? `<div style="margin-top: 20px; padding: 16px; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #00d4ff;"><h3 style="margin: 0 0 8px; color: #333; font-size: 14px;">Meddelande:</h3><p style="margin: 0; white-space: pre-wrap; line-height: 1.6; color: #555;">${s.message}</p></div>` : ""}
             <p style="color: #999; font-size: 11px; margin-top: 24px; text-align: center;">
-              Skickat via bokningsformuläret på DJ Lobo Radio
+              Skickat via bokningsformuläret på DJ Lobo Producciones
             </p>
           </div>
         </div>
