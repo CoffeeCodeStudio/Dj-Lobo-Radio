@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, Radio, Globe, ChevronDown, Home, CalendarDays, Star, Film, Disc3, BadgeDollarSign } from "lucide-react";
+import { Menu, Radio, Globe, ChevronDown, Home, Star, Film, Disc3, BadgeDollarSign } from "lucide-react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { useBranding } from "@/hooks/useBranding";
 import { optimizeLogo } from "@/lib/imageOptimizer";
@@ -25,7 +25,7 @@ const navItems: NavItem[] = [
   { id: "media", href: "/media", label: { sv: "Media", en: "Media", es: "Media" }, icon: Film },
   { id: "radio", href: "/lyssna", label: { sv: "Radio", en: "Radio", es: "Radio" }, icon: Radio, highlight: true },
   { id: "referenser", href: "/referenser", label: { sv: "Omdömen", en: "Reviews", es: "Reseñas" }, icon: Star },
-  { id: "spelningar", href: "/spelningar", label: { sv: "Spelningar", en: "Shows", es: "Shows" }, icon: CalendarDays },
+  
   { id: "prislista", href: "/prislista", label: { sv: "Prislista", en: "Pricing", es: "Precios" }, icon: BadgeDollarSign },
 ];
 
