@@ -93,6 +93,7 @@ const Navbar = () => {
                 fetchPriority="high"
                 width={120}
                 height={40}
+                onError={(e) => { if (logoOpt.fallback) { e.currentTarget.onerror = null; e.currentTarget.src = logoOpt.fallback; } }}
               />
             )}
             </Link>
