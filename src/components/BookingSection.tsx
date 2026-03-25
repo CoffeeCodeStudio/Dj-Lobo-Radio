@@ -46,8 +46,8 @@ const translations = {
     privacyLink: "integritetspolicy",
   },
   en: {
-    title: "Book Event",
-    subtitle: "Fill in the form and we'll get back to you within 24 hours",
+    title: "Contact & Booking",
+    subtitle: "Fill in the form and we'll get back to you within 24 hours with a personalized quote",
     name: "Your name",
     email: "Email address",
     phone: "Phone number (optional)",
