@@ -1,5 +1,6 @@
 import BookingSection from "@/components/BookingSection";
 import Footer from "@/components/Footer";
+import PricingGrid from "@/components/PricingGrid";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const translations = {
@@ -32,6 +33,9 @@ const PrislistaPage = () => {
           {t.pageSubtitle}
         </p>
       </div>
+
+      {/* Pricing Grid */}
+      <PricingGrid />
 
       {/* Booking Form */}
       <div id="boka">
