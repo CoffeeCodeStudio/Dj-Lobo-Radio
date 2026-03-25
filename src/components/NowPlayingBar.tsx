@@ -392,14 +392,14 @@ const NowPlayingBar = () => {
             {/* Mixes button */}
             <button
               onClick={handleMixesClick}
-              className={`tap-target flex items-center gap-1.5 px-3 py-2.5 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
+              className={`tap-target flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
                 isMix
                   ? "bg-primary/20 text-primary border border-primary/40 shadow-[0_0_12px_hsl(var(--primary)/0.3)]"
                   : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/30"
               }`}
               aria-label={t.minaMixar}
             >
-              <ListMusic className="w-4 h-4" />
+              <ListMusic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">{t.minaMixar}</span>
             </button>
           </div>
