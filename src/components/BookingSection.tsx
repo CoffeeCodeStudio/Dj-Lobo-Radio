@@ -22,8 +22,8 @@ const eventTypes = [
 
 const translations = {
   sv: {
-    title: "Boka Spelning",
-    subtitle: "Fyll i formuläret så återkommer vi inom 24 timmar",
+    title: "Kontakt & Bokning",
+    subtitle: "Fyll i formuläret så återkommer vi inom 24 timmar med ett Personligt prisförslag",
     name: "Ditt namn",
     email: "E-postadress",
     phone: "Telefonnummer (valfritt)",
@@ -46,8 +46,8 @@ const translations = {
     privacyLink: "integritetspolicy",
   },
   en: {
-    title: "Book Event",
-    subtitle: "Fill in the form and we'll get back to you within 24 hours",
+    title: "Contact & Booking",
+    subtitle: "Fill in the form and we'll get back to you within 24 hours with a personalized quote",
     name: "Your name",
     email: "Email address",
     phone: "Phone number (optional)",
@@ -70,8 +70,8 @@ const translations = {
     privacyLink: "privacy policy",
   },
   es: {
-    title: "Reservar Evento",
-    subtitle: "Completa el formulario y te responderemos en 24 horas",
+    title: "Contacto y Reserva",
+    subtitle: "Completa el formulario y te responderemos en 24 horas con una cotización personalizada",
     name: "Tu nombre",
     email: "Correo electrónico",
     phone: "Teléfono (opcional)",
