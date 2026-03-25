@@ -435,7 +435,7 @@ const NowPlayingBar = () => {
 
         {/* === Expanded mix iframe === */}
         {showExpandedMix && (
-          <div className="flex-1 px-4 pb-3">
+          <div className="flex-1 px-2 sm:px-4 pb-2 sm:pb-3 min-h-0">
             <iframe
               ref={mixIframeRef}
               src={getMixEmbedUrl()}
