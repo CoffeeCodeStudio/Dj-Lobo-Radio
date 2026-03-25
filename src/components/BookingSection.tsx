@@ -70,8 +70,8 @@ const translations = {
     privacyLink: "privacy policy",
   },
   es: {
-    title: "Reservar Evento",
-    subtitle: "Completa el formulario y te responderemos en 24 horas",
+    title: "Contacto y Reserva",
+    subtitle: "Completa el formulario y te responderemos en 24 horas con una cotización personalizada",
     name: "Tu nombre",
     email: "Correo electrónico",
     phone: "Teléfono (opcional)",
