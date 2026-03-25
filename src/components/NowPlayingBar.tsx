@@ -261,7 +261,7 @@ const NowPlayingBar = () => {
   return (
     <div
       className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-300 ${
-        showExpandedMix ? "h-[280px] sm:h-[200px]" : ""
+        showExpandedMix ? "h-[200px] sm:h-[220px] md:h-[260px]" : ""
       }`}
       role="region"
       aria-label={t.player}
@@ -274,7 +274,7 @@ const NowPlayingBar = () => {
 
       <div className="relative h-full flex flex-col">
         {/* Main control bar — mobile: taller, reorganized layout */}
-        <div className="max-w-7xl mx-auto w-full px-3 sm:px-4 py-2 md:py-2 flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="max-w-7xl mx-auto w-full px-2 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-3 shrink-0">
 
           {/* === PLAY/PAUSE button (LEFT on mobile) === */}
           {isRadio && (
@@ -311,9 +311,9 @@ const NowPlayingBar = () => {
               </div>
             )}
 
-            {/* Title + status — allow 2-line wrap on mobile */}
+            {/* Title + status */}
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-foreground line-clamp-2 sm:truncate leading-tight">
+              <p className="text-xs sm:text-sm font-medium text-foreground truncate leading-tight">
                 {isRadio
                   ? isPlaying
                     ? t.radioLive
@@ -357,20 +357,20 @@ const NowPlayingBar = () => {
 
           {/* === Mix player controls === */}
           {isMix && currentTrack && (
-            <div className="flex items-center gap-0.5 shrink-0">
+            <div className="flex items-center gap-0 shrink-0">
               <button
                 onClick={toggleMinimize}
-                className="tap-target p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                className="tap-target p-1.5 sm:p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
                 aria-label={isMinimized ? t.expand : t.minimize}
               >
-                {isMinimized ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                {isMinimized ? <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5" /> : <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5" />}
               </button>
               <button
                 onClick={stop}
-                className="tap-target p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
+                className="tap-target p-1.5 sm:p-2 rounded-lg hover:bg-destructive/10 transition-colors text-muted-foreground hover:text-destructive"
                 aria-label={t.close}
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           )}
@@ -381,10 +381,10 @@ const NowPlayingBar = () => {
             {!isRadio && (
               <button
                 onClick={handleRadioToggle}
-                className="tap-target flex items-center gap-1.5 px-3 py-2.5 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 glass-card text-muted-foreground hover:text-foreground hover:border-destructive/30"
+                className="tap-target flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-sm font-display font-bold tracking-wide transition-all duration-200 glass-card text-muted-foreground hover:text-foreground hover:border-destructive/30"
                 aria-label={t.playRadio}
               >
-                <Radio className="w-4 h-4" />
+                <Radio className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">{t.liveRadio}</span>
               </button>
             )}
@@ -392,29 +392,29 @@ const NowPlayingBar = () => {
             {/* Mixes button */}
             <button
               onClick={handleMixesClick}
-              className={`tap-target flex items-center gap-1.5 px-3 py-2.5 rounded-full text-xs sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
+              className={`tap-target flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-2 sm:py-2.5 rounded-full text-[10px] sm:text-sm font-display font-bold tracking-wide transition-all duration-200 ${
                 isMix
                   ? "bg-primary/20 text-primary border border-primary/40 shadow-[0_0_12px_hsl(var(--primary)/0.3)]"
                   : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/30"
               }`}
               aria-label={t.minaMixar}
             >
-              <ListMusic className="w-4 h-4" />
+              <ListMusic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">{t.minaMixar}</span>
             </button>
           </div>
 
-          {/* === Volume (all modes) === */}
+          {/* === Volume (all modes) — hidden on xs === */}
           {(isRadio || (isMix && currentTrack)) && (
-            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <div className="hidden xs:flex items-center gap-1 sm:gap-2 shrink-0">
               <button
                 onClick={() => setIsMuted(!isMuted)}
                 aria-label={isMuted ? t.unmute : t.mute}
-                className="tap-target p-1.5 text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
+                className="tap-target p-1 sm:p-1.5 text-muted-foreground hover:text-foreground transition-colors focus-neon rounded-lg"
               >
-                {isMuted || volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                {isMuted || volume === 0 ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
               </button>
-              <div className="relative w-14 sm:w-20 h-1.5 bg-muted rounded-full overflow-hidden">
+              <div className="relative w-12 sm:w-20 h-1.5 bg-muted rounded-full overflow-hidden">
                 <div
                   className="absolute left-0 top-0 h-full bg-gradient-to-r from-destructive to-primary rounded-full transition-all"
                   style={{ width: `${isMuted ? 0 : volume}%` }}
@@ -435,7 +435,7 @@ const NowPlayingBar = () => {
 
         {/* === Expanded mix iframe === */}
         {showExpandedMix && (
-          <div className="flex-1 px-4 pb-3">
+          <div className="flex-1 px-2 sm:px-4 pb-2 sm:pb-3 min-h-0">
             <iframe
               ref={mixIframeRef}
               src={getMixEmbedUrl()}
