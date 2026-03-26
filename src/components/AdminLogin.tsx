@@ -130,29 +130,46 @@ const AdminLogin = ({ onSignIn, onSignUp, onResetPassword, loading, error }: Adm
             >
               {isLoading ? (
                 <span className="loading-spinner" />
+              ) : isForgotPassword ? (
+                "Skicka återställningslänk"
               ) : isSignUp ? (
-                "Create Account"
+                "Skapa konto"
               ) : (
-                "Sign In"
+                "Logga in"
               )}
             </Button>
+
+            {!isForgotPassword && (
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => { setIsForgotPassword(true); setLocalError(null); setResetSent(false); }}
+                  className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Glömt lösenord?
+                </button>
+              </div>
+            )}
 
             <div className="text-center">
               <button
                 type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
+                onClick={() => { setIsSignUp(!isSignUp); setIsForgotPassword(false); setLocalError(null); setResetSent(false); }}
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                {isSignUp 
-                  ? "Already have an account? Sign in" 
-                  : "Need an account? Sign up"}
+                {isForgotPassword
+                  ? "Tillbaka till inloggning"
+                  : isSignUp 
+                    ? "Har du redan ett konto? Logga in" 
+                    : "Behöver du ett konto? Registrera dig"}
               </button>
             </div>
 
             {isSignUp && (
               <p className="text-xs text-muted-foreground text-center">
-                Note: After signing up, an admin must grant you access.
+                OBS: Efter registrering måste en admin ge dig åtkomst.
               </p>
+            )}
             )}
           </form>
         </CardContent>
