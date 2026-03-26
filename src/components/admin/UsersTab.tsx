@@ -12,6 +12,7 @@ interface UserRole {
   user_id: string;
   role: "admin" | "moderator" | "user";
   created_at: string;
+  email: string | null;
 }
 
 const UsersTab = ({ currentUserId }: { currentUserId: string }) => {
@@ -25,13 +26,10 @@ const UsersTab = ({ currentUserId }: { currentUserId: string }) => {
 
   const fetchRoles = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("user_roles")
-      .select("*")
-      .order("created_at", { ascending: true });
+    const { data, error } = await supabase.functions.invoke("list-admin-users");
 
     if (error) {
-      toast({ title: "Fel", description: "Kunde inte hämta roller.", variant: "destructive" });
+      toast({ title: "Fel", description: "Kunde inte hämta användare.", variant: "destructive" });
     } else {
       setRoles(data || []);
     }
@@ -149,7 +147,7 @@ const UsersTab = ({ currentUserId }: { currentUserId: string }) => {
                       <Shield className="w-4 h-4 text-primary" />
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{r.user_id.slice(0, 8)}...</p>
+                      <p className="text-sm font-medium truncate">{r.email || r.user_id.slice(0, 8) + "..."}</p>
                       <Badge variant="outline" className={`text-[10px] ${roleBadgeColor(r.role)}`}>
                         {r.role}
                       </Badge>
