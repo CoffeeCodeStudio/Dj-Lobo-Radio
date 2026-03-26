@@ -15,6 +15,7 @@ const eventTypeLabels: Record<string, string> = {
   private: "Privatfest",
   club: "Klubb/Festival",
   other: "Annat",
+  inquiry: "Allmän fråga",
 };
 
 interface BookingRequest {
