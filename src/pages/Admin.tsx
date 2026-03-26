@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Radio, ArrowLeft, LogOut, Palette, ImageIcon, Calendar, Star, Home, HelpCircle } from "lucide-react";
+import { Shield, Radio, ArrowLeft, LogOut, Palette, ImageIcon, Calendar, Star, Home, HelpCircle, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import AdminLogin from "@/components/AdminLogin";
