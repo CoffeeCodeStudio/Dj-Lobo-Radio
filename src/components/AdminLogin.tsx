@@ -88,26 +88,34 @@ const AdminLogin = ({ onSignIn, onSignUp, onResetPassword, loading, error }: Adm
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   type="email"
-                  placeholder="Email"
+                  placeholder="E-post"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10 bg-input border-border"
                   required
                 />
               </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 bg-input border-border"
-                  required
-                  minLength={6}
-                />
-              </div>
+              {!isForgotPassword && (
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="password"
+                    placeholder="Lösenord"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-10 bg-input border-border"
+                    required
+                    minLength={6}
+                  />
+                </div>
+              )}
             </div>
+
+            {resetSent && (
+              <div className="p-3 rounded-lg bg-primary/10 border border-primary/30 text-primary text-sm">
+                Återställningslänk skickad! Kolla din inkorg.
+              </div>
+            )}
 
             {displayError && (
               <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/30 text-destructive text-sm">
