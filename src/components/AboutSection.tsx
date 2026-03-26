@@ -3,7 +3,7 @@ import djLoboAboutImage from "@/assets/dj-lobo-about.jpg";
 import { Music, Headphones, Zap, Disc } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { optimizeProfile } from "@/lib/imageOptimizer";
+import { optimizeProfile, optimizeWithFallback } from "@/lib/imageOptimizer";
 
 const translations = {
   sv: {
@@ -186,6 +186,8 @@ const AboutSection = () => {
             <div className="scroll-reveal glass-card overflow-hidden aspect-[4/5] max-w-xs mx-auto">
               <img
                 src={aboutImage}
+                srcSet={branding?.profile_image_url ? `${optimizeProfile(branding.profile_image_url).src} 320w, ${optimizeWithFallback(branding.profile_image_url, 560).src} 560w` : undefined}
+                sizes="(max-width: 640px) 280px, 320px"
                 alt="DJ Lobo spelar latinmusik live"
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
