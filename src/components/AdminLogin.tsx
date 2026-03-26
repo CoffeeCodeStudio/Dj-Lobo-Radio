@@ -71,12 +71,14 @@ const AdminLogin = ({ onSignIn, onSignUp, onResetPassword, loading, error }: Adm
             <Shield className="w-8 h-8 text-white" />
           </div>
           <CardTitle className="font-display text-2xl text-neon-gradient">
-            {isSignUp ? "Create Admin Account" : "Admin Login"}
+            {isForgotPassword ? "Återställ lösenord" : isSignUp ? "Skapa konto" : "Admin Login"}
           </CardTitle>
           <CardDescription>
-            {isSignUp 
-              ? "Sign up to request admin access" 
-              : "Sign in to access the dashboard"}
+            {isForgotPassword
+              ? "Ange din e-post för att få en återställningslänk"
+              : isSignUp 
+                ? "Registrera dig för att begära åtkomst" 
+                : "Logga in för att nå kontrollpanelen"}
           </CardDescription>
         </CardHeader>
         <CardContent>
