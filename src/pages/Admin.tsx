@@ -101,7 +101,7 @@ const Admin = () => {
       <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 relative z-10">
         <Tabs defaultValue="framsida" className="w-full">
           {/* Mobile-first tab navigation */}
-          <TabsList className="grid w-full grid-cols-7 mb-4 sm:mb-8 glass-card h-auto p-1 gap-0.5">
+          <TabsList className="grid w-full grid-cols-8 mb-4 sm:mb-8 glass-card h-auto p-1 gap-0.5">
             <TabsTrigger value="framsida" className="data-[state=active]:bg-primary/20 flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 py-2 sm:py-2.5 px-0.5 sm:px-3 min-h-[52px] sm:min-h-0">
               <Home className="w-4 h-4 sm:w-4 sm:h-4" />
               <span className="text-[9px] sm:text-sm leading-tight">Hem</span>
