@@ -3,7 +3,7 @@ import djLoboAboutImage from "@/assets/dj-lobo-about.jpg";
 import { Music, Headphones, Zap, Disc } from "lucide-react";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { optimizeProfile, optimizeWithFallback } from "@/lib/imageOptimizer";
+
 
 const translations = {
   sv: {
@@ -71,10 +71,10 @@ const AboutSection = () => {
   const { language } = useLanguage();
   const t = translations[language];
 
-  // Use profile image for About section (separate from hero background)
-  const profileOpt = optimizeProfile(branding?.profile_image_url);
-  const aboutImage = profileOpt.src || djLoboAboutImage;
-  const aboutFallback = profileOpt.fallback || djLoboAboutImage;
+  // Use profile image for About section — stable reference to avoid blinking
+  const profileUrl = branding?.profile_image_url;
+  const aboutImage = profileUrl || djLoboAboutImage;
+  const aboutFallback = djLoboAboutImage;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -186,8 +186,6 @@ const AboutSection = () => {
             <div className="scroll-reveal glass-card overflow-hidden aspect-[4/5] max-w-xs mx-auto">
               <img
                 src={aboutImage}
-                srcSet={branding?.profile_image_url ? `${optimizeProfile(branding.profile_image_url).src} 320w, ${optimizeWithFallback(branding.profile_image_url, 560).src} 560w` : undefined}
-                sizes="(max-width: 640px) 280px, 320px"
                 alt="DJ Lobo spelar latinmusik live"
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
