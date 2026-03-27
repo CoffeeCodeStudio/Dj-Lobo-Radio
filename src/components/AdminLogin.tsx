@@ -157,7 +157,7 @@ const AdminLogin = ({ onSignIn, onSignUp, onResetPassword, loading, error }: Adm
               </div>
             )}
 
-            {!isForgotPassword && !isSignUp && (
+            {!isForgotPassword && (
               <p className="text-xs text-slate-500 text-center">
                 Kontakta din administratör för att få ett konto skapat
               </p>
