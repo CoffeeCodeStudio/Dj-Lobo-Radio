@@ -38,9 +38,7 @@ const AdminLogin = ({ onSignIn, onSignUp, onResetPassword, loading, error }: Adm
       return;
     }
 
-    const { error } = isSignUp 
-      ? await onSignUp(email, password)
-      : await onSignIn(email, password);
+    const { error } = await onSignIn(email, password);
 
     if (error) {
       setLocalError(error.message);
