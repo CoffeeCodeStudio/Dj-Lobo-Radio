@@ -72,14 +72,12 @@ const AdminLogin = ({ onSignIn, onSignUp, onResetPassword, loading, error }: Adm
             <Shield className="w-7 h-7 text-slate-300" />
           </div>
           <CardTitle className="text-xl font-semibold text-slate-100 tracking-tight">
-            {isForgotPassword ? "Återställ lösenord" : isSignUp ? "Skapa konto" : "Adminpanel"}
+            {isForgotPassword ? "Återställ lösenord" : "Adminpanel"}
           </CardTitle>
           <CardDescription className="text-slate-400 text-sm">
             {isForgotPassword
               ? "Ange din e-post för att få en återställningslänk"
-              : isSignUp 
-                ? "Registrera dig för att begära åtkomst" 
-                : "Logga in för att nå kontrollpanelen"}
+              : "Logga in för att nå kontrollpanelen"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
