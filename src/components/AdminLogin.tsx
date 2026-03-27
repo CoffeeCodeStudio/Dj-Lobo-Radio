@@ -182,7 +182,7 @@ const AdminLogin = ({ onSignIn, onSignUp, onResetPassword, loading, error }: Adm
                 rel="noopener noreferrer"
                 className="text-slate-500 hover:text-slate-400 underline underline-offset-2 transition-colors"
               >
-                Kontakta Coffee Code Studio
+                Kontakta ☕ Coffee Code Studio
               </a>
             </p>
           </div>
