@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Shield, ShieldOff, Users, Mail, RefreshCw } from "lucide-react";
+import { Shield, ShieldOff, Users, Mail, RefreshCw, Lock } from "lucide-react";
 
 interface UserRole {
   id: string;
