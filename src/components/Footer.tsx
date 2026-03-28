@@ -1,8 +1,9 @@
 import { forwardRef } from "react";
-import { Instagram, Facebook, Youtube, Radio as RadioIcon, Mail, Phone, MapPin } from "lucide-react";
+import { Instagram, Facebook, Youtube, Radio as RadioIcon, Mail, Phone, MapPin, Cookie } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useBranding } from "@/hooks/useBranding";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCookieConsent } from "@/contexts/CookieConsentContext";
 
 const DEFAULT_SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/djloboradio",
@@ -18,6 +19,7 @@ const translations = {
     copyright: "© 2026 DJ Lobo Producciones. Alla rättigheter förbehållna.",
     privacyPolicy: "Integritetspolicy",
     terms: "Användarvillkor",
+    cookieSettings: "Cookie-inställningar",
     contact: "Kontakt",
     about: "Om DJ Lobo",
     aboutText: "Professionell DJ i Göteborg med 20+ års erfarenhet. Expert på House, World Hits, 80-tal, 90-tal och Latin beats.",
@@ -30,6 +32,7 @@ const translations = {
     copyright: "© 2026 DJ Lobo Producciones. All rights reserved.",
     privacyPolicy: "Privacy Policy",
     terms: "Terms of Service",
+    cookieSettings: "Cookie Settings",
     contact: "Contact",
     about: "About DJ Lobo",
     aboutText: "Professional DJ in Gothenburg with 20+ years of experience. Expert in House, World Hits, 80s, 90s and Latin beats.",
@@ -42,6 +45,7 @@ const translations = {
     copyright: "© 2026 DJ Lobo Producciones. Todos los derechos reservados.",
     privacyPolicy: "Política de Privacidad",
     terms: "Términos de Servicio",
+    cookieSettings: "Configuración de Cookies",
     contact: "Contacto",
     about: "Sobre DJ Lobo",
     aboutText: "DJ profesional en Gotemburgo con más de 20 años de experiencia. Experto en House, World Hits, 80s, 90s y Latin beats.",
@@ -55,6 +59,7 @@ const translations = {
 const Footer = forwardRef<HTMLElement>((_, ref) => {
   const { language } = useLanguage();
   const { branding } = useBranding();
+  const { resetConsent } = useCookieConsent();
   const t = translations[language];
 
   const socialLinks = {
@@ -175,9 +180,18 @@ const Footer = forwardRef<HTMLElement>((_, ref) => {
         <div className="border-t border-neon-purple/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-muted-foreground text-xs">{t.copyright}</p>
           <nav aria-label="Juridiska länkar">
-            <ul className="flex gap-4 text-xs">
+            <ul className="flex gap-4 text-xs items-center">
               <li><Link to="/privacy" className="text-neon-cyan hover:underline">{t.privacyPolicy}</Link></li>
               <li><Link to="/terms" className="text-neon-cyan hover:underline">{t.terms}</Link></li>
+              <li>
+                <button
+                  onClick={resetConsent}
+                  className="text-muted-foreground hover:text-neon-cyan transition-colors flex items-center gap-1"
+                >
+                  <Cookie className="w-3 h-3" aria-hidden="true" />
+                  {t.cookieSettings}
+                </button>
+              </li>
             </ul>
           </nav>
         </div>
