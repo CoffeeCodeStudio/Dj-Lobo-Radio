@@ -41,6 +41,7 @@ interface LazyEmbedProps {
 const LazyEmbed = ({ title, embedUrl, loadingText }: LazyEmbedProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
+  const { hasConsented } = useCookieConsent();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
