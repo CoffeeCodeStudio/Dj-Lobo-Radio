@@ -38,7 +38,7 @@ export const CookieConsentProvider = ({ children }: { children: ReactNode }) => 
 
   return (
     <CookieConsentContext.Provider
-      value={{ consent, acceptCookies, declineCookies, hasConsented: consent === "accepted" }}
+      value={{ consent, acceptCookies, declineCookies, resetConsent, hasConsented: consent === "accepted" }}
     >
       {children}
     </CookieConsentContext.Provider>
