@@ -29,7 +29,7 @@ Du har rätt att begära utdrag eller radering av data genom att kontakta oss p�
 
 We do NOT collect IP addresses. To prevent abuse in the chat, we use anonymous session IDs stored locally in your browser. These cannot be linked to your identity.
 
-When booking DJ services, we store the name, email, phone number, and event details that you provide in our database. This data is used solely to manage your booking and is retained for as long as necessary to fulfill the booking and any follow-ups. You may request deletion of your booking data at any time.
+When booking DJ services, we store the name, email, phone number, and event details that you provide in our database. This data is used solely to manage your booking and is retained for a maximum of 24 months, after which it is automatically deleted. You may request deletion of your booking data at any time.
 
 When you send a message through the contact form, it is forwarded to us via email through Resend, a US-based email delivery service. Contact form data is not stored in any database and only exists in our email flow. Resend processes data in accordance with their privacy terms.
 
