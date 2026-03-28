@@ -19,6 +19,7 @@ const translations = {
     copyright: "© 2026 DJ Lobo Producciones. Alla rättigheter förbehållna.",
     privacyPolicy: "Integritetspolicy",
     terms: "Användarvillkor",
+    cookieSettings: "Cookie-inställningar",
     contact: "Kontakt",
     about: "Om DJ Lobo",
     aboutText: "Professionell DJ i Göteborg med 20+ års erfarenhet. Expert på House, World Hits, 80-tal, 90-tal och Latin beats.",
