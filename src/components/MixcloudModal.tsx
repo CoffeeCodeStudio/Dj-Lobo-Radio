@@ -30,7 +30,6 @@ const MixcloudModal = ({ isOpen, onClose, title, mixcloudUrl }: MixcloudModalPro
   const { language } = useLanguage();
   const { hasConsented } = useCookieConsent();
   const t = translations[language];
-  const t = translations[language];
 
   // Convert profile URL to embed format
   const embedUrl = `https://www.mixcloud.com/widget/iframe/?hide_cover=1&dark=1&feed=${encodeURIComponent(mixcloudUrl.replace("https://www.mixcloud.com", ""))}`;
