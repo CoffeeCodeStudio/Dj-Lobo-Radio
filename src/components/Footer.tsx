@@ -45,6 +45,7 @@ const translations = {
     copyright: "© 2026 DJ Lobo Producciones. Todos los derechos reservados.",
     privacyPolicy: "Política de Privacidad",
     terms: "Términos de Servicio",
+    cookieSettings: "Configuración de Cookies",
     contact: "Contacto",
     about: "Sobre DJ Lobo",
     aboutText: "DJ profesional en Gotemburgo con más de 20 años de experiencia. Experto en House, World Hits, 80s, 90s y Latin beats.",
