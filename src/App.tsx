@@ -33,6 +33,7 @@ const SuspenseFallback = () => (
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
+      <CookieConsentProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
