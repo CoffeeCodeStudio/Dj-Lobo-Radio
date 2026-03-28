@@ -31,7 +31,7 @@ We do NOT collect IP addresses. To prevent abuse in the chat, we use anonymous s
 
 When booking DJ services, we store the name, email, phone number, and event details that you provide in our database. This data is used solely to manage your booking and is retained for a maximum of 24 months, after which it is automatically deleted. You may request deletion of your booking data at any time.
 
-When you send a message through the contact form, it is forwarded to us via email through Resend, a US-based email delivery service. Contact form data is not stored in any database and only exists in our email flow. Resend processes data in accordance with their privacy terms.
+When you send a message through the contact form, it is forwarded to us via email through Resend, a US-based email delivery service. Contact form data is not stored in any database and only exists in our email flow. Your email address is temporarily stored for up to 1 hour to prevent spam, and is then automatically deleted. Resend processes data in accordance with their privacy terms.
 
 Embedded content from YouTube, Mixcloud, and SoundCloud is only loaded after you actively accept cookies via our consent banner. These third-party services may set their own cookies when the content is displayed.
 
