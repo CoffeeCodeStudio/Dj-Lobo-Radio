@@ -1,6 +1,8 @@
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { X, ChevronDown, ChevronUp, Disc3, Music } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useCookieConsent } from "@/contexts/CookieConsentContext";
+import EmbedBlockedNotice from "@/components/EmbedBlockedNotice";
 
 const GlobalMiniPlayer = () => {
   const { currentTrack, isPlaying, isMinimized, stop, toggleMinimize } = usePlayerStore();
