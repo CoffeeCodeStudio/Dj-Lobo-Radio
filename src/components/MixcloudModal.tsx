@@ -28,6 +28,8 @@ interface MixcloudModalProps {
 
 const MixcloudModal = ({ isOpen, onClose, title, mixcloudUrl }: MixcloudModalProps) => {
   const { language } = useLanguage();
+  const { hasConsented } = useCookieConsent();
+  const t = translations[language];
   const t = translations[language];
 
   // Convert profile URL to embed format
