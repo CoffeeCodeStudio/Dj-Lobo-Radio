@@ -27,7 +27,7 @@ const GlobalMiniPlayer = () => {
       return currentTrack.embedUrl.replace("auto_play=false", "auto_play=true");
     }
     const encoded = encodeURIComponent(currentTrack.originalUrl.trim());
-    return `https://w.soundcloud.com/player/?url=${encoded}&color=%2300e5ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+    return `https://w.soundcloud.com/player/?url=${encoded}&color=%2300e5ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false`;
   };
 
   if (!currentTrack) return null;
