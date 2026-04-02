@@ -21,13 +21,13 @@ const GlobalMiniPlayer = () => {
       const path = currentTrack.originalUrl
         .replace(/https?:\/\/(www\.)?mixcloud\.com/, "")
         .replace(/\/$/, "");
-      return `https://www.mixcloud.com/widget/iframe/?dark=1&hide_cover=1&mini=1&autoplay=1&feed=${encodeURIComponent(path + "/")}`;
+      return `https://www.mixcloud.com/widget/iframe/?dark=1&hide_cover=1&hide_artwork=1&autoplay=1&feed=${encodeURIComponent(path + "/")}`;
     }
     if (currentTrack.embedUrl.includes("w.soundcloud.com")) {
       return currentTrack.embedUrl.replace("auto_play=false", "auto_play=true");
     }
     const encoded = encodeURIComponent(currentTrack.originalUrl.trim());
-    return `https://w.soundcloud.com/player/?url=${encoded}&color=%2300e5ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+    return `https://w.soundcloud.com/player/?url=${encoded}&color=%2300e5ff&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false`;
   };
 
   if (!currentTrack) return null;
